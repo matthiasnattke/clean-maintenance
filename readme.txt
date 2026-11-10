@@ -4,7 +4,7 @@ Tags: maintenance, maintenance mode, multisite, coming soon, rest api
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.6.0
+Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,10 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 9. Network overview: all sites with state, period and maintenance page, switch one or many at once.
 
 == Changelog ==
+
+= 0.6.1 =
+* Every release is now checked against the WordPress.org plugin guidelines and with Plugin Check before it is published.
+* No changes to the plugin's behaviour.
 
 = 0.6.0 =
 * New settings page: a status header with preview, cards ordered by task (status, appearance, access, search engines & API, comfort), section navigation, tiles for mode and design, switches, role chips and a live background swatch.

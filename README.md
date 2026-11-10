@@ -12,7 +12,7 @@ It does one thing and stays out of your way: no page builder, no contact forms, 
 
 I built it for my own WordPress network around the [Couch Blog](https://couch-blog.de). More about the background on the **[project page](https://couch-blog.de/projekte/clean-maintenance/)**.
 
-> **Status:** pre-release (0.x). The plugin runs on my own sites; the submission to the WordPress.org plugin directory is being prepared.
+> **Status:** 0.x – released and in daily use on my own sites. The version stays below 1.0 while things may still change; the submission to the WordPress.org plugin directory is prepared.
 
 ### New in 0.6
 
