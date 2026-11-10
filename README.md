@@ -102,7 +102,7 @@ assets/admin.js           settings page script
 languages/                translation template and translations
 uninstall.php             removes the settings when the plugin is deleted
 tests/                    tests without dependencies: php tests/run.php
-tools/                    translations (i18n.js) and version numbers (version.sh)
+tools/                    translations (i18n.js), version numbers (version.sh), plugin guidelines (guidelines.js)
 ```
 
 ## Contributing

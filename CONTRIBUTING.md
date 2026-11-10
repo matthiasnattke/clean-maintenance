@@ -21,6 +21,7 @@ Changes flow `dev` → `beta` → `main`.
    ```sh
    php tests/run.php          # tests, no dependencies needed
    node tools/i18n.js build   # only if you changed texts
+   node tools/guidelines.js   # WordPress.org plugin guidelines
    ```
 
 4. Open the pull request against `dev`.
@@ -29,7 +30,10 @@ Every pull request is checked automatically by GitHub Actions:
 
 - **PHP syntax and tests** on PHP 8.0 to 8.4,
 - **Translations**: the template is up to date and every bundled language is complete,
-- **WordPress Plugin Check**, the official tool used for the WordPress.org plugin directory.
+- **Plugin guidelines**: `tools/guidelines.js` checks the shipped plugin against the machine-checkable parts of the [WordPress.org Detailed Plugin Guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/) – GPL license, readable code, no tracking or external requests, no remote scripts or CDNs, no credit links, no dashboard hijacking, readme rules, version numbers, trademarks,
+- **WordPress Plugin Check**, the [official tool](https://wordpress.org/plugins/plugin-check/) used for the WordPress.org plugin directory.
+
+The release workflow runs the same checks again on the package before anything is published – a release with a failing check is never created.
 
 ## Versions and tags
 

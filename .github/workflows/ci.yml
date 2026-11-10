@@ -41,16 +41,22 @@ jobs:
       - name: Template up to date, translations complete
         run: node tools/i18n.js check
 
-  plugin-check:
-    name: WordPress Plugin Check
+  wordpress-org:
+    name: WordPress.org – guidelines and Plugin Check
     runs-on: ubuntu-latest
     needs: php
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
       - name: Build the plugin as it is shipped
         run: |
           mkdir -p build
           git archive --format=tar --prefix=clean-maintenance/ HEAD | tar -x -C build
-      - uses: wordpress/plugin-check-action@v1
+      - name: Plugin guidelines (detailed-plugin-guidelines)
+        run: node tools/guidelines.js build/clean-maintenance --online
+      - name: WordPress Plugin Check
+        uses: wordpress/plugin-check-action@v1
         with:
           build-dir: build/clean-maintenance

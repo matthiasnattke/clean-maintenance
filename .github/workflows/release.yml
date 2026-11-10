@@ -1,9 +1,11 @@
 # Runs when a version tag is pushed, e.g. v0.5.0 (release) or v0.5.0-beta.1 (pre-release).
 #
 # 1. The tag must match the version in clean-maintenance.php, the constant and readme.txt.
-# 2. Tests run.
-# 3. A GitHub release with the installable ZIP is created.
-# 4. For final versions (no "-" in the tag) the plugin is deployed to WordPress.org –
+# 2. Tests and translation checks run.
+# 3. The package is checked against the WordPress.org plugin guidelines and with Plugin Check.
+#    Nothing is released if one of these checks fails.
+# 4. A GitHub release with the installable ZIP is created.
+# 5. For final versions (no "-" in the tag) the plugin is deployed to WordPress.org –
 #    only once the repository secrets SVN_USERNAME and SVN_PASSWORD are set.
 name: Release
 
@@ -43,6 +45,26 @@ jobs:
 
       - name: Tests
         run: php tests/run.php
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Translations
+        run: node tools/i18n.js check
+
+      - name: Build the plugin as it is shipped
+        run: |
+          mkdir -p build
+          git archive --format=tar --prefix=clean-maintenance/ HEAD | tar -x -C build
+
+      - name: Plugin guidelines (detailed-plugin-guidelines)
+        run: node tools/guidelines.js build/clean-maintenance --online
+
+      - name: WordPress Plugin Check
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: build/clean-maintenance
 
       - name: Build ZIP
         run: |
