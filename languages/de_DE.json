@@ -112,5 +112,14 @@
 	"Open": "Offen",
 	"Locked during maintenance": "Während der Wartung gesperrt",
 	"Always locked": "Immer gesperrt",
-	"Small helpers in the dashboard.": "Kleine Helfer in der Verwaltung."
+	"Small helpers in the dashboard.": "Kleine Helfer in der Verwaltung.",
+	"Classic design": "Klassische Gestaltung",
+	"All": "Alle",
+	"In maintenance": "In Wartung",
+	"Reachable": "Erreichbar",
+	"Show": "Anzeigen",
+	"Select all": "Alle auswählen",
+	"Action": "Aktion",
+	"No sites in this view.": "Keine Websites in dieser Ansicht.",
+	"All sites are reachable.": "Alle Websites sind erreichbar."
 }

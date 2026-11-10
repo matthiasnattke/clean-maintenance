@@ -53,6 +53,6 @@ jQuery( function ( $ ) {
 	} );
 
 	$( '#cm-all' ).on( 'change', function () {
-		$( '.cm-site' ).prop( 'checked', this.checked );
+		$( '.cm-site:visible .cm-site-check' ).prop( 'checked', this.checked );
 	} );
 } );

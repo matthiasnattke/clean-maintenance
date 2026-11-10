@@ -77,6 +77,8 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 
 = 0.6.0 =
 * New settings page: a status header with preview, cards ordered by task (status, appearance, access, search engines & API, comfort), section navigation, tiles for mode and design, switches, role chips and a live background swatch.
+* Network overview redesigned: key figures, filter by state, a card per site with state, period and what it shows, quick switches and bulk actions.
+* Network dashboard widget redesigned: key figures and a list of paused and planned sites with switches.
 * Dependent fields also show and hide without JavaScript.
 * Screenshots and example maintenance pages in the documentation.
 
