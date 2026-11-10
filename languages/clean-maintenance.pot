@@ -1,0 +1,369 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Clean Maintenance\n"
+"Report-Msgid-Bugs-To: https://github.com/matthiasnattke/clean-maintenance/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Domain: clean-maintenance\n"
+
+#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:107 includes/network.php:19 includes/network.php:20 includes/network.php:220
+msgid "Maintenance mode"
+msgstr ""
+
+#: includes/admin.php:78
+msgid "Please choose a start and/or end for the scheduled maintenance mode."
+msgstr ""
+
+#: includes/admin.php:80
+msgid "The end is before the start – please check."
+msgstr ""
+
+#: includes/admin.php:111
+msgid "Overview of all sites in the network"
+msgstr ""
+
+#: includes/admin.php:117
+msgid "Mode"
+msgstr ""
+
+#: includes/admin.php:121 includes/core.php:150
+msgid "Off"
+msgstr ""
+
+#: includes/admin.php:122
+msgid "On – right away, until I turn it off"
+msgstr ""
+
+#: includes/admin.php:123
+msgid "Scheduled"
+msgstr ""
+
+#: includes/admin.php:132
+msgid "Period"
+msgstr ""
+
+#: includes/admin.php:134
+msgid "Start"
+msgstr ""
+
+#: includes/admin.php:135
+msgid "End"
+msgstr ""
+
+#. translators: %s: time zone of the site, e.g. Europe/Berlin.
+#: includes/admin.php:139
+#, php-format
+msgid "Time zone of the site (%s). Without a start the mode applies right away, without an end until you turn it off."
+msgstr ""
+
+#: includes/admin.php:145
+msgid "Design"
+msgstr ""
+
+#: includes/admin.php:147
+msgid "Page from WordPress – in the style of the theme"
+msgstr ""
+
+#: includes/admin.php:148
+msgid "Classic – heading, text and background, independent of the theme"
+msgstr ""
+
+#: includes/admin.php:152
+msgid "Title in the browser tab"
+msgstr ""
+
+#: includes/admin.php:156
+msgid "Heading"
+msgstr ""
+
+#: includes/admin.php:161
+msgid "Text"
+msgstr ""
+
+#: includes/admin.php:164
+msgid "HTML is allowed (paragraphs, links, emphasis)."
+msgstr ""
+
+#: includes/admin.php:167
+msgid "Dashboard link"
+msgstr ""
+
+#: includes/admin.php:168
+msgid "Show a “Dashboard” link below the text"
+msgstr ""
+
+#: includes/admin.php:171 includes/network.php:155
+msgid "Maintenance page"
+msgstr ""
+
+#: includes/admin.php:174
+msgid "– simple notice with the site title –"
+msgstr ""
+
+#: includes/admin.php:180
+msgid "Edit page"
+msgstr ""
+
+#: includes/admin.php:182 includes/network.php:179
+msgid "Preview"
+msgstr ""
+
+#: includes/admin.php:183
+msgid "Shown everywhere without header and footer. Best create a page of its own as a draft or private – then it is not visible anywhere else."
+msgstr ""
+
+#: includes/admin.php:187
+msgid "Background"
+msgstr ""
+
+#: includes/admin.php:191
+msgid "Choose image"
+msgstr ""
+
+#: includes/admin.php:192
+msgid "Remove image"
+msgstr ""
+
+#: includes/admin.php:194
+msgid "The image fills the whole background; the colour lies beneath it or applies on its own."
+msgstr ""
+
+#: includes/admin.php:198
+msgid "Exceptions"
+msgstr ""
+
+#: includes/admin.php:201
+msgid "Exclude the feed, pages, archives or IP addresses from maintenance mode. One slug or IP per line; comments start with # and may follow at the end of a line."
+msgstr ""
+
+#: includes/admin.php:205
+msgid "Roles with access to the site"
+msgstr ""
+
+#: includes/admin.php:212
+msgid "Logged-in users with these roles see the normal site. Network administrators always have access."
+msgstr ""
+
+#: includes/admin.php:216
+msgid "Roles with access to the dashboard"
+msgstr ""
+
+#: includes/admin.php:228
+msgid "During maintenance only administrators and these roles may use the dashboard; everyone else is redirected."
+msgstr ""
+
+#: includes/admin.php:232
+msgid "Redirect"
+msgstr ""
+
+#: includes/admin.php:235
+msgid "Where logged-in users without dashboard access are sent. Empty = home page."
+msgstr ""
+
+#: includes/admin.php:239
+msgid "Search engine bots"
+msgstr ""
+
+#: includes/admin.php:240
+msgid "Bots see the normal site"
+msgstr ""
+
+#: includes/admin.php:241
+msgid "Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking."
+msgstr ""
+
+#: includes/admin.php:244
+msgid "Robots meta tag"
+msgstr ""
+
+#: includes/admin.php:250
+msgid "Instruction for search engines on the maintenance page."
+msgstr ""
+
+#: includes/admin.php:254
+msgid "REST API for visitors"
+msgstr ""
+
+#: includes/admin.php:258
+msgid "Open – as WordPress intends"
+msgstr ""
+
+#: includes/admin.php:259
+msgid "Locked for visitors who are not logged in during maintenance"
+msgstr ""
+
+#: includes/admin.php:260
+msgid "Always locked for visitors who are not logged in"
+msgstr ""
+
+#: includes/admin.php:267
+msgid "Still public (one namespace per line, e.g. oembed or podlove; comments with #):"
+msgstr ""
+
+#: includes/admin.php:269
+msgid "Locked requests without login get “401”. Logged-in users, the block editor and Jetpack keep working. The REST API hints in the page head are removed as well."
+msgstr ""
+
+#: includes/admin.php:272
+msgid "Notice"
+msgstr ""
+
+#: includes/admin.php:273
+msgid "Red “Maintenance mode active” notice in the admin bar, with a switch to turn it off"
+msgstr ""
+
+#: includes/admin.php:276
+msgid "Save settings"
+msgstr ""
+
+#: includes/admin.php:308
+msgid "Choose background image"
+msgstr ""
+
+#: includes/admin.php:309
+msgid "Use image"
+msgstr ""
+
+#: includes/admin.php:318 includes/frontend.php:302 includes/network.php:178
+msgid "Settings"
+msgstr ""
+
+#: includes/core.php:147
+msgid "On"
+msgstr ""
+
+#: includes/core.php:157
+msgid "Active (scheduled)"
+msgstr ""
+
+#: includes/core.php:158
+msgid "Period ended"
+msgstr ""
+
+#: includes/core.php:159 includes/network.php:279
+msgid "Planned"
+msgstr ""
+
+#. translators: 1: start date and time, 2: end date and time.
+#: includes/core.php:165
+#, php-format
+msgid "from %1$s to %2$s"
+msgstr ""
+
+#. translators: %s: start date and time.
+#: includes/core.php:168
+#, php-format
+msgid "from %s"
+msgstr ""
+
+#. translators: %s: end date and time.
+#: includes/core.php:171
+#, php-format
+msgid "until %s"
+msgstr ""
+
+#: includes/frontend.php:125
+msgid "This website is currently being updated. Please check back soon."
+msgstr ""
+
+#: includes/frontend.php:230
+msgid "Dashboard"
+msgstr ""
+
+#: includes/frontend.php:286
+msgid "Maintenance mode active"
+msgstr ""
+
+#: includes/frontend.php:294
+msgid "Turn off maintenance mode"
+msgstr ""
+
+#: includes/frontend.php:315 includes/network.php:195
+msgid "You are not allowed to do this."
+msgstr ""
+
+#: includes/frontend.php:405
+msgid "The REST API is only available to logged-in users."
+msgstr ""
+
+#: includes/network.php:41
+msgid "Overview"
+msgstr ""
+
+#: includes/network.php:123
+msgid "Maintenance mode in the network"
+msgstr ""
+
+#. translators: %d: number of changed sites.
+#: includes/network.php:128
+#, php-format
+msgid "%d site changed."
+msgid_plural "%d sites changed."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: sites in maintenance mode, 2: all sites.
+#: includes/network.php:135
+#, php-format
+msgid "%1$d of %2$d sites are in maintenance mode right now."
+msgstr ""
+
+#. translators: 1: sites in maintenance mode, 2: all sites.
+#: includes/network.php:137
+msgid "Each site sets its period, maintenance page, background, exceptions and roles in its own settings."
+msgstr ""
+
+#: includes/network.php:144
+msgid "Turn selected on"
+msgstr ""
+
+#: includes/network.php:145
+msgid "Turn selected off"
+msgstr ""
+
+#: includes/network.php:147
+msgid "Apply"
+msgstr ""
+
+#: includes/network.php:153
+msgid "Site"
+msgstr ""
+
+#: includes/network.php:154
+msgid "State"
+msgstr ""
+
+#: includes/network.php:156
+msgid "Actions"
+msgstr ""
+
+#: includes/network.php:169
+msgid "simple notice"
+msgstr ""
+
+#: includes/network.php:174 includes/network.php:273
+msgid "Turn off"
+msgstr ""
+
+#: includes/network.php:176
+msgid "Turn on"
+msgstr ""
+
+#: includes/network.php:186
+msgid "“Turn on” applies right away and until you turn it off; a scheduled period is replaced. Network administrators always see the sites normally."
+msgstr ""
+
+#: includes/network.php:261
+msgid "in maintenance mode"
+msgstr ""
+
+#: includes/network.php:262
+msgid "reachable"
+msgstr ""
+
+#: includes/network.php:286
+msgid "Manage all sites →"
+msgstr ""
+
