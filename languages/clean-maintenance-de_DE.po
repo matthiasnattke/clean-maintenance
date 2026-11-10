@@ -29,7 +29,7 @@ msgstr "Übersicht aller Websites im Netzwerk"
 msgid "Mode"
 msgstr "Modus"
 
-#: includes/admin.php:121 includes/core.php:150
+#: includes/admin.php:121 includes/core.php:151
 msgid "Off"
 msgstr "Aus"
 
@@ -231,36 +231,36 @@ msgstr "Übernehmen"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: includes/core.php:147
+#: includes/core.php:148
 msgid "On"
 msgstr "Eingeschaltet"
 
-#: includes/core.php:157
+#: includes/core.php:158
 msgid "Active (scheduled)"
 msgstr "Aktiv (geplant)"
 
-#: includes/core.php:158
+#: includes/core.php:159
 msgid "Period ended"
 msgstr "Zeitraum vorbei"
 
-#: includes/core.php:159 includes/network.php:279
+#: includes/core.php:160 includes/network.php:279
 msgid "Planned"
 msgstr "Geplant"
 
 #. translators: 1: start date and time, 2: end date and time.
-#: includes/core.php:165
+#: includes/core.php:166
 #, php-format
 msgid "from %1$s to %2$s"
 msgstr "ab %1$s bis %2$s"
 
 #. translators: %s: start date and time.
-#: includes/core.php:168
+#: includes/core.php:169
 #, php-format
 msgid "from %s"
 msgstr "ab %s"
 
 #. translators: %s: end date and time.
-#: includes/core.php:171
+#: includes/core.php:172
 #, php-format
 msgid "until %s"
 msgstr "bis %s"

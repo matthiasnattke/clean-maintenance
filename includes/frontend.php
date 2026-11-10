@@ -36,7 +36,7 @@ function clean_maintenance_bypass( $s ) {
  * @return bool
  */
 function clean_maintenance_excluded( $s ) {
-	$uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( rawurldecode( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : '/';
+	$uri = isset( $_SERVER['REQUEST_URI'] ) ? rawurldecode( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : '/';
 	$ip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 	foreach ( preg_split( '/\R/', (string) $s['exclude'] ) as $line ) {
 		$line = trim( preg_replace( '/#.*$/', '', $line ) );
@@ -113,7 +113,7 @@ function clean_maintenance_render( $s, $preview = false ) {
 		if ( $wp_query->have_posts() ) {
 			$wp_query->the_post();
 		}
-		$content = apply_filters( 'the_content', $page->post_content );
+		$content = apply_filters( 'the_content', $page->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core filter.
 	} else {
 		/**
 		 * Name shown on the simple default maintenance notice.

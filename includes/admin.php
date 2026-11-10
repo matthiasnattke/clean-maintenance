@@ -54,7 +54,7 @@ function clean_maintenance_sanitize( $in ) {
 	$out['page']            = absint( $in['page'] ?? 0 );
 	$out['bg_image']        = absint( $in['bg_image'] ?? 0 );
 	$out['bg_color']        = (string) sanitize_hex_color( $in['bg_color'] ?? '' );
-	$out['exclude']         = sanitize_textarea_field( $in['exclude'] ?? '' );
+	$out['exclude']         = sanitize_textarea_field( $in['exclude'] ?? '' ); // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- setting name, not a query argument.
 	$out['roles']           = array_values( array_intersect( array_map( 'sanitize_key', (array) ( $in['roles'] ?? array() ) ), $roles ) );
 	$out['backend_roles']   = array_values( array_intersect( array_map( 'sanitize_key', (array) ( $in['backend_roles'] ?? array() ) ), $roles ) );
 	$out['redirect']        = esc_url_raw( trim( (string) ( $in['redirect'] ?? '' ) ) );

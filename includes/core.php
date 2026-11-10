@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * Load the bundled translations (German ships with the plugin).
  */
 function clean_maintenance_load_textdomain() {
+	// Bundled German translation; once listed on WordPress.org, translate.wordpress.org takes over.
 	load_plugin_textdomain( 'clean-maintenance', false, dirname( plugin_basename( CLEAN_MAINTENANCE_FILE ) ) . '/languages' );
 }
 add_action( 'init', 'clean_maintenance_load_textdomain' );
@@ -30,7 +31,7 @@ function clean_maintenance_defaults() {
 		'page'            => 0,
 		'bg_image'        => 0,
 		'bg_color'        => '',
-		'exclude'         => "feed\nwp-login\nlogin",
+		'exclude'         => "feed\nwp-login\nlogin", // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- setting name, not a query argument.
 		'roles'           => array( 'administrator', 'editor' ), // May see the site.
 		'backend_roles'   => array(),  // May use the dashboard (administrators always).
 		'redirect'        => '',       // Target for logged-in users without dashboard access.
