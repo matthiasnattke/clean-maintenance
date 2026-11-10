@@ -14,6 +14,12 @@ I built it for my own WordPress network around the [Couch Blog](https://couch-bl
 
 > **Status:** pre-release (0.x). The plugin runs on my own sites; the submission to the WordPress.org plugin directory is being prepared.
 
+### New in 0.6
+
+- **Settings, ordered by task** – status, appearance, access, search engines & API and comfort, each on its own card. Mode and design are big tiles, options are switches, roles are chips, and a header shows the current state with a preview button.
+- **Network overview as cards** – key figures at the top, a filter for paused, reachable and planned sites, and one card per site with its state, planned period, what it shows and a quick switch. Bulk actions stay.
+- **A friendlier dashboard widget** – key figures plus the paused and planned sites, each with a switch.
+
 ## Screenshots
 
 <p>
@@ -27,11 +33,14 @@ Six example maintenance pages, all made with the classic design – your own bac
 | ![Coffee break](.wordpress-org/screenshot-2.jpg) | ![Night shift](.wordpress-org/screenshot-3.jpg) | ![Gone to the beach](.wordpress-org/screenshot-4.jpg) |
 | ![Under construction](.wordpress-org/screenshot-5.jpg) | ![A break in the green](.wordpress-org/screenshot-6.jpg) | ![Plain](.wordpress-org/screenshot-7.jpg) |
 
-In a multisite network, a dashboard widget and an overview keep every site in view:
+In a multisite network, the overview and a dashboard widget keep every site in view:
 
-| | |
-|---|---|
-| ![Network dashboard widget](.wordpress-org/screenshot-8.jpg) | ![Network overview](.wordpress-org/screenshot-9.jpg) |
+<p>
+<img src=".wordpress-org/screenshot-9.jpg" alt="Network overview with one card per site, key figures and a state filter" width="100%">
+</p>
+<p>
+<img src=".wordpress-org/screenshot-8.jpg" alt="Network dashboard widget with key figures and paused sites" width="49%">
+</p>
 
 The backgrounds in these examples are drawn for this documentation; the sites are fictional.
 
@@ -48,7 +57,7 @@ The backgrounds in these examples are drawn for this documentation; the sites ar
 | **Search engines** | HTTP 503 with `Retry-After`, optionally let bots through or send `noindex` |
 | **Comfort** | Red "Maintenance mode active" notice in the admin bar with a switch to turn it off, preview with `?cm-preview=1` |
 | **Clear settings** | One page, ordered by task – status, appearance, access, search engines and comfort – with tiles, switches and a live status |
-| **Multisite** | Overview and bulk switching for all sites, widget in the network dashboard |
+| **Multisite** | Overview with key figures, a state filter and one card per site; switch one or many at once; widget in the network dashboard |
 | **Languages** | English, German – [help translate](CONTRIBUTING.md#translations) |
 
 Clean Maintenance does not collect or send any personal data, contacts no external services and sets no cookies.
@@ -75,7 +84,7 @@ Every site has its own settings under **Settings → Maintenance mode**:
 - **REST API for visitors** – *open*, *locked during maintenance* (default) or *always locked*. Locked requests without login get `401`. Logged-in users, the block editor and Jetpack keep working; the REST API hints in the page head are removed.
 - **Notice** in the admin bar.
 
-In a multisite network, **Network Admin → Settings → Maintenance mode** lists all sites with state, period and maintenance page and switches one or many at once.
+In a multisite network, **Network Admin → Settings → Maintenance mode** shows every site as a card with state, period and what it shows. Filter by paused, reachable or planned, switch a site with one click or select several and switch them together. The widget in the network dashboard shows the key figures and the paused and planned sites.
 
 ## For developers
 
