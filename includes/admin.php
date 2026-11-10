@@ -84,197 +84,320 @@ function clean_maintenance_sanitize( $in ) {
 }
 
 /**
+ * Small inline icons for the settings page.
+ *
+ * @param string $name Icon name.
+ * @return string SVG markup (static, no user data).
+ */
+function clean_maintenance_icon( $name ) {
+	$paths = array(
+		'cup'      => '<path d="M5 9h11v4a5.5 5.5 0 0 1-11 0z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 11.5v3M12 11.5v3"/><path d="M8 3c-.8 1 .8 1.8 0 3M11.5 3c-.8 1 .8 1.8 0 3"/><path d="M4 21h14"/>',
+		'power'    => '<path d="M12 3v8"/><path d="M6.3 6.3a8 8 0 1 0 11.4 0"/>',
+		'calendar' => '<rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M16 2.5v4M8 2.5v4M3 10h18"/>',
+		'page'     => '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+		'type'     => '<path d="M5 6V4h14v2M12 4v16M9 20h6"/>',
+		'eye'      => '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+		'brush'    => '<path d="M14.5 4.5 19.5 9.5 11 18l-5-5z"/><path d="M6 13c-2 0-3 1.5-3 3.5 0 1.2-.5 2.5-1 3.5 2.5 0 6-1 6-4"/>',
+		'key'      => '<circle cx="8" cy="14" r="4"/><path d="m11 11 9-9M17 5l2 2M15 7l2 2"/>',
+		'globe'    => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+		'bell'     => '<path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+		'external' => '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+		'network'  => '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+	);
+	if ( ! isset( $paths[ $name ] ) ) {
+		return '';
+	}
+	return '<svg class="cm-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $paths[ $name ] . '</svg>';
+}
+
+/**
+ * A switch (checkbox) with label and optional help text.
+ *
+ * @param string $name    Field key.
+ * @param bool   $checked Current value.
+ * @param string $label   Label.
+ * @param string $help    Help text.
+ */
+function clean_maintenance_switch( $name, $checked, $label, $help = '' ) {
+	?>
+	<label class="cm-switch">
+		<input type="checkbox" name="clean_maintenance[<?php echo esc_attr( $name ); ?>]" value="1" <?php checked( $checked ); ?>>
+		<span class="cm-switch-track" aria-hidden="true"></span>
+		<span class="cm-switch-text"><strong><?php echo esc_html( $label ); ?></strong>
+		<?php if ( $help ) : ?>
+			<span class="cm-help"><?php echo esc_html( $help ); ?></span>
+		<?php endif; ?>
+		</span>
+	</label>
+	<?php
+}
+
+/**
  * Render the settings page.
  */
 function clean_maintenance_render_settings() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	$s      = clean_maintenance_settings();
-	$status = clean_maintenance_status( $s );
-	$pages  = get_pages(
+	$s       = clean_maintenance_settings();
+	$status  = clean_maintenance_status( $s );
+	$pages   = get_pages(
 		array(
 			'post_status' => array( 'publish', 'private', 'draft' ),
 			'sort_column' => 'post_title',
 		)
 	);
-	$img    = (int) $s['bg_image'];
-	$imgurl = $img ? wp_get_attachment_image_url( $img, 'medium' ) : '';
-	$n      = 'clean_maintenance';
-	$label  = 'display:inline-block;min-width:11em;margin:.2em 1em .2em 0';
+	$img     = (int) $s['bg_image'];
+	$imgurl  = $img ? wp_get_attachment_image_url( $img, 'medium' ) : '';
+	$n       = 'clean_maintenance';
+	$preview = add_query_arg( 'cm-preview', '1', home_url( '/' ) );
+	$network = is_multisite() && current_user_can( 'manage_network_options' );
+	$roles   = wp_roles()->get_names();
+
+	$sections = array(
+		'cm-sec-status'  => __( 'Status', 'clean-maintenance' ),
+		'cm-sec-look'    => __( 'Appearance', 'clean-maintenance' ),
+		'cm-sec-access'  => __( 'Access', 'clean-maintenance' ),
+		'cm-sec-search'  => __( 'Search engines & API', 'clean-maintenance' ),
+		'cm-sec-comfort' => __( 'Comfort', 'clean-maintenance' ),
+	);
 	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'Maintenance mode', 'clean-maintenance' ); ?></h1>
+	<div class="wrap cm-wrap">
+		<h1 class="screen-reader-text"><?php esc_html_e( 'Maintenance mode', 'clean-maintenance' ); ?></h1>
+
+		<header class="cm-hero cm-state-<?php echo esc_attr( $status[2] ); ?>">
+			<span class="cm-hero-icon"><?php echo clean_maintenance_icon( 'cup' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
+			<div class="cm-hero-text">
+				<p class="cm-eyebrow">Clean Maintenance</p>
+				<p class="cm-hero-title"><?php esc_html_e( 'Maintenance mode', 'clean-maintenance' ); ?></p>
+				<p class="cm-pill<?php echo $status[0] ? ' is-active' : ''; ?>"><span class="cm-dot" aria-hidden="true"></span><?php echo esc_html( $status[1] ); ?></p>
+			</div>
+			<div class="cm-hero-actions">
+				<a class="button button-secondary cm-btn" href="<?php echo esc_url( $preview ); ?>" target="_blank" rel="noopener"><?php echo clean_maintenance_icon( 'eye' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Preview', 'clean-maintenance' ); ?></a>
+				<?php if ( $network ) : ?>
+					<a class="button button-secondary cm-btn" href="<?php echo esc_url( network_admin_url( 'settings.php?page=clean-maintenance-network' ) ); ?>"><?php echo clean_maintenance_icon( 'network' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'All sites', 'clean-maintenance' ); ?></a>
+				<?php endif; ?>
+			</div>
+		</header>
+
 		<?php settings_errors( 'clean_maintenance' ); ?>
-		<p class="cm-status<?php echo $status[0] ? ' is-active' : ''; ?>"><?php echo esc_html( $status[1] ); ?></p>
-		<?php if ( is_multisite() && current_user_can( 'manage_network_options' ) ) : ?>
-			<p><a href="<?php echo esc_url( network_admin_url( 'settings.php?page=clean-maintenance-network' ) ); ?>"><?php esc_html_e( 'Overview of all sites in the network', 'clean-maintenance' ); ?></a></p>
-		<?php endif; ?>
-		<form method="post" action="options.php">
-			<?php settings_fields( 'clean_maintenance' ); ?>
-			<table class="form-table" role="presentation">
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Mode', 'clean-maintenance' ); ?></th>
-					<td><fieldset>
+
+		<div class="cm-layout">
+			<nav class="cm-nav" aria-label="<?php esc_attr_e( 'Sections', 'clean-maintenance' ); ?>">
+				<?php foreach ( $sections as $id => $title ) : ?>
+					<a href="#<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $title ); ?></a>
+				<?php endforeach; ?>
+				<div class="cm-about">
+					<p><strong>Clean Maintenance</strong>
+					<?php
+					/* translators: %s: version number. */
+					echo esc_html( sprintf( __( 'Version %s', 'clean-maintenance' ), CLEAN_MAINTENANCE_VERSION ) );
+					?>
+					</p>
+					<p><a href="https://couch-blog.de/projekte/clean-maintenance/" target="_blank" rel="noopener"><?php esc_html_e( 'Project page', 'clean-maintenance' ); ?></a> · <a href="https://github.com/matthiasnattke/clean-maintenance" target="_blank" rel="noopener">GitHub</a></p>
+				</div>
+			</nav>
+
+			<form method="post" action="options.php" class="cm-form">
+				<?php settings_fields( 'clean_maintenance' ); ?>
+
+				<section class="cm-card" id="cm-sec-status">
+					<h2><?php echo clean_maintenance_icon( 'power' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Status', 'clean-maintenance' ); ?></h2>
+					<p class="cm-lead"><?php esc_html_e( 'When should visitors see the maintenance page?', 'clean-maintenance' ); ?></p>
+					<fieldset class="cm-tiles cm-tiles-3">
+						<legend class="screen-reader-text"><?php esc_html_e( 'Mode', 'clean-maintenance' ); ?></legend>
 						<?php
 						$modes = array(
-							'off'       => __( 'Off', 'clean-maintenance' ),
-							'on'        => __( 'On – right away, until I turn it off', 'clean-maintenance' ),
-							'scheduled' => __( 'Scheduled', 'clean-maintenance' ),
+							'off'       => array( 'power', __( 'Off', 'clean-maintenance' ), __( 'Visitors see the normal site.', 'clean-maintenance' ) ),
+							'on'        => array( 'cup', __( 'On', 'clean-maintenance' ), __( 'Right away, until you turn it off.', 'clean-maintenance' ) ),
+							'scheduled' => array( 'calendar', __( 'Scheduled', 'clean-maintenance' ), __( 'Start and end from the calendar.', 'clean-maintenance' ) ),
 						);
-						foreach ( $modes as $v => $l ) :
+						foreach ( $modes as $v => $m ) :
 							?>
-							<label class="cm-block"><input type="radio" name="<?php echo esc_attr( $n ); ?>[mode]" value="<?php echo esc_attr( $v ); ?>" <?php checked( $s['mode'], $v ); ?>> <?php echo esc_html( $l ); ?></label>
+							<label class="cm-tile cm-tile-<?php echo esc_attr( $v ); ?>">
+								<input type="radio" name="<?php echo esc_attr( $n ); ?>[mode]" value="<?php echo esc_attr( $v ); ?>" <?php checked( $s['mode'], $v ); ?>>
+								<span class="cm-tile-ico"><?php echo clean_maintenance_icon( $m[0] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+								<span class="cm-tile-title"><?php echo esc_html( $m[1] ); ?></span>
+								<span class="cm-tile-text"><?php echo esc_html( $m[2] ); ?></span>
+							</label>
 						<?php endforeach; ?>
-					</fieldset></td>
-				</tr>
-				<tr class="cm-when">
-					<th scope="row"><?php esc_html_e( 'Period', 'clean-maintenance' ); ?></th>
-					<td>
-						<label><?php esc_html_e( 'Start', 'clean-maintenance' ); ?> <input type="datetime-local" name="<?php echo esc_attr( $n ); ?>[start]" value="<?php echo esc_attr( $s['start'] ); ?>"></label>
-						&nbsp; <label><?php esc_html_e( 'End', 'clean-maintenance' ); ?> <input type="datetime-local" name="<?php echo esc_attr( $n ); ?>[end]" value="<?php echo esc_attr( $s['end'] ); ?>"></label>
-						<p class="description">
+					</fieldset>
+					<div class="cm-when cm-sub">
+						<div class="cm-row">
+							<label class="cm-field"><span><?php esc_html_e( 'Start', 'clean-maintenance' ); ?></span><input type="datetime-local" name="<?php echo esc_attr( $n ); ?>[start]" value="<?php echo esc_attr( $s['start'] ); ?>"></label>
+							<label class="cm-field"><span><?php esc_html_e( 'End', 'clean-maintenance' ); ?></span><input type="datetime-local" name="<?php echo esc_attr( $n ); ?>[end]" value="<?php echo esc_attr( $s['end'] ); ?>"></label>
+						</div>
+						<p class="cm-help">
 							<?php
 							/* translators: %s: time zone of the site, e.g. Europe/Berlin. */
 							echo esc_html( sprintf( __( 'Time zone of the site (%s). Without a start the mode applies right away, without an end until you turn it off.', 'clean-maintenance' ), wp_timezone_string() ) );
 							?>
 						</p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Design', 'clean-maintenance' ); ?></th>
-					<td><fieldset>
-						<label class="cm-block"><input type="radio" name="<?php echo esc_attr( $n ); ?>[design]" value="page" <?php checked( $s['design'], 'page' ); ?>> <?php esc_html_e( 'Page from WordPress – in the style of the theme', 'clean-maintenance' ); ?></label>
-						<label class="cm-block"><input type="radio" name="<?php echo esc_attr( $n ); ?>[design]" value="classic" <?php checked( $s['design'], 'classic' ); ?>> <?php esc_html_e( 'Classic – heading, text and background, independent of the theme', 'clean-maintenance' ); ?></label>
-					</fieldset></td>
-				</tr>
-				<tr class="cm-classic">
-					<th scope="row"><label for="cm-c-title"><?php esc_html_e( 'Title in the browser tab', 'clean-maintenance' ); ?></label></th>
-					<td><input id="cm-c-title" type="text" class="regular-text" name="<?php echo esc_attr( $n ); ?>[c_title]" value="<?php echo esc_attr( $s['c_title'] ); ?>"></td>
-				</tr>
-				<tr class="cm-classic">
-					<th scope="row"><label for="cm-c-heading"><?php esc_html_e( 'Heading', 'clean-maintenance' ); ?></label></th>
-					<td><input id="cm-c-heading" type="text" class="regular-text" name="<?php echo esc_attr( $n ); ?>[c_heading]" value="<?php echo esc_attr( $s['c_heading'] ); ?>">
-					<p class="cm-gap"><input type="text" class="cm-color" name="<?php echo esc_attr( $n ); ?>[c_heading_color]" value="<?php echo esc_attr( $s['c_heading_color'] ); ?>" data-default-color=""></p></td>
-				</tr>
-				<tr class="cm-classic">
-					<th scope="row"><label for="cm-c-text"><?php esc_html_e( 'Text', 'clean-maintenance' ); ?></label></th>
-					<td><textarea id="cm-c-text" name="<?php echo esc_attr( $n ); ?>[c_text]" rows="6" class="large-text"><?php echo esc_textarea( $s['c_text'] ); ?></textarea>
-					<p class="cm-gap"><input type="text" class="cm-color" name="<?php echo esc_attr( $n ); ?>[c_text_color]" value="<?php echo esc_attr( $s['c_text_color'] ); ?>" data-default-color=""></p>
-					<p class="description"><?php esc_html_e( 'HTML is allowed (paragraphs, links, emphasis).', 'clean-maintenance' ); ?></p></td>
-				</tr>
-				<tr class="cm-classic">
-					<th scope="row"><?php esc_html_e( 'Dashboard link', 'clean-maintenance' ); ?></th>
-					<td><label><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[c_admin_link]" value="1" <?php checked( ! empty( $s['c_admin_link'] ) ); ?>> <?php esc_html_e( 'Show a “Dashboard” link below the text', 'clean-maintenance' ); ?></label></td>
-				</tr>
-				<tr class="cm-page-row">
-					<th scope="row"><label for="cm-page"><?php esc_html_e( 'Maintenance page', 'clean-maintenance' ); ?></label></th>
-					<td>
-						<select id="cm-page" name="<?php echo esc_attr( $n ); ?>[page]">
-							<option value="0"><?php esc_html_e( '– simple notice with the site title –', 'clean-maintenance' ); ?></option>
-							<?php foreach ( $pages as $p ) : ?>
-								<option value="<?php echo (int) $p->ID; ?>" <?php selected( (int) $s['page'], (int) $p->ID ); ?>><?php echo esc_html( ( $p->post_title ? $p->post_title : '#' . $p->ID ) . ( 'publish' !== $p->post_status ? ' (' . $p->post_status . ')' : '' ) ); ?></option>
+					</div>
+				</section>
+
+				<section class="cm-card" id="cm-sec-look">
+					<h2><?php echo clean_maintenance_icon( 'brush' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Appearance', 'clean-maintenance' ); ?></h2>
+					<p class="cm-lead"><?php esc_html_e( 'What visitors see while you work.', 'clean-maintenance' ); ?></p>
+					<fieldset class="cm-tiles cm-tiles-2">
+						<legend class="screen-reader-text"><?php esc_html_e( 'Design', 'clean-maintenance' ); ?></legend>
+						<label class="cm-tile">
+							<input type="radio" name="<?php echo esc_attr( $n ); ?>[design]" value="page" <?php checked( $s['design'], 'page' ); ?>>
+							<span class="cm-tile-ico"><?php echo clean_maintenance_icon( 'page' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+							<span class="cm-tile-title"><?php esc_html_e( 'Page from WordPress', 'clean-maintenance' ); ?></span>
+							<span class="cm-tile-text"><?php esc_html_e( 'In the style of your theme, edited like any other page.', 'clean-maintenance' ); ?></span>
+						</label>
+						<label class="cm-tile">
+							<input type="radio" name="<?php echo esc_attr( $n ); ?>[design]" value="classic" <?php checked( $s['design'], 'classic' ); ?>>
+							<span class="cm-tile-ico"><?php echo clean_maintenance_icon( 'type' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+							<span class="cm-tile-title"><?php esc_html_e( 'Classic', 'clean-maintenance' ); ?></span>
+							<span class="cm-tile-text"><?php esc_html_e( 'Heading, text and background – independent of the theme.', 'clean-maintenance' ); ?></span>
+						</label>
+					</fieldset>
+
+					<div class="cm-page-row cm-sub">
+						<label class="cm-field" for="cm-page"><span><?php esc_html_e( 'Maintenance page', 'clean-maintenance' ); ?></span></label>
+						<div class="cm-inline">
+							<select id="cm-page" name="<?php echo esc_attr( $n ); ?>[page]">
+								<option value="0"><?php esc_html_e( '– simple notice with the site title –', 'clean-maintenance' ); ?></option>
+								<?php foreach ( $pages as $p ) : ?>
+									<option value="<?php echo (int) $p->ID; ?>" <?php selected( (int) $s['page'], (int) $p->ID ); ?>><?php echo esc_html( ( $p->post_title ? $p->post_title : '#' . $p->ID ) . ( 'publish' !== $p->post_status ? ' (' . $p->post_status . ')' : '' ) ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<?php if ( (int) $s['page'] ) : ?>
+								<a href="<?php echo esc_url( get_edit_post_link( (int) $s['page'] ) ); ?>"><?php esc_html_e( 'Edit page', 'clean-maintenance' ); ?></a>
+							<?php endif; ?>
+						</div>
+						<p class="cm-help"><?php esc_html_e( 'Shown everywhere without header and footer. Best create a page of its own as a draft or private – then it is not visible anywhere else.', 'clean-maintenance' ); ?></p>
+					</div>
+
+					<div class="cm-classic cm-sub">
+						<label class="cm-field"><span><?php esc_html_e( 'Title in the browser tab', 'clean-maintenance' ); ?></span>
+							<input id="cm-c-title" type="text" class="regular-text" name="<?php echo esc_attr( $n ); ?>[c_title]" value="<?php echo esc_attr( $s['c_title'] ); ?>"></label>
+						<div class="cm-row cm-row-color">
+							<label class="cm-field cm-grow"><span><?php esc_html_e( 'Heading', 'clean-maintenance' ); ?></span>
+								<input id="cm-c-heading" type="text" class="regular-text" name="<?php echo esc_attr( $n ); ?>[c_heading]" value="<?php echo esc_attr( $s['c_heading'] ); ?>"></label>
+							<div class="cm-field"><span><?php esc_html_e( 'Colour', 'clean-maintenance' ); ?></span><input type="text" class="cm-color" name="<?php echo esc_attr( $n ); ?>[c_heading_color]" value="<?php echo esc_attr( $s['c_heading_color'] ); ?>" data-default-color=""></div>
+						</div>
+						<div class="cm-row cm-row-color">
+							<label class="cm-field cm-grow"><span><?php esc_html_e( 'Text', 'clean-maintenance' ); ?></span>
+								<textarea id="cm-c-text" name="<?php echo esc_attr( $n ); ?>[c_text]" rows="5" class="large-text"><?php echo esc_textarea( $s['c_text'] ); ?></textarea></label>
+							<div class="cm-field"><span><?php esc_html_e( 'Colour', 'clean-maintenance' ); ?></span><input type="text" class="cm-color" name="<?php echo esc_attr( $n ); ?>[c_text_color]" value="<?php echo esc_attr( $s['c_text_color'] ); ?>" data-default-color=""></div>
+						</div>
+						<p class="cm-help"><?php esc_html_e( 'HTML is allowed (paragraphs, links, emphasis).', 'clean-maintenance' ); ?></p>
+						<?php clean_maintenance_switch( 'c_admin_link', ! empty( $s['c_admin_link'] ), __( 'Show a “Dashboard” link below the text', 'clean-maintenance' ) ); ?>
+					</div>
+
+					<div class="cm-sub">
+						<span class="cm-field"><span><?php esc_html_e( 'Background', 'clean-maintenance' ); ?></span></span>
+						<div class="cm-bg">
+							<div class="cm-bg-swatch"<?php echo $s['bg_color'] ? ' style="background:' . esc_attr( $s['bg_color'] ) . '"' : ''; ?>>
+								<img id="cm-bg-preview" src="<?php echo esc_url( $imgurl ); ?>" alt="" class="<?php echo $imgurl ? '' : 'hidden'; ?>">
+							</div>
+							<div class="cm-bg-controls">
+								<input type="hidden" id="cm-bg-image" name="<?php echo esc_attr( $n ); ?>[bg_image]" value="<?php echo $img ? (int) $img : ''; ?>">
+								<p><button type="button" class="button" id="cm-bg-pick"><?php esc_html_e( 'Choose image', 'clean-maintenance' ); ?></button>
+								<button type="button" class="button-link<?php echo $imgurl ? '' : ' hidden'; ?>" id="cm-bg-remove"><?php esc_html_e( 'Remove image', 'clean-maintenance' ); ?></button></p>
+								<p><input type="text" class="cm-color" id="cm-bg-color" name="<?php echo esc_attr( $n ); ?>[bg_color]" value="<?php echo esc_attr( $s['bg_color'] ); ?>" data-default-color=""></p>
+								<p class="cm-help"><?php esc_html_e( 'The image fills the whole background; the colour lies beneath it or applies on its own.', 'clean-maintenance' ); ?></p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="cm-card" id="cm-sec-access">
+					<h2><?php echo clean_maintenance_icon( 'key' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Access', 'clean-maintenance' ); ?></h2>
+					<p class="cm-lead"><?php esc_html_e( 'Who still gets in – and what stays reachable for everyone.', 'clean-maintenance' ); ?></p>
+
+					<fieldset class="cm-sub">
+						<legend class="cm-field"><span><?php esc_html_e( 'Roles with access to the site', 'clean-maintenance' ); ?></span></legend>
+						<div class="cm-chips">
+							<?php foreach ( $roles as $role => $role_name ) : ?>
+								<label class="cm-chip"><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[roles][]" value="<?php echo esc_attr( $role ); ?>" <?php checked( in_array( $role, (array) $s['roles'], true ) ); ?>><span><?php echo esc_html( translate_user_role( $role_name ) ); ?></span></label>
 							<?php endforeach; ?>
-						</select>
-						<?php if ( (int) $s['page'] ) : ?>
-							<a href="<?php echo esc_url( get_edit_post_link( (int) $s['page'] ) ); ?>"><?php esc_html_e( 'Edit page', 'clean-maintenance' ); ?></a> ·
-						<?php endif; ?>
-						<a href="<?php echo esc_url( add_query_arg( 'cm-preview', '1', home_url( '/' ) ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Preview', 'clean-maintenance' ); ?></a>
-						<p class="description"><?php esc_html_e( 'Shown everywhere without header and footer. Best create a page of its own as a draft or private – then it is not visible anywhere else.', 'clean-maintenance' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Background', 'clean-maintenance' ); ?></th>
-					<td>
-						<input type="hidden" id="cm-bg-image" name="<?php echo esc_attr( $n ); ?>[bg_image]" value="<?php echo $img ? (int) $img : ''; ?>">
-						<img id="cm-bg-preview" src="<?php echo esc_url( $imgurl ); ?>" alt="" class="<?php echo $imgurl ? '' : 'hidden'; ?>">
-						<button type="button" class="button" id="cm-bg-pick"><?php esc_html_e( 'Choose image', 'clean-maintenance' ); ?></button>
-						<button type="button" class="button-link<?php echo $imgurl ? '' : ' hidden'; ?>" id="cm-bg-remove"><?php esc_html_e( 'Remove image', 'clean-maintenance' ); ?></button>
-						<p class="cm-gap"><input type="text" class="cm-color" name="<?php echo esc_attr( $n ); ?>[bg_color]" value="<?php echo esc_attr( $s['bg_color'] ); ?>" data-default-color=""></p>
-						<p class="description"><?php esc_html_e( 'The image fills the whole background; the colour lies beneath it or applies on its own.', 'clean-maintenance' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><label for="cm-exclude"><?php esc_html_e( 'Exceptions', 'clean-maintenance' ); ?></label></th>
-					<td>
-						<textarea id="cm-exclude" name="<?php echo esc_attr( $n ); ?>[exclude]" rows="6" class="large-text code"><?php echo esc_textarea( $s['exclude'] ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'Exclude the feed, pages, archives or IP addresses from maintenance mode. One slug or IP per line; comments start with # and may follow at the end of a line.', 'clean-maintenance' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Roles with access to the site', 'clean-maintenance' ); ?></th>
-					<td>
-						<fieldset>
-							<?php foreach ( wp_roles()->get_names() as $role => $role_name ) : ?>
-								<label style="<?php echo esc_attr( $label ); ?>"><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[roles][]" value="<?php echo esc_attr( $role ); ?>" <?php checked( in_array( $role, (array) $s['roles'], true ) ); ?>> <?php echo esc_html( translate_user_role( $role_name ) ); ?></label>
-							<?php endforeach; ?>
-						</fieldset>
-						<p class="description"><?php esc_html_e( 'Logged-in users with these roles see the normal site. Network administrators always have access.', 'clean-maintenance' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Roles with access to the dashboard', 'clean-maintenance' ); ?></th>
-					<td>
-						<fieldset>
+						</div>
+						<p class="cm-help"><?php esc_html_e( 'Logged-in users with these roles see the normal site. Network administrators always have access.', 'clean-maintenance' ); ?></p>
+					</fieldset>
+
+					<fieldset class="cm-sub">
+						<legend class="cm-field"><span><?php esc_html_e( 'Roles with access to the dashboard', 'clean-maintenance' ); ?></span></legend>
+						<div class="cm-chips">
 							<?php
-							foreach ( wp_roles()->get_names() as $role => $role_name ) :
+							foreach ( $roles as $role => $role_name ) :
 								if ( 'administrator' === $role ) {
 									continue;
 								}
 								?>
-								<label style="<?php echo esc_attr( $label ); ?>"><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[backend_roles][]" value="<?php echo esc_attr( $role ); ?>" <?php checked( in_array( $role, (array) $s['backend_roles'], true ) ); ?>> <?php echo esc_html( translate_user_role( $role_name ) ); ?></label>
+								<label class="cm-chip"><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[backend_roles][]" value="<?php echo esc_attr( $role ); ?>" <?php checked( in_array( $role, (array) $s['backend_roles'], true ) ); ?>><span><?php echo esc_html( translate_user_role( $role_name ) ); ?></span></label>
 							<?php endforeach; ?>
-						</fieldset>
-						<p class="description"><?php esc_html_e( 'During maintenance only administrators and these roles may use the dashboard; everyone else is redirected.', 'clean-maintenance' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><label for="cm-redirect"><?php esc_html_e( 'Redirect', 'clean-maintenance' ); ?></label></th>
-					<td>
+						</div>
+						<p class="cm-help"><?php esc_html_e( 'During maintenance only administrators and these roles may use the dashboard; everyone else is redirected.', 'clean-maintenance' ); ?></p>
+					</fieldset>
+
+					<div class="cm-sub">
+						<label class="cm-field" for="cm-redirect"><span><?php esc_html_e( 'Redirect', 'clean-maintenance' ); ?></span></label>
 						<input id="cm-redirect" type="url" class="regular-text" name="<?php echo esc_attr( $n ); ?>[redirect]" value="<?php echo esc_attr( $s['redirect'] ); ?>" placeholder="<?php echo esc_attr( home_url( '/' ) ); ?>">
-						<p class="description"><?php esc_html_e( 'Where logged-in users without dashboard access are sent. Empty = home page.', 'clean-maintenance' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Search engine bots', 'clean-maintenance' ); ?></th>
-					<td><label><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[bypass_bots]" value="1" <?php checked( ! empty( $s['bypass_bots'] ) ); ?>> <?php esc_html_e( 'Bots see the normal site', 'clean-maintenance' ); ?></label>
-					<p class="description"><?php esc_html_e( 'Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking.', 'clean-maintenance' ); ?></p></td>
-				</tr>
-				<tr>
-					<th scope="row"><label for="cm-robots"><?php esc_html_e( 'Robots meta tag', 'clean-maintenance' ); ?></label></th>
-					<td>
+						<p class="cm-help"><?php esc_html_e( 'Where logged-in users without dashboard access are sent. Empty = home page.', 'clean-maintenance' ); ?></p>
+					</div>
+
+					<div class="cm-sub">
+						<label class="cm-field" for="cm-exclude"><span><?php esc_html_e( 'Exceptions', 'clean-maintenance' ); ?></span></label>
+						<textarea id="cm-exclude" name="<?php echo esc_attr( $n ); ?>[exclude]" rows="6" class="large-text code"><?php echo esc_textarea( $s['exclude'] ); ?></textarea>
+						<p class="cm-help"><?php esc_html_e( 'Exclude the feed, pages, archives or IP addresses from maintenance mode. One slug or IP per line; comments start with # and may follow at the end of a line.', 'clean-maintenance' ); ?></p>
+					</div>
+				</section>
+
+				<section class="cm-card" id="cm-sec-search">
+					<h2><?php echo clean_maintenance_icon( 'globe' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Search engines & API', 'clean-maintenance' ); ?></h2>
+					<p class="cm-lead"><?php esc_html_e( 'How search engines and other programs are treated.', 'clean-maintenance' ); ?></p>
+
+					<div class="cm-sub">
+						<?php clean_maintenance_switch( 'bypass_bots', ! empty( $s['bypass_bots'] ), __( 'Bots see the normal site', 'clean-maintenance' ), __( 'Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking.', 'clean-maintenance' ) ); ?>
+					</div>
+
+					<div class="cm-sub">
+						<label class="cm-field" for="cm-robots"><span><?php esc_html_e( 'Robots meta tag', 'clean-maintenance' ); ?></span></label>
 						<select id="cm-robots" name="<?php echo esc_attr( $n ); ?>[meta_robots]">
 							<option value="index" <?php selected( $s['meta_robots'], 'index' ); ?>>index, follow</option>
 							<option value="noindex" <?php selected( $s['meta_robots'], 'noindex' ); ?>>noindex, nofollow</option>
 						</select>
-						<p class="description"><?php esc_html_e( 'Instruction for search engines on the maintenance page.', 'clean-maintenance' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'REST API for visitors', 'clean-maintenance' ); ?></th>
-					<td><fieldset>
-						<?php
-						$rest_modes = array(
-							'off'         => __( 'Open – as WordPress intends', 'clean-maintenance' ),
-							'maintenance' => __( 'Locked for visitors who are not logged in during maintenance', 'clean-maintenance' ),
-							'always'      => __( 'Always locked for visitors who are not logged in', 'clean-maintenance' ),
-						);
-						foreach ( $rest_modes as $v => $l ) :
-							?>
-							<label class="cm-block"><input type="radio" name="<?php echo esc_attr( $n ); ?>[rest]" value="<?php echo esc_attr( $v ); ?>" <?php checked( $s['rest'], $v ); ?>> <?php echo esc_html( $l ); ?></label>
-						<?php endforeach; ?>
+						<p class="cm-help"><?php esc_html_e( 'Instruction for search engines on the maintenance page.', 'clean-maintenance' ); ?></p>
+					</div>
+
+					<fieldset class="cm-sub">
+						<legend class="cm-field"><span><?php esc_html_e( 'REST API for visitors', 'clean-maintenance' ); ?></span></legend>
+						<div class="cm-segment">
+							<?php
+							$rest_modes = array(
+								'off'         => __( 'Open', 'clean-maintenance' ),
+								'maintenance' => __( 'Locked during maintenance', 'clean-maintenance' ),
+								'always'      => __( 'Always locked', 'clean-maintenance' ),
+							);
+							foreach ( $rest_modes as $v => $l ) :
+								?>
+								<label><input type="radio" name="<?php echo esc_attr( $n ); ?>[rest]" value="<?php echo esc_attr( $v ); ?>" <?php checked( $s['rest'], $v ); ?>><span><?php echo esc_html( $l ); ?></span></label>
+							<?php endforeach; ?>
+						</div>
+						<p class="cm-help"><?php esc_html_e( 'Locked requests without login get “401”. Logged-in users, the block editor and Jetpack keep working. The REST API hints in the page head are removed as well.', 'clean-maintenance' ); ?></p>
+						<label class="cm-field cm-gap" for="cm-rest-allow"><span><?php esc_html_e( 'Still public (one namespace per line, e.g. oembed or podlove; comments with #):', 'clean-maintenance' ); ?></span></label>
+						<textarea id="cm-rest-allow" name="<?php echo esc_attr( $n ); ?>[rest_allow]" rows="4" class="large-text code"><?php echo esc_textarea( $s['rest_allow'] ); ?></textarea>
 					</fieldset>
-					<p class="cm-gap"><label for="cm-rest-allow"><?php esc_html_e( 'Still public (one namespace per line, e.g. oembed or podlove; comments with #):', 'clean-maintenance' ); ?></label></p>
-					<textarea id="cm-rest-allow" name="<?php echo esc_attr( $n ); ?>[rest_allow]" rows="5" class="large-text code"><?php echo esc_textarea( $s['rest_allow'] ); ?></textarea>
-					<p class="description"><?php esc_html_e( 'Locked requests without login get “401”. Logged-in users, the block editor and Jetpack keep working. The REST API hints in the page head are removed as well.', 'clean-maintenance' ); ?></p></td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Notice', 'clean-maintenance' ); ?></th>
-					<td><label><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[notice]" value="1" <?php checked( ! empty( $s['notice'] ) ); ?>> <?php esc_html_e( 'Red “Maintenance mode active” notice in the admin bar, with a switch to turn it off', 'clean-maintenance' ); ?></label></td>
-				</tr>
-			</table>
-			<?php submit_button( __( 'Save settings', 'clean-maintenance' ) ); ?>
-		</form>
+				</section>
+
+				<section class="cm-card" id="cm-sec-comfort">
+					<h2><?php echo clean_maintenance_icon( 'bell' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Comfort', 'clean-maintenance' ); ?></h2>
+					<p class="cm-lead"><?php esc_html_e( 'Small helpers in the dashboard.', 'clean-maintenance' ); ?></p>
+					<div class="cm-sub">
+						<?php clean_maintenance_switch( 'notice', ! empty( $s['notice'] ), __( 'Notice', 'clean-maintenance' ), __( 'Red “Maintenance mode active” notice in the admin bar, with a switch to turn it off', 'clean-maintenance' ) ); ?>
+					</div>
+				</section>
+
+				<div class="cm-savebar">
+					<?php submit_button( __( 'Save settings', 'clean-maintenance' ), 'primary large', 'submit', false ); ?>
+					<a href="<?php echo esc_url( $preview ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Preview', 'clean-maintenance' ); ?> <?php echo clean_maintenance_icon( 'external' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+				</div>
+			</form>
+		</div>
 	</div>
 	<?php
 }
@@ -287,13 +410,7 @@ add_action(
 		}
 		wp_enqueue_media();
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_add_inline_style(
-			'wp-color-picker',
-			'.cm-status{display:inline-block;padding:.35em .8em;border-radius:999px;background:#eef0f4;color:#3c434a}'
-			. '.cm-status.is-active{background:#fbe3dc;color:#a3341a}'
-			. '.cm-block{display:block;margin:.2em 0}.cm-gap{margin-top:.6em}'
-			. '#cm-bg-preview{max-width:220px;height:auto;border-radius:6px;display:block;margin-bottom:.5em}#cm-bg-preview.hidden{display:none}#cm-bg-remove{margin-left:.6em}'
-		);
+		wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array( 'wp-color-picker' ), CLEAN_MAINTENANCE_VERSION );
 		wp_enqueue_script(
 			'clean-maintenance-admin',
 			plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ),

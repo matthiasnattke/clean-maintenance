@@ -2,9 +2,17 @@
 jQuery( function ( $ ) {
 	var l10n = window.cleanMaintenance || {};
 
-	if ( $.fn.wpColorPicker ) {
-		$( '.cm-color' ).wpColorPicker();
+	function paintSwatch( color ) {
+		$( '.cm-bg-swatch' ).css( 'background', color || '' );
 	}
+	if ( $.fn.wpColorPicker ) {
+		$( '.cm-color' ).not( '#cm-bg-color' ).wpColorPicker();
+		$( '#cm-bg-color' ).wpColorPicker( {
+			change: function ( e, ui ) { paintSwatch( ui.color.toString() ); },
+			clear: function () { paintSwatch( '' ); }
+		} );
+	}
+	paintSwatch( $( '#cm-bg-color' ).val() );
 
 	function syncWhen() {
 		$( '.cm-when' ).toggle( $( 'input[name="clean_maintenance[mode]"]:checked' ).val() === 'scheduled' );
