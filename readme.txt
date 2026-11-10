@@ -63,9 +63,15 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 
 == Screenshots ==
 
-1. Settings of a site.
-2. Network overview of all sites.
-3. A maintenance page in the style of the theme.
+1. Settings of a site, ordered by task: status, appearance, access, search engines and comfort.
+2. Classic design with a background image, coloured heading and text and a link to the dashboard.
+3. Light text on a dark background image.
+4. A holiday notice with emphasised text.
+5. Bold colours and a construction motif.
+6. Calm colours, no link.
+7. Plain and simple – one sentence is enough.
+8. Network dashboard widget: sites in maintenance, reachable and planned at a glance, each with a switch.
+9. Network overview: all sites with state, period and maintenance page, switch one or many at once.
 
 == Changelog ==
 

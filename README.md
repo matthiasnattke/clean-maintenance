@@ -14,6 +14,27 @@ I built it for my own WordPress network around the [Couch Blog](https://couch-bl
 
 > **Status:** pre-release (0.x). The plugin runs on my own sites; the submission to the WordPress.org plugin directory is being prepared.
 
+## Screenshots
+
+<p>
+<img src=".wordpress-org/screenshot-1.jpg" alt="Settings page ordered by task" width="100%">
+</p>
+
+Six example maintenance pages, all made with the classic design – your own background image, colours for heading and text, optionally a link to the dashboard, or just one sentence:
+
+| | | |
+|---|---|---|
+| ![Coffee break](.wordpress-org/screenshot-2.jpg) | ![Night shift](.wordpress-org/screenshot-3.jpg) | ![Gone to the beach](.wordpress-org/screenshot-4.jpg) |
+| ![Under construction](.wordpress-org/screenshot-5.jpg) | ![A break in the green](.wordpress-org/screenshot-6.jpg) | ![Plain](.wordpress-org/screenshot-7.jpg) |
+
+In a multisite network, a dashboard widget and an overview keep every site in view:
+
+| | |
+|---|---|
+| ![Network dashboard widget](.wordpress-org/screenshot-8.jpg) | ![Network overview](.wordpress-org/screenshot-9.jpg) |
+
+The backgrounds in these examples are drawn for this documentation; the sites are fictional.
+
 ## Features
 
 | | |
@@ -26,6 +47,7 @@ I built it for my own WordPress network around the [Couch Blog](https://couch-bl
 | **REST API lock** | Lock the REST API for visitors who are not logged in – always or only during maintenance – with namespaces that stay public (e.g. `oembed`) |
 | **Search engines** | HTTP 503 with `Retry-After`, optionally let bots through or send `noindex` |
 | **Comfort** | Red "Maintenance mode active" notice in the admin bar with a switch to turn it off, preview with `?cm-preview=1` |
+| **Clear settings** | One page, ordered by task – status, appearance, access, search engines and comfort – with tiles, switches and a live status |
 | **Multisite** | Overview and bulk switching for all sites, widget in the network dashboard |
 | **Languages** | English, German – [help translate](CONTRIBUTING.md#translations) |
 
