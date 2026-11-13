@@ -79,6 +79,7 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 * Always let through: visitors from your home network see every site of the network without logging in.
 * Your router reports the home network: a secret update link for the user-defined DynDNS of a FRITZ!Box (or any router that sends its IPv6 prefix). Nothing in the home network has to be reachable from outside.
 * Alternatively a DynDNS name; its current address is looked up every five minutes, IPv6 devices in the same home network are covered by the prefix.
+* Access pass: a cookie that lets one browser through regardless of its address (iCloud Private Relay, mobile). Network administrators get it when they log in and keep it after logging out; a secret link gives it to any browser; renewing the link revokes all passes.
 * Fixed addresses and ranges (CIDR, IPv4 and IPv6) network-wide and in the exceptions of every site, with a button that adds your current address.
 * A guide pops up when private ranges are entered while requests arrive over the internet, explaining how to route them through a VPN tunnel.
 

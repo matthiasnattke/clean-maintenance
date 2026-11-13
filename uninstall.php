@@ -24,6 +24,8 @@ if ( is_multisite() ) {
 	delete_site_option( 'clean_maintenance_home' );
 	delete_site_option( 'clean_maintenance_home_token' );
 	delete_site_option( 'clean_maintenance_home_log' );
+	delete_site_option( 'clean_maintenance_pass_token' );
+	delete_site_option( 'clean_maintenance_pass_login' );
 } else {
 	delete_option( 'clean_maintenance' );
 }

@@ -177,5 +177,14 @@
 	"Manual": "Manuell",
 	"Last calls of the router": "Letzte Aufrufe des Routers",
 	"When": "Wann",
-	"From": "Von"
+	"From": "Von",
+	"Access pass for a browser": "Durchlass für einen Browser",
+	"Any address": "Jede Adresse",
+	"A cookie that lets one browser see every site – no matter where it is or which address it uses, also with iCloud Private Relay or on the go. It stays for half a year, even after logging out.": "Ein Cookie, mit dem ein Browser alle Websites sieht – egal wo er ist und mit welcher Adresse, auch mit iCloud Privat-Relay oder unterwegs. Es bleibt ein halbes Jahr, auch nach dem Abmelden.",
+	"Give network administrators a pass when they log in": "Netzwerk-Administratoren bekommen den Durchlass bei der Anmeldung",
+	"Access link": "Zugangslink",
+	"Open this link once in a browser to give it a pass – handy as a bookmark for private windows, or to show the sites to someone without an account.": "Öffne diesen Link einmal in einem Browser, um ihm den Durchlass zu geben – praktisch als Lesezeichen für private Fenster oder um die Websites jemandem ohne Konto zu zeigen.",
+	"This browser has a pass": "Dieser Browser hat den Durchlass",
+	"This browser has no pass yet": "Dieser Browser hat noch keinen Durchlass",
+	"Revoke all passes and create a new link": "Alle Durchlässe widerrufen und neuen Link erzeugen"
 }

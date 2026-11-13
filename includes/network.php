@@ -313,9 +313,32 @@ function clean_maintenance_render_network() {
 				<label class="cm-renew"><input type="checkbox" name="cm_home_renew" value="1"> <?php esc_html_e( 'Create a new link (the old one stops working)', 'clean-maintenance' ); ?></label>
 			</section>
 
+			<section class="cm-way">
+				<header>
+					<span class="cm-way-nr">2</span>
+					<strong><?php esc_html_e( 'Access pass for a browser', 'clean-maintenance' ); ?></strong>
+					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Any address', 'clean-maintenance' ); ?></span>
+				</header>
+				<p class="cm-help"><?php esc_html_e( 'A cookie that lets one browser see every site – no matter where it is or which address it uses, also with iCloud Private Relay or on the go. It stays for half a year, even after logging out.', 'clean-maintenance' ); ?></p>
+				<label class="cm-renew cm-pass-login"><input type="checkbox" name="cm_pass_login" value="1" <?php checked( clean_maintenance_pass_on_login() ); ?>> <?php esc_html_e( 'Give network administrators a pass when they log in', 'clean-maintenance' ); ?></label>
+				<div class="cm-copy">
+					<input type="text" id="cm-pass-url" class="large-text code" readonly value="<?php echo esc_attr( clean_maintenance_pass_url() ); ?>" aria-label="<?php esc_attr_e( 'Access link', 'clean-maintenance' ); ?>">
+					<button type="button" class="button cm-copy-btn" data-target="cm-pass-url" data-done="<?php esc_attr_e( 'Copied', 'clean-maintenance' ); ?>"><?php esc_html_e( 'Copy', 'clean-maintenance' ); ?></button>
+				</div>
+				<p class="cm-help"><?php esc_html_e( 'Open this link once in a browser to give it a pass – handy as a bookmark for private windows, or to show the sites to someone without an account.', 'clean-maintenance' ); ?></p>
+				<p class="cm-ip">
+					<?php if ( clean_maintenance_has_pass() ) : ?>
+						<span class="cm-ip-ok"><?php esc_html_e( 'This browser has a pass', 'clean-maintenance' ); ?></span>
+					<?php else : ?>
+						<span class="cm-ip-no"><?php esc_html_e( 'This browser has no pass yet', 'clean-maintenance' ); ?></span>
+					<?php endif; ?>
+				</p>
+				<label class="cm-renew"><input type="checkbox" name="cm_pass_renew" value="1"> <?php esc_html_e( 'Revoke all passes and create a new link', 'clean-maintenance' ); ?></label>
+			</section>
+
 			<details class="cm-way" <?php echo $cm_host['host'] ? 'open' : ''; ?>>
 				<summary>
-					<span class="cm-way-nr">2</span>
+					<span class="cm-way-nr">3</span>
 					<strong><?php esc_html_e( 'Or a DynDNS name', 'clean-maintenance' ); ?></strong>
 					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Alternative', 'clean-maintenance' ); ?></span>
 				</summary>
@@ -355,7 +378,7 @@ function clean_maintenance_render_network() {
 
 			<details class="cm-way" <?php echo $cm_list ? 'open' : ''; ?>>
 				<summary>
-					<span class="cm-way-nr">3</span>
+					<span class="cm-way-nr">4</span>
 					<strong><?php esc_html_e( 'Fixed addresses and ranges', 'clean-maintenance' ); ?></strong>
 					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Manual', 'clean-maintenance' ); ?></span>
 				</summary>
@@ -367,7 +390,7 @@ function clean_maintenance_render_network() {
 
 			<section class="cm-way cm-tunnel" id="cm-tunnel" data-public="<?php echo $cm_ip && ! clean_maintenance_is_private_ip( $cm_ip ) ? 1 : 0; ?>" <?php echo $cm_tunnel ? '' : 'hidden'; ?>>
 				<header>
-					<span class="cm-way-nr">4</span>
+					<span class="cm-way-nr">5</span>
 					<strong><?php esc_html_e( 'Private ranges need the tunnel', 'clean-maintenance' ); ?></strong>
 					<span class="cm-way-tag cm-way-tag-warn"><?php esc_html_e( 'Guide', 'clean-maintenance' ); ?></span>
 				</header>
@@ -441,6 +464,10 @@ add_action(
 		update_site_option( 'clean_maintenance_network_allow', clean_maintenance_sanitize_ip_list( wp_unslash( $_POST['cm_network_allow'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized by clean_maintenance_sanitize_ip_list().
 		$raw  = sanitize_text_field( wp_unslash( $_POST['cm_network_host'] ?? '' ) );
 		$host = clean_maintenance_normalize_host( $raw );
+		update_site_option( 'clean_maintenance_pass_login', empty( $_POST['cm_pass_login'] ) ? 0 : 1 );
+		if ( ! empty( $_POST['cm_pass_renew'] ) ) {
+			delete_site_option( 'clean_maintenance_pass_token' );
+		}
 		if ( ! empty( $_POST['cm_home_renew'] ) ) {
 			delete_site_option( 'clean_maintenance_home_token' );
 			delete_site_option( 'clean_maintenance_home' );

@@ -607,3 +607,133 @@ function clean_maintenance_receive_home_report() {
 }
 add_action( 'admin_post_nopriv_clean_maintenance_home', 'clean_maintenance_receive_home_report' );
 add_action( 'admin_post_clean_maintenance_home', 'clean_maintenance_receive_home_report' );
+
+/*
+ * ===== Access pass: a cookie that lets one browser through =====
+ *
+ * Works regardless of the address (iCloud Private Relay, mobile, travelling).
+ * A browser gets it from a secret link or – optionally – when a network
+ * administrator logs in; logging out does not remove it. Renewing the secret
+ * revokes every pass at once.
+ */
+
+const CLEAN_MAINTENANCE_PASS_COOKIE = 'clean_maintenance_pass';
+
+/**
+ * Secret of the access link; created on first use.
+ *
+ * @param bool $create Create one if there is none yet.
+ * @return string
+ */
+function clean_maintenance_pass_token( $create = false ) {
+	if ( ! is_multisite() ) {
+		return '';
+	}
+	$t = (string) get_site_option( 'clean_maintenance_pass_token', '' );
+	if ( '' === $t && $create ) {
+		$t = wp_generate_password( 32, false );
+		update_site_option( 'clean_maintenance_pass_token', $t );
+	}
+	return $t;
+}
+
+/**
+ * Value of the pass cookie – derived from the secret, never the secret itself.
+ *
+ * @param string $token Secret.
+ * @return string
+ */
+function clean_maintenance_pass_value( $token ) {
+	return '' === $token ? '' : hash_hmac( 'sha256', 'clean-maintenance-pass', $token );
+}
+
+/**
+ * Whether the current browser carries a valid pass.
+ *
+ * @return bool
+ */
+function clean_maintenance_has_pass() {
+	$value = isset( $_COOKIE[ CLEAN_MAINTENANCE_PASS_COOKIE ] ) ? sanitize_text_field( wp_unslash( $_COOKIE[ CLEAN_MAINTENANCE_PASS_COOKIE ] ) ) : '';
+	$want  = clean_maintenance_pass_value( clean_maintenance_pass_token() );
+	return '' !== $value && '' !== $want && hash_equals( $want, $value );
+}
+
+/**
+ * Whether administrators get a pass when they log in (default: yes).
+ *
+ * @return bool
+ */
+function clean_maintenance_pass_on_login() {
+	return is_multisite() && (bool) get_site_option( 'clean_maintenance_pass_login', 1 );
+}
+
+/**
+ * Give the current browser a pass for half a year.
+ */
+function clean_maintenance_set_pass() {
+	$value = clean_maintenance_pass_value( clean_maintenance_pass_token( true ) );
+	if ( '' === $value || headers_sent() ) {
+		return;
+	}
+	$_COOKIE[ CLEAN_MAINTENANCE_PASS_COOKIE ] = $value;
+	setcookie(
+		CLEAN_MAINTENANCE_PASS_COOKIE,
+		$value,
+		array(
+			'expires'  => time() + 180 * DAY_IN_SECONDS,
+			'path'     => '/',
+			'secure'   => is_ssl(),
+			'httponly' => true,
+			'samesite' => 'Lax',
+		)
+	);
+}
+
+/**
+ * Secret access link (opens the network's main site and sets the pass).
+ *
+ * @return string
+ */
+function clean_maintenance_pass_url() {
+	return add_query_arg( 'cm-pass', rawurlencode( clean_maintenance_pass_token( true ) ), network_home_url( '/' ) );
+}
+
+// The access link: set the pass and continue without the secret in the address bar.
+add_action(
+	'init',
+	function () {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- protected by the secret token.
+		$given = isset( $_GET['cm-pass'] ) ? sanitize_text_field( wp_unslash( $_GET['cm-pass'] ) ) : '';
+		if ( '' === $given ) {
+			return;
+		}
+		$token = clean_maintenance_pass_token();
+		if ( '' !== $token && hash_equals( $token, $given ) ) {
+			clean_maintenance_set_pass();
+		}
+		nocache_headers();
+		wp_safe_redirect( remove_query_arg( 'cm-pass' ) );
+		exit;
+	},
+	1
+);
+
+// Network administrators: pass at login, and on every site they visit while logged in.
+add_action(
+	'wp_login',
+	function ( $login, $user ) {
+		if ( clean_maintenance_pass_on_login() && is_super_admin( $user->ID ) ) {
+			clean_maintenance_set_pass();
+		}
+	},
+	10,
+	2
+);
+add_action(
+	'init',
+	function () {
+		if ( clean_maintenance_pass_on_login() && is_user_logged_in() && is_super_admin() && ! clean_maintenance_has_pass() ) {
+			clean_maintenance_set_pass();
+		}
+	}
+);

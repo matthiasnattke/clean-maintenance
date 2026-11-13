@@ -17,6 +17,7 @@ I built it for my own WordPress network around the [Couch Blog](https://couch-bl
 ### New in 0.7
 
 - **Always let through** – visitors from your home network see every site without logging in. Recommended: your router reports its home network to a secret update link (user-defined DynDNS on a FRITZ!Box, with `<ip6lanprefix>`), so nothing at home has to be reachable from outside. A DynDNS name works as an alternative.
+- **Access pass** – a cookie that lets one browser through from anywhere, also with iCloud Private Relay. Network administrators get it at login and keep it after logging out; a secret link hands it to any browser.
 - **Fixed addresses and ranges** – CIDR ranges for IPv4 and IPv6, network-wide and per site, with a button that adds your current address.
 - **Tunnel guide** – enter a private range while your requests still arrive over the internet, and a short guide explains how to route them through your VPN.
 

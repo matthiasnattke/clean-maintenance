@@ -209,6 +209,16 @@ test( 'Separate IPv4 and IPv6 calls of the router are merged', function () {
 	same( '2a00:aaaa:adc0:7e7::/64', $r['prefix'], 'prefix kept' );
 } );
 
+test( 'Access pass: cookie value is derived from the secret', function () {
+	same( '', clean_maintenance_pass_value( '' ), 'no secret, no pass' );
+	same( clean_maintenance_pass_value( 'abc' ), clean_maintenance_pass_value( 'abc' ), 'stable' );
+	same( false, clean_maintenance_pass_value( 'abc' ) === clean_maintenance_pass_value( 'abd' ), 'a new secret revokes' );
+	same( false, false !== strpos( clean_maintenance_pass_value( 'abc' ), 'abc' ), 'secret not in the cookie' );
+	$_COOKIE['clean_maintenance_pass'] = clean_maintenance_pass_value( 'abc' );
+	same( false, clean_maintenance_has_pass(), 'single site has no pass secret' );
+	unset( $_COOKIE['clean_maintenance_pass'] );
+} );
+
 test( 'Host names and private ranges are recognised', function () {
 	same( true, clean_maintenance_is_hostname( 'abc123.myfritz.net' ) );
 	same( false, clean_maintenance_is_hostname( '192.168.178.1' ) );
