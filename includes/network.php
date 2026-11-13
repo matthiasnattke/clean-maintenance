@@ -255,9 +255,35 @@ function clean_maintenance_render_network() {
 			<section class="cm-way cm-way-main">
 				<header>
 					<span class="cm-way-nr">1</span>
-					<strong><?php esc_html_e( 'Your router reports the home network', 'clean-maintenance' ); ?></strong>
+					<strong><?php esc_html_e( 'Access pass for a browser', 'clean-maintenance' ); ?></strong>
 					<span class="cm-way-tag"><?php esc_html_e( 'Recommended', 'clean-maintenance' ); ?></span>
 				</header>
+				<p class="cm-help"><?php esc_html_e( 'A cookie that lets one browser see every site – no matter where it is or which address it uses, also with iCloud Private Relay or on the go. It stays for half a year, even after logging out.', 'clean-maintenance' ); ?></p>
+				<label class="cm-renew cm-pass-login"><input type="checkbox" name="cm_pass_login" value="1" <?php checked( clean_maintenance_pass_on_login() ); ?>> <?php esc_html_e( 'Give network administrators a pass when they log in', 'clean-maintenance' ); ?></label>
+				<div class="cm-copy">
+					<input type="text" id="cm-pass-url" class="large-text code" readonly value="<?php echo esc_attr( clean_maintenance_pass_url() ); ?>" aria-label="<?php esc_attr_e( 'Access link', 'clean-maintenance' ); ?>">
+					<button type="button" class="button cm-copy-btn" data-target="cm-pass-url" data-done="<?php esc_attr_e( 'Copied', 'clean-maintenance' ); ?>"><?php esc_html_e( 'Copy', 'clean-maintenance' ); ?></button>
+				</div>
+				<p class="cm-help"><?php esc_html_e( 'To see the maintenance page anyway, add ?cm-preview=1 to the address.', 'clean-maintenance' ); ?></p>
+				<p class="cm-help"><?php esc_html_e( 'Open this link once in a browser to give it a pass – handy as a bookmark for private windows, or to show the sites to someone without an account.', 'clean-maintenance' ); ?></p>
+				<p class="cm-ip">
+					<?php if ( clean_maintenance_has_pass() ) : ?>
+						<span class="cm-ip-ok"><?php esc_html_e( 'This browser has a pass', 'clean-maintenance' ); ?></span>
+						<a href="<?php echo esc_url( add_query_arg( 'cm-pass', 'off', network_home_url( '/' ) ) ); ?>"><?php esc_html_e( 'Remove it from this browser', 'clean-maintenance' ); ?></a>
+					<?php else : ?>
+						<span class="cm-ip-no"><?php esc_html_e( 'This browser has no pass yet', 'clean-maintenance' ); ?></span>
+					<?php endif; ?>
+				</p>
+				<label class="cm-renew"><input type="checkbox" name="cm_pass_renew" value="1"> <?php esc_html_e( 'Revoke all passes and create a new link', 'clean-maintenance' ); ?></label>
+			</section>
+
+			<section class="cm-way">
+				<header>
+					<span class="cm-way-nr">2</span>
+					<strong><?php esc_html_e( 'Your router reports the home network', 'clean-maintenance' ); ?></strong>
+					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Whole home network', 'clean-maintenance' ); ?></span>
+				</header>
+				<p class="cm-help"><?php esc_html_e( 'For every device at home without a pass – family, guests, TV, podcast apps.', 'clean-maintenance' ); ?></p>
 				<p class="cm-help"><?php esc_html_e( 'Whenever its addresses change, your FRITZ!Box calls a secret link and tells the plugin the current network of your home. Nothing in your home network becomes reachable from outside – the router only sends, it does not open anything.', 'clean-maintenance' ); ?></p>
 				<div class="cm-copy">
 					<input type="text" id="cm-home-url" class="large-text code" readonly value="<?php echo esc_attr( $cm_url ); ?>" aria-label="<?php esc_attr_e( 'Update URL', 'clean-maintenance' ); ?>">
@@ -313,31 +339,6 @@ function clean_maintenance_render_network() {
 				<label class="cm-renew"><input type="checkbox" name="cm_home_renew" value="1"> <?php esc_html_e( 'Create a new link (the old one stops working)', 'clean-maintenance' ); ?></label>
 			</section>
 
-			<section class="cm-way">
-				<header>
-					<span class="cm-way-nr">2</span>
-					<strong><?php esc_html_e( 'Access pass for a browser', 'clean-maintenance' ); ?></strong>
-					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Any address', 'clean-maintenance' ); ?></span>
-				</header>
-				<p class="cm-help"><?php esc_html_e( 'A cookie that lets one browser see every site – no matter where it is or which address it uses, also with iCloud Private Relay or on the go. It stays for half a year, even after logging out.', 'clean-maintenance' ); ?></p>
-				<label class="cm-renew cm-pass-login"><input type="checkbox" name="cm_pass_login" value="1" <?php checked( clean_maintenance_pass_on_login() ); ?>> <?php esc_html_e( 'Give network administrators a pass when they log in', 'clean-maintenance' ); ?></label>
-				<div class="cm-copy">
-					<input type="text" id="cm-pass-url" class="large-text code" readonly value="<?php echo esc_attr( clean_maintenance_pass_url() ); ?>" aria-label="<?php esc_attr_e( 'Access link', 'clean-maintenance' ); ?>">
-					<button type="button" class="button cm-copy-btn" data-target="cm-pass-url" data-done="<?php esc_attr_e( 'Copied', 'clean-maintenance' ); ?>"><?php esc_html_e( 'Copy', 'clean-maintenance' ); ?></button>
-				</div>
-				<p class="cm-help"><?php esc_html_e( 'To see the maintenance page anyway, add ?cm-preview=1 to the address.', 'clean-maintenance' ); ?></p>
-				<p class="cm-help"><?php esc_html_e( 'Open this link once in a browser to give it a pass – handy as a bookmark for private windows, or to show the sites to someone without an account.', 'clean-maintenance' ); ?></p>
-				<p class="cm-ip">
-					<?php if ( clean_maintenance_has_pass() ) : ?>
-						<span class="cm-ip-ok"><?php esc_html_e( 'This browser has a pass', 'clean-maintenance' ); ?></span>
-						<a href="<?php echo esc_url( add_query_arg( 'cm-pass', 'off', network_home_url( '/' ) ) ); ?>"><?php esc_html_e( 'Remove it from this browser', 'clean-maintenance' ); ?></a>
-					<?php else : ?>
-						<span class="cm-ip-no"><?php esc_html_e( 'This browser has no pass yet', 'clean-maintenance' ); ?></span>
-					<?php endif; ?>
-				</p>
-				<label class="cm-renew"><input type="checkbox" name="cm_pass_renew" value="1"> <?php esc_html_e( 'Revoke all passes and create a new link', 'clean-maintenance' ); ?></label>
-			</section>
-
 			<details class="cm-way" <?php echo $cm_host['host'] ? 'open' : ''; ?>>
 				<summary>
 					<span class="cm-way-nr">3</span>
@@ -373,7 +374,7 @@ function clean_maintenance_render_network() {
 						<?php endif; ?>
 					</p>
 					<?php if ( $cm_ips && ! $cm_home && preg_match( '/\.myfritz\.net$/', $cm_host['host'] ) ) : ?>
-						<p class="cm-hint"><?php esc_html_e( 'A MyFRITZ name points to the internet side of the FRITZ!Box, not to your home network. Let the FRITZ!Box report the home network instead (way 1) – no sharing needed.', 'clean-maintenance' ); ?></p>
+						<p class="cm-hint"><?php esc_html_e( 'A MyFRITZ name points to the internet side of the FRITZ!Box, not to your home network. Let the FRITZ!Box report the home network instead (way 2) – no sharing needed.', 'clean-maintenance' ); ?></p>
 					<?php endif; ?>
 				<?php endif; ?>
 			</details>
