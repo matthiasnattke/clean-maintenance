@@ -317,6 +317,23 @@ function clean_maintenance_is_hostname( $host ) {
 }
 
 /**
+ * Turn whatever was pasted into a bare host name:
+ * "https://abc.myfritz.net:42243/path" becomes "abc.myfritz.net".
+ *
+ * @param string $value Pasted value (URL, host with port, …).
+ * @return string Host name, or '' when nothing usable is left.
+ */
+function clean_maintenance_normalize_host( $value ) {
+	$value = strtolower( trim( (string) $value ) );
+	$value = preg_replace( '#^[a-z][a-z0-9+.-]*://#', '', $value ); // Scheme.
+	$value = preg_replace( '#^[^@/]*@#', '', $value );              // user:password@.
+	$value = preg_replace( '#[/?\#].*$#', '', $value );            // Path, query, fragment.
+	$value = preg_replace( '#:\d*$#', '', $value );                // Port.
+	$value = rtrim( $value, '.' );
+	return clean_maintenance_is_hostname( $value ) ? $value : '';
+}
+
+/**
  * Network-wide home address: a host name (MyFRITZ, DynDNS) that always points
  * to the current public address of the home network.
  *

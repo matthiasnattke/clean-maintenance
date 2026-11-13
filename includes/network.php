@@ -242,7 +242,11 @@ function clean_maintenance_render_network() {
 			<h2><?php echo clean_maintenance_icon( 'key' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?> <?php esc_html_e( 'Always let through', 'clean-maintenance' ); ?></h2>
 			<p class="cm-lead"><?php esc_html_e( 'Visitors from your home network see every site of the network normally, without logging in.', 'clean-maintenance' ); ?></p>
 			<?php if ( isset( $_GET['cm-allow-saved'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only. ?>
-				<div class="notice notice-success inline"><p><?php esc_html_e( 'Saved.', 'clean-maintenance' ); ?></p></div>
+				<?php if ( 'badhost' === $_GET['cm-allow-saved'] ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput -- display only, compared with a fixed value. ?>
+					<div class="notice notice-warning inline"><p><?php esc_html_e( 'Saved, but the home address was not a valid name and has been left empty.', 'clean-maintenance' ); ?></p></div>
+				<?php else : ?>
+					<div class="notice notice-success inline"><p><?php esc_html_e( 'Saved.', 'clean-maintenance' ); ?></p></div>
+				<?php endif; ?>
 			<?php endif; ?>
 
 			<section class="cm-way cm-way-main">
@@ -253,7 +257,8 @@ function clean_maintenance_render_network() {
 				</header>
 				<p class="cm-help"><?php esc_html_e( 'A name that always points to the current address of your home network, e.g. your MyFRITZ address or a DynDNS name. It follows every address change by itself.', 'clean-maintenance' ); ?></p>
 				<div class="cm-host-row">
-					<input type="text" id="cm-network-host" name="cm_network_host" class="regular-text code" value="<?php echo esc_attr( $cm_host['host'] ); ?>" placeholder="abcdef1234567890.myfritz.net" spellcheck="false" autocomplete="off">
+					<input type="text" id="cm-network-host" name="cm_network_host" class="regular-text code" value="<?php echo esc_attr( $cm_host['host'] ); ?>" placeholder="abcdef1234567890.myfritz.net" spellcheck="false" autocomplete="off" inputmode="url">
+					<span class="cm-host-note" id="cm-host-note" aria-live="polite" data-text="<?php esc_attr_e( 'Cleaned up – only the name is needed.', 'clean-maintenance' ); ?>" hidden></span>
 					<label class="cm-v6"><span><?php esc_html_e( 'IPv6 network', 'clean-maintenance' ); ?></span>
 						<select name="cm_network_v6">
 							<?php foreach ( array( 56 => __( '/56 – whole home network', 'clean-maintenance' ), 64 => __( '/64 – one network segment', 'clean-maintenance' ), 48 => __( '/48 – wide', 'clean-maintenance' ), 128 => __( 'Only the exact address', 'clean-maintenance' ) ) as $cm_len => $cm_label ) : ?>
@@ -367,16 +372,16 @@ add_action(
 		}
 		check_admin_referer( 'clean_maintenance_network_allow' );
 		update_site_option( 'clean_maintenance_network_allow', clean_maintenance_sanitize_ip_list( wp_unslash( $_POST['cm_network_allow'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized by clean_maintenance_sanitize_ip_list().
-		$host = strtolower( trim( sanitize_text_field( wp_unslash( $_POST['cm_network_host'] ?? '' ) ) ) );
-		$host = preg_replace( '#^[a-z]+://|/.*$#', '', $host );
+		$raw  = sanitize_text_field( wp_unslash( $_POST['cm_network_host'] ?? '' ) );
+		$host = clean_maintenance_normalize_host( $raw );
 		update_site_option(
 			'clean_maintenance_network_host',
 			array(
-				'host' => clean_maintenance_is_hostname( $host ) ? $host : '',
+				'host' => $host,
 				'v6'   => absint( $_POST['cm_network_v6'] ?? 56 ),
 			)
 		);
-		wp_safe_redirect( add_query_arg( 'cm-allow-saved', '1', network_admin_url( 'settings.php?page=clean-maintenance-network' ) ) . '#cm-allow' );
+		wp_safe_redirect( add_query_arg( 'cm-allow-saved', '' !== $raw && '' === $host ? 'badhost' : '1', network_admin_url( 'settings.php?page=clean-maintenance-network' ) ) . '#cm-allow' );
 		exit;
 	}
 );

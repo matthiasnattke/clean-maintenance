@@ -310,3 +310,4 @@ fieldset.cm-sub > legend.cm-field + * { clear: both; }
 @keyframes cm-pop { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .cm-pop { animation: none; } }
 @media (max-width: 600px) { .cm-way, .cm-tunnel-link { margin-left: 0; } }
+.cm-host-note { flex-basis: 100%; color: #00701c; font-size: 12px; font-weight: 600; }

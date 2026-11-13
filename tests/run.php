@@ -173,6 +173,16 @@ test( 'Home address: IPv4 exactly, IPv6 within the prefix', function () {
 	same( false, clean_maintenance_host_matches( '198.51.100.20', array() ), 'nothing resolved' );
 } );
 
+test( 'Pasted URLs become a bare host name', function () {
+	same( 'jjnrknqfpjr5zu7i.myfritz.net', clean_maintenance_normalize_host( 'https://jjnrknqfpjr5zu7i.myfritz.net:42243' ) );
+	same( 'abc.myfritz.net', clean_maintenance_normalize_host( '  HTTPS://Abc.MyFritz.net:42243/#/login?x=1 ' ) );
+	same( 'abc.myfritz.net', clean_maintenance_normalize_host( 'abc.myfritz.net:8443' ) );
+	same( 'abc.myfritz.net', clean_maintenance_normalize_host( 'http://user:pw@abc.myfritz.net/' ) );
+	same( 'home.example.org', clean_maintenance_normalize_host( 'home.example.org.' ) );
+	same( '', clean_maintenance_normalize_host( 'https://192.168.178.1:443' ) );
+	same( '', clean_maintenance_normalize_host( 'not a host' ) );
+} );
+
 test( 'Host names and private ranges are recognised', function () {
 	same( true, clean_maintenance_is_hostname( 'abc123.myfritz.net' ) );
 	same( false, clean_maintenance_is_hostname( '192.168.178.1' ) );

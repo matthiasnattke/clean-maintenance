@@ -158,5 +158,7 @@
 	"Check": "Prüfen",
 	"Reload this page: “Your current address” should now show a private address.": "Lade diese Seite neu: „Deine aktuelle Adresse“ sollte jetzt eine private Adresse zeigen.",
 	"No tunnel? Then the home address above is the simpler way.": "Kein Tunnel? Dann ist die Heimadresse oben der einfachere Weg.",
-	"Connected through a VPN? Show the tunnel guide": "Über VPN verbunden? Tunnel-Anleitung zeigen"
+	"Connected through a VPN? Show the tunnel guide": "Über VPN verbunden? Tunnel-Anleitung zeigen",
+	"Saved, but the home address was not a valid name and has been left empty.": "Gespeichert, aber die Heimadresse war kein gültiger Name und bleibt leer.",
+	"Cleaned up – only the name is needed.": "Bereinigt – nur der Name wird gebraucht."
 }

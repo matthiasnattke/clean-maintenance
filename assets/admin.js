@@ -61,6 +61,27 @@ jQuery( function ( $ ) {
 		}
 	} );
 
+	/* Home address: a pasted URL such as https://abc.myfritz.net:42243/ becomes abc.myfritz.net. */
+	function cmHost( value ) {
+		return String( value ).trim().toLowerCase()
+			.replace( /^[a-z][a-z0-9+.-]*:\/\//, '' )
+			.replace( /^[^@\/]*@/, '' )
+			.replace( /[\/?#].*$/, '' )
+			.replace( /:\d*$/, '' )
+			.replace( /\.+$/, '' );
+	}
+	$( '#cm-network-host' ).on( 'paste change blur', function () {
+		var $f = $( this );
+		setTimeout( function () {
+			var before = $f.val();
+			var after = cmHost( before );
+			if ( after !== before.trim() ) {
+				$f.val( after );
+				$( '#cm-host-note' ).text( $( '#cm-host-note' ).data( 'text' ) ).prop( 'hidden', false );
+			}
+		}, 0 );
+	} );
+
 	/* Tunnel guide: pops up as soon as private ranges are entered while the request arrives from a public address. */
 	var $tunnel = $( '#cm-tunnel' );
 	var privateRe = /^\s*(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|f[cd][0-9a-f]{2}:|fe80:)/im;
