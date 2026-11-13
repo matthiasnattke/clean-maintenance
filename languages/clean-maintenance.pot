@@ -8,7 +8,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Domain: clean-maintenance\n"
 
-#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:191 includes/admin.php:197 includes/network.php:19 includes/network.php:20 includes/network.php:396
+#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:191 includes/admin.php:197 includes/network.php:19 includes/network.php:20 includes/network.php:412
 msgid "Maintenance mode"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 msgid "Period ended"
 msgstr ""
 
-#: includes/core.php:160 includes/network.php:151 includes/network.php:168 includes/network.php:421
+#: includes/core.php:160 includes/network.php:151 includes/network.php:168 includes/network.php:437
 msgid "Planned"
 msgstr ""
 
@@ -358,7 +358,7 @@ msgstr ""
 msgid "Turn off maintenance mode"
 msgstr ""
 
-#: includes/frontend.php:318 includes/network.php:349 includes/network.php:371
+#: includes/frontend.php:318 includes/network.php:365 includes/network.php:387
 msgid "You are not allowed to do this."
 msgstr ""
 
@@ -398,11 +398,11 @@ msgstr ""
 msgid "Each site sets its period, maintenance page, background, exceptions and roles in its own settings."
 msgstr ""
 
-#: includes/network.php:165 includes/network.php:418
+#: includes/network.php:165 includes/network.php:434
 msgid "in maintenance mode"
 msgstr ""
 
-#: includes/network.php:166 includes/network.php:419
+#: includes/network.php:166 includes/network.php:435
 msgid "reachable"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: includes/network.php:217 includes/network.php:432
+#: includes/network.php:217 includes/network.php:448
 msgid "Turn off"
 msgstr ""
 
@@ -518,89 +518,111 @@ msgstr ""
 msgid "This name cannot be resolved right now."
 msgstr ""
 
+#: includes/network.php:288
+msgid "Tip for MyFRITZ"
+msgstr ""
+
+#: includes/network.php:289
+msgid "The main MyFRITZ name points to the internet side of the FRITZ!Box. Your devices at home use a different IPv6 network, and often there is no IPv4 address at all. Use the MyFRITZ name of a device in your home network instead:"
+msgstr ""
+
+#: includes/network.php:291
+msgid "FRITZ!Box: Internet → Permit Access → Port Sharing → Add Device for Sharing, choose a device that is always on (e.g. a NAS or this computer)."
+msgstr ""
+
 #: includes/network.php:292
+msgid "Add a MyFRITZ!-Sharing for it, e.g. for HTTPS. Nothing has to be reachable – the share only creates the name."
+msgstr ""
+
+#. translators: %s: example host name of a device, e.g. nas.abcdef.myfritz.net.
+#: includes/network.php:296
+#, php-format
+msgid "Enter the name shown there, such as %s, and keep “/56 – whole home network”."
+msgstr ""
+
+#: includes/network.php:308
 msgid "Fixed addresses and ranges"
 msgstr ""
 
-#: includes/network.php:293
+#: includes/network.php:309
 msgid "Manual"
 msgstr ""
 
-#: includes/network.php:295
+#: includes/network.php:311
 msgid "IP addresses and ranges"
 msgstr ""
 
-#: includes/network.php:296
+#: includes/network.php:312
 msgid "office"
 msgstr ""
 
-#: includes/network.php:297
+#: includes/network.php:313
 msgid "One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses."
 msgstr ""
 
-#: includes/network.php:304
+#: includes/network.php:320
 msgid "Private ranges need the tunnel"
 msgstr ""
 
-#: includes/network.php:305
+#: includes/network.php:321
 msgid "Guide"
 msgstr ""
 
 #. translators: %s: IP address of the current visitor.
-#: includes/network.php:310
+#: includes/network.php:326
 #, php-format
 msgid "Private ranges such as 192.168.x.x or 10.x.x.x only match when a request really travels through your VPN. Right now your request arrives from %s – a public address, so the domain is reached over the internet."
 msgstr ""
 
-#: includes/network.php:315
+#: includes/network.php:331
 msgid "Route the server through the tunnel"
 msgstr ""
 
 #. translators: %s: public IP address of the web server.
-#: includes/network.php:318
+#: includes/network.php:334
 #, php-format
 msgid "In the WireGuard connection of your router, add the server address %s to the networks reached through the tunnel (AllowedIPs). On the server, the connection must accept your home range, e.g. 192.168.178.0/24."
 msgstr ""
 
-#: includes/network.php:322
+#: includes/network.php:338
 msgid "Or resolve the domain locally"
 msgstr ""
 
 #. translators: %s: domain of the network.
-#: includes/network.php:325
+#: includes/network.php:341
 #, php-format
 msgid "Let %s point to the tunnel address of the server in your home network – in a local DNS server or in the hosts file of a device. The certificate stays valid because the name does not change."
 msgstr ""
 
-#: includes/network.php:329
+#: includes/network.php:345
 msgid "Check"
 msgstr ""
 
-#: includes/network.php:330
+#: includes/network.php:346
 msgid "Reload this page: “Your current address” should now show a private address."
 msgstr ""
 
-#: includes/network.php:333
+#: includes/network.php:349
 msgid "No tunnel? Then the home address above is the simpler way."
 msgstr ""
 
-#: includes/network.php:335
+#: includes/network.php:351
 msgid "Connected through a VPN? Show the tunnel guide"
 msgstr ""
 
-#: includes/network.php:337
+#: includes/network.php:353
 msgid "Save"
 msgstr ""
 
-#: includes/network.php:340
+#: includes/network.php:356
 msgid "“Turn on” applies right away and until you turn it off; a scheduled period is replaced. Network administrators always see the sites normally."
 msgstr ""
 
-#: includes/network.php:438
+#: includes/network.php:454
 msgid "All sites are reachable."
 msgstr ""
 
-#: includes/network.php:440
+#: includes/network.php:456
 msgid "Manage all sites →"
 msgstr ""
 

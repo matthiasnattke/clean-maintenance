@@ -160,5 +160,10 @@
 	"No tunnel? Then the home address above is the simpler way.": "Kein Tunnel? Dann ist die Heimadresse oben der einfachere Weg.",
 	"Connected through a VPN? Show the tunnel guide": "Über VPN verbunden? Tunnel-Anleitung zeigen",
 	"Saved, but the home address was not a valid name and has been left empty.": "Gespeichert, aber die Heimadresse war kein gültiger Name und bleibt leer.",
-	"Cleaned up – only the name is needed.": "Bereinigt – nur der Name wird gebraucht."
+	"Cleaned up – only the name is needed.": "Bereinigt – nur der Name wird gebraucht.",
+	"Tip for MyFRITZ": "Tipp für MyFRITZ",
+	"The main MyFRITZ name points to the internet side of the FRITZ!Box. Your devices at home use a different IPv6 network, and often there is no IPv4 address at all. Use the MyFRITZ name of a device in your home network instead:": "Der MyFRITZ-Hauptname zeigt auf die Internetseite der FRITZ!Box. Deine Geräte zu Hause nutzen ein anderes IPv6-Netz, und oft gibt es gar keine IPv4-Adresse. Nimm stattdessen den MyFRITZ-Namen eines Geräts in deinem Heimnetz:",
+	"FRITZ!Box: Internet → Permit Access → Port Sharing → Add Device for Sharing, choose a device that is always on (e.g. a NAS or this computer).": "FRITZ!Box: Internet → Freigaben → Portfreigaben → Gerät für Freigaben hinzufügen, ein Gerät wählen, das immer läuft (z. B. ein NAS oder diesen Rechner).",
+	"Add a MyFRITZ!-Sharing for it, e.g. for HTTPS. Nothing has to be reachable – the share only creates the name.": "Dafür eine MyFRITZ!-Freigabe anlegen, z. B. für HTTPS. Erreichbar muss dort nichts sein – die Freigabe erzeugt nur den Namen.",
+	"Enter the name shown there, such as %s, and keep “/56 – whole home network”.": "Den dort angezeigten Namen eintragen, etwa %s, und „/56 – ganzes Heimnetz“ beibehalten."
 }

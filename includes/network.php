@@ -283,6 +283,22 @@ function clean_maintenance_render_network() {
 							<span class="cm-ip-no"><?php esc_html_e( 'This name cannot be resolved right now.', 'clean-maintenance' ); ?></span>
 						<?php endif; ?>
 					</p>
+					<?php if ( $cm_ips && ! $cm_home && preg_match( '/^[a-z0-9]+\.myfritz\.net$/', $cm_host['host'] ) ) : ?>
+						<div class="cm-hint">
+							<strong><?php esc_html_e( 'Tip for MyFRITZ', 'clean-maintenance' ); ?></strong>
+							<p><?php esc_html_e( 'The main MyFRITZ name points to the internet side of the FRITZ!Box. Your devices at home use a different IPv6 network, and often there is no IPv4 address at all. Use the MyFRITZ name of a device in your home network instead:', 'clean-maintenance' ); ?></p>
+							<ol class="cm-steps">
+								<li><?php esc_html_e( 'FRITZ!Box: Internet → Permit Access → Port Sharing → Add Device for Sharing, choose a device that is always on (e.g. a NAS or this computer).', 'clean-maintenance' ); ?></li>
+								<li><?php esc_html_e( 'Add a MyFRITZ!-Sharing for it, e.g. for HTTPS. Nothing has to be reachable – the share only creates the name.', 'clean-maintenance' ); ?></li>
+								<li>
+									<?php
+									/* translators: %s: example host name of a device, e.g. nas.abcdef.myfritz.net. */
+									echo wp_kses( sprintf( __( 'Enter the name shown there, such as %s, and keep “/56 – whole home network”.', 'clean-maintenance' ), '<code>' . esc_html( 'nas.' . $cm_host['host'] ) . '</code>' ), array( 'code' => array() ) );
+									?>
+								</li>
+							</ol>
+						</div>
+					<?php endif; ?>
 				<?php endif; ?>
 			</section>
 

@@ -311,3 +311,7 @@ fieldset.cm-sub > legend.cm-field + * { clear: both; }
 @media (prefers-reduced-motion: reduce) { .cm-pop { animation: none; } }
 @media (max-width: 600px) { .cm-way, .cm-tunnel-link { margin-left: 0; } }
 .cm-host-note { flex-basis: 100%; color: #00701c; font-size: 12px; font-weight: 600; }
+.cm-hint { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: #fffaf6; border: 1px solid #f0c8ad; }
+.cm-hint p { margin: 4px 0 8px; }
+.cm-hint .cm-steps { margin-bottom: 0; }
+.cm-hint code { padding: 1px 5px; border-radius: 5px; background: #fff; border: 1px solid var(--cm-line); }
