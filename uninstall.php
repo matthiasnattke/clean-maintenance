@@ -20,6 +20,7 @@ if ( is_multisite() ) {
 		restore_current_blog();
 	}
 	delete_site_option( 'clean_maintenance_network_allow' );
+	delete_site_option( 'clean_maintenance_network_host' );
 } else {
 	delete_option( 'clean_maintenance' );
 }

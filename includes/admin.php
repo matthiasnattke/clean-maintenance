@@ -142,7 +142,7 @@ function clean_maintenance_ip_hint( $target ) {
 	if ( ! $ip ) {
 		return;
 	}
-	$allowed = clean_maintenance_ip_in_list( $ip, clean_maintenance_network_allow() );
+	$allowed = clean_maintenance_network_allowed( $ip );
 	?>
 	<p class="cm-ip">
 		<?php

@@ -163,6 +163,28 @@ test( 'A range in the exception list lets the whole network through', function (
 	same( false, clean_maintenance_excluded( settings( array( 'exclude' => "feed\n192.168.178.0/24 # home" ) ) ) );
 } );
 
+test( 'Home address: IPv4 exactly, IPv6 within the prefix', function () {
+	$home = array( '198.51.100.20', '2001:db8:4400:7e00::1' );
+	same( true, clean_maintenance_host_matches( '198.51.100.20', $home ), 'IPv4 of the router' );
+	same( false, clean_maintenance_host_matches( '198.51.100.21', $home ), 'other IPv4' );
+	same( true, clean_maintenance_host_matches( '2001:db8:4400:7e07:abcd::9', $home, 56 ), 'device in the /56' );
+	same( false, clean_maintenance_host_matches( '2001:db8:4400:7e07:abcd::9', $home, 64 ), 'other /64' );
+	same( false, clean_maintenance_host_matches( '2001:db8:4400:7f00::9', $home, 56 ), 'outside the /56' );
+	same( false, clean_maintenance_host_matches( '198.51.100.20', array() ), 'nothing resolved' );
+} );
+
+test( 'Host names and private ranges are recognised', function () {
+	same( true, clean_maintenance_is_hostname( 'abc123.myfritz.net' ) );
+	same( false, clean_maintenance_is_hostname( '192.168.178.1' ) );
+	same( false, clean_maintenance_is_hostname( 'localhost' ) );
+	same( false, clean_maintenance_is_hostname( 'not a host' ) );
+	same( true, clean_maintenance_is_private_ip( '192.168.178.33' ) );
+	same( true, clean_maintenance_is_private_ip( 'fd00::1' ) );
+	same( false, clean_maintenance_is_private_ip( '8.8.8.8' ) );
+	same( true, clean_maintenance_list_has_private( "# home\n192.168.178.0/24 # VPN" ) );
+	same( false, clean_maintenance_list_has_private( "203.0.113.7\n# 10.0.0.0/8" ) );
+} );
+
 test( 'IP lists keep only valid rules and comments', function () {
 	same( "192.168.178.0/24 # home\n# VPN\n10.8.0.0/24", clean_maintenance_sanitize_ip_list( "192.168.178.0/24 # home\n# VPN\n10.8.0.0/24\nnonsense\n10.0.0.0/99" ) );
 	same( true, clean_maintenance_ip_in_list( '10.8.0.9', "# VPN\n10.8.0.0/24" ) );

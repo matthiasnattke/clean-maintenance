@@ -8,7 +8,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Domain: clean-maintenance\n"
 
-#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:191 includes/admin.php:197 includes/network.php:19 includes/network.php:20 includes/network.php:290
+#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:191 includes/admin.php:197 includes/network.php:19 includes/network.php:20 includes/network.php:391
 msgid "Maintenance mode"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 msgid "Period ended"
 msgstr ""
 
-#: includes/core.php:160 includes/network.php:151 includes/network.php:168 includes/network.php:315
+#: includes/core.php:160 includes/network.php:151 includes/network.php:168 includes/network.php:416
 msgid "Planned"
 msgstr ""
 
@@ -358,7 +358,7 @@ msgstr ""
 msgid "Turn off maintenance mode"
 msgstr ""
 
-#: includes/frontend.php:318 includes/network.php:252 includes/network.php:274
+#: includes/frontend.php:318 includes/network.php:344 includes/network.php:366
 msgid "You are not allowed to do this."
 msgstr ""
 
@@ -398,11 +398,11 @@ msgstr ""
 msgid "Each site sets its period, maintenance page, background, exceptions and roles in its own settings."
 msgstr ""
 
-#: includes/network.php:165 includes/network.php:312
+#: includes/network.php:165 includes/network.php:413
 msgid "in maintenance mode"
 msgstr ""
 
-#: includes/network.php:166 includes/network.php:313
+#: includes/network.php:166 includes/network.php:414
 msgid "reachable"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: includes/network.php:217 includes/network.php:326
+#: includes/network.php:217 includes/network.php:427
 msgid "Turn off"
 msgstr ""
 
@@ -450,43 +450,149 @@ msgstr ""
 msgid "No sites in this view."
 msgstr ""
 
-#: includes/network.php:231
+#: includes/network.php:242
 msgid "Always let through"
 msgstr ""
 
-#: includes/network.php:232
-msgid "Visitors from these addresses see every site of the network normally, without logging in – for example your home network or a VPN."
+#: includes/network.php:243
+msgid "Visitors from your home network see every site of the network normally, without logging in."
 msgstr ""
 
-#: includes/network.php:234
+#: includes/network.php:245
 msgid "Saved."
 msgstr ""
 
-#: includes/network.php:236
+#: includes/network.php:251
+msgid "Home address"
+msgstr ""
+
+#: includes/network.php:252
+msgid "Recommended"
+msgstr ""
+
+#: includes/network.php:254
+msgid "A name that always points to the current address of your home network, e.g. your MyFRITZ address or a DynDNS name. It follows every address change by itself."
+msgstr ""
+
+#: includes/network.php:257
+msgid "IPv6 network"
+msgstr ""
+
+#: includes/network.php:259
+msgid "/56 – whole home network"
+msgstr ""
+
+#: includes/network.php:259
+msgid "/64 – one network segment"
+msgstr ""
+
+#: includes/network.php:259
+msgid "/48 – wide"
+msgstr ""
+
+#: includes/network.php:259
+msgid "Only the exact address"
+msgstr ""
+
+#: includes/network.php:268
+msgid "Points to"
+msgstr ""
+
+#: includes/network.php:273
+msgid "You are at home – let through"
+msgstr ""
+
+#: includes/network.php:275
+msgid "Your current address does not belong to it"
+msgstr ""
+
+#: includes/network.php:278
+msgid "This name cannot be resolved right now."
+msgstr ""
+
+#: includes/network.php:287
+msgid "Fixed addresses and ranges"
+msgstr ""
+
+#: includes/network.php:288
+msgid "Manual"
+msgstr ""
+
+#: includes/network.php:290
 msgid "IP addresses and ranges"
 msgstr ""
 
-#: includes/network.php:237
-msgid "home network"
+#: includes/network.php:291
+msgid "office"
 msgstr ""
 
-#: includes/network.php:238
+#: includes/network.php:292
 msgid "One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses."
 msgstr ""
 
-#: includes/network.php:240
-msgid "Save"
+#: includes/network.php:299
+msgid "Private ranges need the tunnel"
 msgstr ""
 
-#: includes/network.php:243
-msgid "“Turn on” applies right away and until you turn it off; a scheduled period is replaced. Network administrators always see the sites normally."
+#: includes/network.php:300
+msgid "Guide"
+msgstr ""
+
+#. translators: %s: IP address of the current visitor.
+#: includes/network.php:305
+#, php-format
+msgid "Private ranges such as 192.168.x.x or 10.x.x.x only match when a request really travels through your VPN. Right now your request arrives from %s – a public address, so the domain is reached over the internet."
+msgstr ""
+
+#: includes/network.php:310
+msgid "Route the server through the tunnel"
+msgstr ""
+
+#. translators: %s: public IP address of the web server.
+#: includes/network.php:313
+#, php-format
+msgid "In the WireGuard connection of your router, add the server address %s to the networks reached through the tunnel (AllowedIPs). On the server, the connection must accept your home range, e.g. 192.168.178.0/24."
+msgstr ""
+
+#: includes/network.php:317
+msgid "Or resolve the domain locally"
+msgstr ""
+
+#. translators: %s: domain of the network.
+#: includes/network.php:320
+#, php-format
+msgid "Let %s point to the tunnel address of the server in your home network – in a local DNS server or in the hosts file of a device. The certificate stays valid because the name does not change."
+msgstr ""
+
+#: includes/network.php:324
+msgid "Check"
+msgstr ""
+
+#: includes/network.php:325
+msgid "Reload this page: “Your current address” should now show a private address."
+msgstr ""
+
+#: includes/network.php:328
+msgid "No tunnel? Then the home address above is the simpler way."
+msgstr ""
+
+#: includes/network.php:330
+msgid "Connected through a VPN? Show the tunnel guide"
 msgstr ""
 
 #: includes/network.php:332
+msgid "Save"
+msgstr ""
+
+#: includes/network.php:335
+msgid "“Turn on” applies right away and until you turn it off; a scheduled period is replaced. Network administrators always see the sites normally."
+msgstr ""
+
+#: includes/network.php:433
 msgid "All sites are reachable."
 msgstr ""
 
-#: includes/network.php:334
+#: includes/network.php:435
 msgid "Manage all sites →"
 msgstr ""
 

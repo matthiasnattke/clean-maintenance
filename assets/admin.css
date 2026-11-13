@@ -280,3 +280,33 @@ fieldset.cm-sub > legend.cm-field + * { clear: both; }
 @media (prefers-reduced-motion: reduce) {
 	.cm-pill.is-active .cm-dot { animation: none; }
 }
+
+/* ===== Always let through: three ways ===== */
+.cm-way { margin: 0 0 14px 30px; padding: 16px 18px; border: 1px solid var(--cm-line); border-radius: 14px; background: #fff; }
+.cm-way > header, .cm-way > summary { display: flex; align-items: center; gap: 10px; margin: 0 0 6px; }
+.cm-way > summary { cursor: pointer; list-style: none; margin: 0; }
+.cm-way > summary::-webkit-details-marker { display: none; }
+.cm-way > summary::after { content: ""; margin-left: auto; width: 8px; height: 8px; border-right: 2px solid var(--cm-muted); border-bottom: 2px solid var(--cm-muted); transform: rotate(45deg); transition: transform .15s; }
+.cm-way[open] > summary { margin-bottom: 12px; }
+.cm-way[open] > summary::after { transform: rotate(-135deg); }
+.cm-way-main { border-color: var(--cm-blue); box-shadow: 0 0 0 3px rgba(34, 113, 177, .08); }
+.cm-way-nr { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--cm-soft); color: var(--cm-ink); font-weight: 700; font-size: 12px; }
+.cm-way-main .cm-way-nr { background: var(--cm-blue); color: #fff; }
+.cm-way-tag { padding: 2px 9px; border-radius: 999px; background: #f0f6fc; color: var(--cm-blue); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.cm-way-tag-soft { background: var(--cm-soft); color: var(--cm-muted); }
+.cm-way-tag-warn { background: #fcf0e8; color: #a8430c; }
+.cm-host-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 16px; margin-top: 12px; }
+.cm-host-row input { flex: 1 1 280px; max-width: 420px; }
+.cm-v6 span { display: block; font-size: 12px; color: var(--cm-muted); margin-bottom: 2px; }
+.cm-ip-no { padding: 2px 8px; border-radius: 999px; background: #fcf0f1; color: #8a2424; font-weight: 600; font-size: 12px; }
+.cm-tunnel { border-color: #f0c8ad; background: #fffaf6; }
+.cm-tunnel > p { margin: 6px 0 10px; }
+.cm-steps { margin: 0 0 8px 18px; }
+.cm-steps li { margin-bottom: 8px; }
+.cm-steps li strong { display: block; }
+.cm-steps code, .cm-tunnel code { padding: 1px 5px; border-radius: 5px; background: #fff; border: 1px solid var(--cm-line); }
+.cm-tunnel-link { margin: -4px 0 14px 30px; }
+.cm-pop { animation: cm-pop .35s ease-out; }
+@keyframes cm-pop { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cm-pop { animation: none; } }
+@media (max-width: 600px) { .cm-way, .cm-tunnel-link { margin-left: 0; } }

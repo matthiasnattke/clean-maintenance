@@ -12,6 +12,7 @@
 
 define( 'ABSPATH', __DIR__ . '/' );
 define( 'HOUR_IN_SECONDS', 3600 );
+define( 'MINUTE_IN_SECONDS', 60 );
 
 $GLOBALS['cm_test_options']  = array();
 $GLOBALS['cm_test_is_feed']  = false;

@@ -276,3 +276,132 @@ function clean_maintenance_sanitize_ip_list( $text ) {
 	}
 	return implode( "\n", $out );
 }
+
+/**
+ * Whether an address is private or local (home network, VPN, loopback).
+ *
+ * @param string $ip Address.
+ * @return bool
+ */
+function clean_maintenance_is_private_ip( $ip ) {
+	return (bool) filter_var( $ip, FILTER_VALIDATE_IP ) && ! filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE );
+}
+
+/**
+ * Whether a list contains private ranges – they only match when requests
+ * really travel through a VPN tunnel or the local network.
+ *
+ * @param string $list List of rules.
+ * @return bool
+ */
+function clean_maintenance_list_has_private( $list ) {
+	foreach ( preg_split( '/\R/', (string) $list ) as $line ) {
+		$rule = explode( '/', trim( preg_replace( '/#.*$/', '', $line ) ) )[0];
+		if ( '' !== $rule && clean_maintenance_is_private_ip( $rule ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Whether a value is a host name such as example.myfritz.net.
+ *
+ * @param string $host Host name.
+ * @return bool
+ */
+function clean_maintenance_is_hostname( $host ) {
+	$host = trim( (string) $host );
+	return '' !== $host && false !== strpos( $host, '.' ) && ! filter_var( $host, FILTER_VALIDATE_IP )
+		&& (bool) filter_var( $host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME );
+}
+
+/**
+ * Network-wide home address: a host name (MyFRITZ, DynDNS) that always points
+ * to the current public address of the home network.
+ *
+ * @return array{host: string, v6: int} Host name and IPv6 prefix length.
+ */
+function clean_maintenance_network_host() {
+	if ( ! is_multisite() ) {
+		return array( 'host' => '', 'v6' => 56 );
+	}
+	$o  = get_site_option( 'clean_maintenance_network_host', array() );
+	$o  = is_array( $o ) ? $o : array();
+	$v6 = (int) ( $o['v6'] ?? 56 );
+	return array(
+		'host' => clean_maintenance_is_hostname( $o['host'] ?? '' ) ? (string) $o['host'] : '',
+		'v6'   => in_array( $v6, array( 48, 56, 64, 128 ), true ) ? $v6 : 56,
+	);
+}
+
+/**
+ * Current addresses of a host name (A and AAAA records), cached for five minutes.
+ *
+ * @param string $host  Host name.
+ * @param bool   $fresh Skip the cache.
+ * @return string[]
+ */
+function clean_maintenance_resolve_host( $host, $fresh = false ) {
+	if ( ! clean_maintenance_is_hostname( $host ) ) {
+		return array();
+	}
+	$key    = 'clean_maintenance_host_' . md5( strtolower( $host ) );
+	$cached = $fresh ? false : get_site_transient( $key );
+	if ( is_array( $cached ) ) {
+		return $cached;
+	}
+	$ips = array();
+	if ( function_exists( 'dns_get_record' ) ) {
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- an unknown name must not print a warning.
+		$records = @dns_get_record( $host, DNS_A | DNS_AAAA );
+		foreach ( (array) $records as $r ) {
+			$ip = $r['ip'] ?? ( $r['ipv6'] ?? '' );
+			if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+				$ips[] = $ip;
+			}
+		}
+	}
+	if ( ! $ips ) {
+		$ips = (array) gethostbynamel( $host );
+	}
+	$ips = array_values( array_unique( array_filter( $ips ) ) );
+	set_site_transient( $key, $ips, $ips ? 5 * MINUTE_IN_SECONDS : MINUTE_IN_SECONDS );
+	return $ips;
+}
+
+/**
+ * Whether an address belongs to a resolved home address: IPv4 exactly,
+ * IPv6 within the same prefix (devices in the home network share it).
+ *
+ * @param string   $ip        Client address.
+ * @param string[] $addresses Resolved addresses.
+ * @param int      $v6        IPv6 prefix length.
+ * @return bool
+ */
+function clean_maintenance_host_matches( $ip, $addresses, $v6 = 56 ) {
+	foreach ( (array) $addresses as $a ) {
+		$rule = false !== strpos( $a, ':' ) ? $a . '/' . (int) $v6 : $a;
+		if ( clean_maintenance_ip_matches( $ip, $rule ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Whether an address may see every site of the network (fixed list or home address).
+ *
+ * @param string $ip Client address.
+ * @return bool
+ */
+function clean_maintenance_network_allowed( $ip ) {
+	if ( ! $ip || ! is_multisite() ) {
+		return false;
+	}
+	if ( clean_maintenance_ip_in_list( $ip, clean_maintenance_network_allow() ) ) {
+		return true;
+	}
+	$h = clean_maintenance_network_host();
+	return $h['host'] && clean_maintenance_host_matches( $ip, clean_maintenance_resolve_host( $h['host'] ), $h['v6'] );
+}

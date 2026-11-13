@@ -4,7 +4,7 @@ Tags: maintenance, maintenance mode, multisite, coming soon, rest api
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.6.1
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,15 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 9. Network overview: all sites with state, period and maintenance page, switch one or many at once.
 
 == Changelog ==
+
+= 0.7.0 =
+* Always let through: visitors from your home network see every site of the network without logging in.
+* Home address: enter a MyFRITZ or DynDNS name; its current address is looked up every five minutes, IPv6 devices in the same home network are covered by the prefix.
+* Fixed addresses and ranges (CIDR, IPv4 and IPv6) network-wide and in the exceptions of every site, with a button that adds your current address.
+* A guide pops up when private ranges are entered while requests arrive over the internet, explaining how to route them through a VPN tunnel.
+
+= 0.7.0 =
+* …
 
 = 0.6.1 =
 * Every release is now checked against the WordPress.org plugin guidelines and with Plugin Check before it is published.

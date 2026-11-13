@@ -226,17 +226,109 @@ function clean_maintenance_render_network() {
 				<p class="cm-empty"><?php esc_html_e( 'No sites in this view.', 'clean-maintenance' ); ?></p>
 			</div>
 		</form>
+		<?php
+		$cm_host   = clean_maintenance_network_host();
+		$cm_list   = clean_maintenance_network_allow();
+		$cm_ip     = clean_maintenance_client_ip();
+		$cm_ips    = $cm_host['host'] ? clean_maintenance_resolve_host( $cm_host['host'], isset( $_GET['cm-allow-saved'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
+		$cm_home   = $cm_host['host'] && clean_maintenance_host_matches( $cm_ip, $cm_ips, $cm_host['v6'] );
+		$cm_priv   = clean_maintenance_list_has_private( $cm_list );
+		$cm_tunnel = $cm_priv && $cm_ip && ! clean_maintenance_is_private_ip( $cm_ip );
+		$cm_server = isset( $_SERVER['SERVER_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_ADDR'] ) ) : '';
+		$cm_domain = (string) wp_parse_url( network_home_url(), PHP_URL_HOST );
+		?>
 		<form method="post" action="<?php echo esc_url( network_admin_url( 'edit.php?action=clean_maintenance_network_allow' ) ); ?>" class="cm-card cm-allow" id="cm-allow">
 			<?php wp_nonce_field( 'clean_maintenance_network_allow' ); ?>
 			<h2><?php echo clean_maintenance_icon( 'key' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?> <?php esc_html_e( 'Always let through', 'clean-maintenance' ); ?></h2>
-			<p class="cm-lead"><?php esc_html_e( 'Visitors from these addresses see every site of the network normally, without logging in – for example your home network or a VPN.', 'clean-maintenance' ); ?></p>
+			<p class="cm-lead"><?php esc_html_e( 'Visitors from your home network see every site of the network normally, without logging in.', 'clean-maintenance' ); ?></p>
 			<?php if ( isset( $_GET['cm-allow-saved'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only. ?>
 				<div class="notice notice-success inline"><p><?php esc_html_e( 'Saved.', 'clean-maintenance' ); ?></p></div>
 			<?php endif; ?>
-			<label class="cm-field" for="cm-network-allow"><span><?php esc_html_e( 'IP addresses and ranges', 'clean-maintenance' ); ?></span></label>
-			<textarea id="cm-network-allow" name="cm_network_allow" rows="5" class="large-text code" placeholder="192.168.178.0/24   # <?php esc_attr_e( 'home network', 'clean-maintenance' ); ?>"><?php echo esc_textarea( clean_maintenance_network_allow() ); ?></textarea>
-			<p class="cm-help"><?php esc_html_e( 'One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses.', 'clean-maintenance' ); ?></p>
-			<?php clean_maintenance_ip_hint( 'cm-network-allow' ); ?>
+
+			<section class="cm-way cm-way-main">
+				<header>
+					<span class="cm-way-nr">1</span>
+					<strong><?php esc_html_e( 'Home address', 'clean-maintenance' ); ?></strong>
+					<span class="cm-way-tag"><?php esc_html_e( 'Recommended', 'clean-maintenance' ); ?></span>
+				</header>
+				<p class="cm-help"><?php esc_html_e( 'A name that always points to the current address of your home network, e.g. your MyFRITZ address or a DynDNS name. It follows every address change by itself.', 'clean-maintenance' ); ?></p>
+				<div class="cm-host-row">
+					<input type="text" id="cm-network-host" name="cm_network_host" class="regular-text code" value="<?php echo esc_attr( $cm_host['host'] ); ?>" placeholder="abcdef1234567890.myfritz.net" spellcheck="false" autocomplete="off">
+					<label class="cm-v6"><span><?php esc_html_e( 'IPv6 network', 'clean-maintenance' ); ?></span>
+						<select name="cm_network_v6">
+							<?php foreach ( array( 56 => __( '/56 – whole home network', 'clean-maintenance' ), 64 => __( '/64 – one network segment', 'clean-maintenance' ), 48 => __( '/48 – wide', 'clean-maintenance' ), 128 => __( 'Only the exact address', 'clean-maintenance' ) ) as $cm_len => $cm_label ) : ?>
+								<option value="<?php echo esc_attr( $cm_len ); ?>" <?php selected( $cm_host['v6'], $cm_len ); ?>><?php echo esc_html( $cm_label ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</label>
+				</div>
+				<?php if ( $cm_host['host'] ) : ?>
+					<p class="cm-ip">
+						<?php if ( $cm_ips ) : ?>
+							<?php esc_html_e( 'Points to', 'clean-maintenance' ); ?>
+							<?php foreach ( $cm_ips as $cm_a ) : ?>
+								<code><?php echo esc_html( $cm_a ); ?></code>
+							<?php endforeach; ?>
+							<?php if ( $cm_home ) : ?>
+								<span class="cm-ip-ok"><?php esc_html_e( 'You are at home – let through', 'clean-maintenance' ); ?></span>
+							<?php else : ?>
+								<span class="cm-ip-no"><?php esc_html_e( 'Your current address does not belong to it', 'clean-maintenance' ); ?></span>
+							<?php endif; ?>
+						<?php else : ?>
+							<span class="cm-ip-no"><?php esc_html_e( 'This name cannot be resolved right now.', 'clean-maintenance' ); ?></span>
+						<?php endif; ?>
+					</p>
+				<?php endif; ?>
+			</section>
+
+			<details class="cm-way" <?php echo $cm_list ? 'open' : ''; ?>>
+				<summary>
+					<span class="cm-way-nr">2</span>
+					<strong><?php esc_html_e( 'Fixed addresses and ranges', 'clean-maintenance' ); ?></strong>
+					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Manual', 'clean-maintenance' ); ?></span>
+				</summary>
+				<label class="screen-reader-text" for="cm-network-allow"><?php esc_html_e( 'IP addresses and ranges', 'clean-maintenance' ); ?></label>
+				<textarea id="cm-network-allow" name="cm_network_allow" rows="5" class="large-text code" placeholder="203.0.113.7   # <?php esc_attr_e( 'office', 'clean-maintenance' ); ?>"><?php echo esc_textarea( $cm_list ); ?></textarea>
+				<p class="cm-help"><?php esc_html_e( 'One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses.', 'clean-maintenance' ); ?></p>
+				<?php clean_maintenance_ip_hint( 'cm-network-allow' ); ?>
+			</details>
+
+			<section class="cm-way cm-tunnel" id="cm-tunnel" data-public="<?php echo $cm_ip && ! clean_maintenance_is_private_ip( $cm_ip ) ? 1 : 0; ?>" <?php echo $cm_tunnel ? '' : 'hidden'; ?>>
+				<header>
+					<span class="cm-way-nr">3</span>
+					<strong><?php esc_html_e( 'Private ranges need the tunnel', 'clean-maintenance' ); ?></strong>
+					<span class="cm-way-tag cm-way-tag-warn"><?php esc_html_e( 'Guide', 'clean-maintenance' ); ?></span>
+				</header>
+				<p>
+					<?php
+					/* translators: %s: IP address of the current visitor. */
+					echo wp_kses( sprintf( __( 'Private ranges such as 192.168.x.x or 10.x.x.x only match when a request really travels through your VPN. Right now your request arrives from %s – a public address, so the domain is reached over the internet.', 'clean-maintenance' ), '<code>' . esc_html( $cm_ip ) . '</code>' ), array( 'code' => array() ) );
+					?>
+				</p>
+				<ol class="cm-steps">
+					<li>
+						<strong><?php esc_html_e( 'Route the server through the tunnel', 'clean-maintenance' ); ?></strong>
+						<?php
+						/* translators: %s: public IP address of the web server. */
+						echo wp_kses( sprintf( __( 'In the WireGuard connection of your router, add the server address %s to the networks reached through the tunnel (AllowedIPs). On the server, the connection must accept your home range, e.g. 192.168.178.0/24.', 'clean-maintenance' ), '<code>' . esc_html( $cm_server ? $cm_server . ( false !== strpos( $cm_server, ':' ) ? '/128' : '/32' ) : '…' ) . '</code>' ), array( 'code' => array() ) );
+						?>
+					</li>
+					<li>
+						<strong><?php esc_html_e( 'Or resolve the domain locally', 'clean-maintenance' ); ?></strong>
+						<?php
+						/* translators: %s: domain of the network. */
+						echo wp_kses( sprintf( __( 'Let %s point to the tunnel address of the server in your home network – in a local DNS server or in the hosts file of a device. The certificate stays valid because the name does not change.', 'clean-maintenance' ), '<code>' . esc_html( $cm_domain ) . '</code>' ), array( 'code' => array() ) );
+						?>
+					</li>
+					<li>
+						<strong><?php esc_html_e( 'Check', 'clean-maintenance' ); ?></strong>
+						<?php esc_html_e( 'Reload this page: “Your current address” should now show a private address.', 'clean-maintenance' ); ?>
+					</li>
+				</ol>
+				<p class="cm-help"><?php esc_html_e( 'No tunnel? Then the home address above is the simpler way.', 'clean-maintenance' ); ?></p>
+			</section>
+			<p class="cm-tunnel-link"><button type="button" class="button-link" id="cm-tunnel-toggle" <?php echo $cm_tunnel ? 'hidden' : ''; ?>><?php esc_html_e( 'Connected through a VPN? Show the tunnel guide', 'clean-maintenance' ); ?></button></p>
+
 			<p><?php submit_button( __( 'Save', 'clean-maintenance' ), 'primary', 'cm_allow_save', false ); ?></p>
 		</form>
 
@@ -275,6 +367,15 @@ add_action(
 		}
 		check_admin_referer( 'clean_maintenance_network_allow' );
 		update_site_option( 'clean_maintenance_network_allow', clean_maintenance_sanitize_ip_list( wp_unslash( $_POST['cm_network_allow'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized by clean_maintenance_sanitize_ip_list().
+		$host = strtolower( trim( sanitize_text_field( wp_unslash( $_POST['cm_network_host'] ?? '' ) ) ) );
+		$host = preg_replace( '#^[a-z]+://|/.*$#', '', $host );
+		update_site_option(
+			'clean_maintenance_network_host',
+			array(
+				'host' => clean_maintenance_is_hostname( $host ) ? $host : '',
+				'v6'   => absint( $_POST['cm_network_v6'] ?? 56 ),
+			)
+		);
 		wp_safe_redirect( add_query_arg( 'cm-allow-saved', '1', network_admin_url( 'settings.php?page=clean-maintenance-network' ) ) . '#cm-allow' );
 		exit;
 	}

@@ -14,6 +14,12 @@ I built it for my own WordPress network around the [Couch Blog](https://couch-bl
 
 > **Status:** 0.x – released and in daily use on my own sites. The version stays below 1.0 while things may still change; the submission to the WordPress.org plugin directory is prepared.
 
+### New in 0.7
+
+- **Always let through** – visitors from your home network see every site without logging in. The recommended way is your MyFRITZ or DynDNS name: it follows every address change, and IPv6 devices are matched by the home network's prefix.
+- **Fixed addresses and ranges** – CIDR ranges for IPv4 and IPv6, network-wide and per site, with a button that adds your current address.
+- **Tunnel guide** – enter a private range while your requests still arrive over the internet, and a short guide explains how to route them through your VPN.
+
 ### New in 0.6
 
 - **Settings, ordered by task** – status, appearance, access, search engines & API and comfort, each on its own card. Mode and design are big tiles, options are switches, roles are chips, and a header shows the current state with a preview button.

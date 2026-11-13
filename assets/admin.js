@@ -61,6 +61,19 @@ jQuery( function ( $ ) {
 		}
 	} );
 
+	/* Tunnel guide: pops up as soon as private ranges are entered while the request arrives from a public address. */
+	var $tunnel = $( '#cm-tunnel' );
+	var privateRe = /^\s*(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|f[cd][0-9a-f]{2}:|fe80:)/im;
+	function cmTunnel( force ) {
+		var show = force || ( $tunnel.data( 'public' ) === 1 && privateRe.test( $( '#cm-network-allow' ).val() || '' ) );
+		if ( show && $tunnel.prop( 'hidden' ) ) {
+			$tunnel.prop( 'hidden', false ).addClass( 'cm-pop' );
+			$( '#cm-tunnel-toggle' ).prop( 'hidden', true );
+		}
+	}
+	$( '#cm-network-allow' ).on( 'input change', function () { cmTunnel( false ); } );
+	$( '#cm-tunnel-toggle' ).on( 'click', function () { cmTunnel( true ); } );
+
 	$( '#cm-all' ).on( 'change', function () {
 		$( '.cm-site:visible .cm-site-check' ).prop( 'checked', this.checked );
 	} );

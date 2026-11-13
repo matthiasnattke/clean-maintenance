@@ -38,7 +38,7 @@ function clean_maintenance_bypass( $s ) {
 function clean_maintenance_excluded( $s ) {
 	$uri = isset( $_SERVER['REQUEST_URI'] ) ? rawurldecode( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : '/';
 	$ip  = clean_maintenance_client_ip();
-	if ( clean_maintenance_ip_in_list( $ip, clean_maintenance_network_allow() ) ) {
+	if ( clean_maintenance_network_allowed( $ip ) ) {
 		return true;
 	}
 	foreach ( preg_split( '/\R/', (string) $s['exclude'] ) as $line ) {
