@@ -319,3 +319,7 @@ fieldset.cm-sub > legend.cm-field + * { clear: both; }
 .cm-copy input { flex: 1; min-width: 0; font-size: 12px; background: var(--cm-soft); }
 .cm-renew { display: inline-block; margin-top: 10px; color: var(--cm-muted); font-size: 12px; }
 p.cm-hint { margin: 10px 0 0; font-size: 13px; }
+.cm-log { margin-top: 10px; font-size: 12px; color: var(--cm-muted); }
+.cm-log summary { cursor: pointer; }
+.cm-log table { margin-top: 6px; border-collapse: collapse; }
+.cm-log th, .cm-log td { padding: 3px 12px 3px 0; text-align: left; }

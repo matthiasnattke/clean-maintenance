@@ -291,6 +291,25 @@ function clean_maintenance_render_network() {
 						<span class="cm-ip-no"><?php esc_html_e( 'No report yet – save the DynDNS settings in the FRITZ!Box.', 'clean-maintenance' ); ?></span>
 					<?php endif; ?>
 				</p>
+				<?php $cm_log = get_site_option( 'clean_maintenance_home_log', array() ); ?>
+				<?php if ( is_array( $cm_log ) && $cm_log ) : ?>
+					<details class="cm-log">
+						<summary><?php esc_html_e( 'Last calls of the router', 'clean-maintenance' ); ?></summary>
+						<table>
+							<thead><tr><th><?php esc_html_e( 'When', 'clean-maintenance' ); ?></th><th><?php esc_html_e( 'From', 'clean-maintenance' ); ?></th><th>prefix</th><th>ip4</th></tr></thead>
+							<tbody>
+								<?php foreach ( $cm_log as $cm_call ) : ?>
+									<tr>
+										<td><?php echo esc_html( human_time_diff( (int) ( $cm_call['time'] ?? 0 ) ) ); ?></td>
+										<td><code><?php echo esc_html( (string) ( $cm_call['from'] ?? '' ) ); ?></code></td>
+										<td><code><?php echo esc_html( '' !== (string) ( $cm_call['prefix'] ?? '' ) ? (string) $cm_call['prefix'] : '–' ); ?></code></td>
+										<td><code><?php echo esc_html( '' !== (string) ( $cm_call['ip4'] ?? '' ) ? (string) $cm_call['ip4'] : '–' ); ?></code></td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					</details>
+				<?php endif; ?>
 				<label class="cm-renew"><input type="checkbox" name="cm_home_renew" value="1"> <?php esc_html_e( 'Create a new link (the old one stops working)', 'clean-maintenance' ); ?></label>
 			</section>
 
@@ -425,6 +444,7 @@ add_action(
 		if ( ! empty( $_POST['cm_home_renew'] ) ) {
 			delete_site_option( 'clean_maintenance_home_token' );
 			delete_site_option( 'clean_maintenance_home' );
+			delete_site_option( 'clean_maintenance_home_log' );
 		}
 		update_site_option(
 			'clean_maintenance_network_host',

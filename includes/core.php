@@ -545,6 +545,28 @@ function clean_maintenance_merge_home_report( $old, $prefix, $v4, $time ) {
 }
 
 /**
+ * Keep the last calls of the router for the status display (newest first).
+ *
+ * @param string $from   Address the call came from.
+ * @param string $prefix Raw value of "prefix".
+ * @param string $v4     Raw value of "ip4".
+ */
+function clean_maintenance_log_home_call( $from, $prefix, $v4 ) {
+	$log = get_site_option( 'clean_maintenance_home_log', array() );
+	$log = is_array( $log ) ? $log : array();
+	array_unshift(
+		$log,
+		array(
+			'time'   => time(),
+			'from'   => $from,
+			'prefix' => $prefix,
+			'ip4'    => $v4,
+		)
+	);
+	update_site_option( 'clean_maintenance_home_log', array_slice( $log, 0, 4 ) );
+}
+
+/**
  * Receive a report from the router (no login; protected by the secret).
  */
 function clean_maintenance_receive_home_report() {
@@ -558,9 +580,17 @@ function clean_maintenance_receive_home_report() {
 		echo 'badauth';
 		exit;
 	}
-	$prefix = clean_maintenance_clean_prefix( sanitize_text_field( wp_unslash( $_GET['prefix'] ?? '' ) ) );
-	$v4     = clean_maintenance_clean_v4( sanitize_text_field( wp_unslash( $_GET['ip4'] ?? '' ) ) );
+	$raw_prefix = substr( sanitize_text_field( wp_unslash( $_GET['prefix'] ?? '' ) ), 0, 64 );
+	$raw_v4     = substr( sanitize_text_field( wp_unslash( $_GET['ip4'] ?? '' ) ), 0, 64 );
 	// phpcs:enable
+	$from   = clean_maintenance_client_ip();
+	$prefix = clean_maintenance_clean_prefix( $raw_prefix );
+	$v4     = clean_maintenance_clean_v4( $raw_v4 );
+	if ( '' === $v4 ) {
+		// No usable IPv4 value: a call over IPv4 comes from the router's public address itself.
+		$v4 = clean_maintenance_clean_v4( $from );
+	}
+	clean_maintenance_log_home_call( $from, $raw_prefix, $raw_v4 );
 	if ( '' === $prefix && '' === $v4 ) {
 		status_header( 400 );
 		echo 'noaddress';

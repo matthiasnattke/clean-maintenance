@@ -23,6 +23,7 @@ if ( is_multisite() ) {
 	delete_site_option( 'clean_maintenance_network_host' );
 	delete_site_option( 'clean_maintenance_home' );
 	delete_site_option( 'clean_maintenance_home_token' );
+	delete_site_option( 'clean_maintenance_home_log' );
 } else {
 	delete_option( 'clean_maintenance' );
 }
