@@ -419,6 +419,146 @@ function clean_maintenance_network_allowed( $ip ) {
 	if ( clean_maintenance_ip_in_list( $ip, clean_maintenance_network_allow() ) ) {
 		return true;
 	}
+	$home = clean_maintenance_home_report();
+	if ( clean_maintenance_home_matches( $ip, $home ) ) {
+		return true;
+	}
 	$h = clean_maintenance_network_host();
 	return $h['host'] && clean_maintenance_host_matches( $ip, clean_maintenance_resolve_host( $h['host'] ), $h['v6'] );
 }
+
+/*
+ * ===== Home network reported by the router (FRITZ!Box DynDNS) =====
+ *
+ * The router calls a secret link whenever its addresses change and sends the
+ * IPv6 prefix of the home network (<ip6lanprefix>) and its IPv4 address
+ * (<ipaddr>). Nothing in the home network has to be reachable from outside.
+ */
+
+/**
+ * Last report of the router.
+ *
+ * @return array{prefix: string, v4: string, time: int}
+ */
+function clean_maintenance_home_report() {
+	$o = is_multisite() ? get_site_option( 'clean_maintenance_home', array() ) : array();
+	$o = is_array( $o ) ? $o : array();
+	return array(
+		'prefix' => (string) ( $o['prefix'] ?? '' ),
+		'v4'     => (string) ( $o['v4'] ?? '' ),
+		'time'   => (int) ( $o['time'] ?? 0 ),
+	);
+}
+
+/**
+ * Secret of the report link; created on first use.
+ *
+ * @param bool $create Create one if there is none yet.
+ * @return string
+ */
+function clean_maintenance_home_token( $create = false ) {
+	if ( ! is_multisite() ) {
+		return '';
+	}
+	$t = (string) get_site_option( 'clean_maintenance_home_token', '' );
+	if ( '' === $t && $create ) {
+		$t = wp_generate_password( 32, false );
+		update_site_option( 'clean_maintenance_home_token', $t );
+	}
+	return $t;
+}
+
+/**
+ * Link the router calls, with the FRITZ!Box placeholders.
+ *
+ * @return string
+ */
+function clean_maintenance_home_url() {
+	$t = clean_maintenance_home_token( true );
+	// Placeholders must stay literal – the router replaces them.
+	return network_site_url( 'wp-admin/admin-post.php' ) . '?action=clean_maintenance_home&token=' . rawurlencode( $t ) . '&prefix=<ip6lanprefix>&ip4=<ipaddr>';
+}
+
+/**
+ * Clean up a reported IPv6 prefix such as "2001:db8:1:700::/56".
+ * Only global prefixes between /32 and /64 are accepted.
+ *
+ * @param string $value Reported value.
+ * @return string Prefix or ''.
+ */
+function clean_maintenance_clean_prefix( $value ) {
+	$value = trim( (string) $value );
+	if ( ! clean_maintenance_is_ip_rule( $value ) || false === strpos( $value, '/' ) || false === strpos( $value, ':' ) ) {
+		return '';
+	}
+	list( $addr, $len ) = explode( '/', $value );
+	$len                = (int) $len;
+	if ( $len < 32 || $len > 64 || clean_maintenance_is_private_ip( $addr ) ) {
+		return '';
+	}
+	return strtolower( $addr ) . '/' . $len;
+}
+
+/**
+ * Clean up a reported IPv4 address: only public addresses count. Behind
+ * DS-Lite or carrier-grade NAT the router knows no public IPv4 address.
+ *
+ * @param string $value Reported value.
+ * @return string
+ */
+function clean_maintenance_clean_v4( $value ) {
+	$value = trim( (string) $value );
+	if ( ! filter_var( $value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) || clean_maintenance_is_private_ip( $value )
+		|| clean_maintenance_ip_matches( $value, '100.64.0.0/10' ) || clean_maintenance_ip_matches( $value, '192.0.0.0/24' ) ) {
+		return '';
+	}
+	return $value;
+}
+
+/**
+ * Whether an address belongs to the reported home network.
+ *
+ * @param string $ip   Client address.
+ * @param array  $home Report (see clean_maintenance_home_report()).
+ * @return bool
+ */
+function clean_maintenance_home_matches( $ip, $home ) {
+	return ( '' !== $home['prefix'] && clean_maintenance_ip_matches( $ip, $home['prefix'] ) )
+		|| ( '' !== $home['v4'] && $ip === $home['v4'] );
+}
+
+/**
+ * Receive a report from the router (no login; protected by the secret).
+ */
+function clean_maintenance_receive_home_report() {
+	nocache_headers();
+	header( 'Content-Type: text/plain; charset=utf-8' );
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- called by a router, protected by the secret token.
+	$token = sanitize_text_field( wp_unslash( $_GET['token'] ?? '' ) );
+	$known = clean_maintenance_home_token();
+	if ( '' === $known || ! hash_equals( $known, $token ) ) {
+		status_header( 403 );
+		echo 'badauth';
+		exit;
+	}
+	$prefix = clean_maintenance_clean_prefix( sanitize_text_field( wp_unslash( $_GET['prefix'] ?? '' ) ) );
+	$v4     = clean_maintenance_clean_v4( sanitize_text_field( wp_unslash( $_GET['ip4'] ?? '' ) ) );
+	// phpcs:enable
+	if ( '' === $prefix && '' === $v4 ) {
+		status_header( 400 );
+		echo 'noaddress';
+		exit;
+	}
+	update_site_option(
+		'clean_maintenance_home',
+		array(
+			'prefix' => $prefix,
+			'v4'     => $v4,
+			'time'   => time(),
+		)
+	);
+	echo 'good';
+	exit;
+}
+add_action( 'admin_post_nopriv_clean_maintenance_home', 'clean_maintenance_receive_home_report' );
+add_action( 'admin_post_clean_maintenance_home', 'clean_maintenance_receive_home_report' );

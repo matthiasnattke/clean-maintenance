@@ -183,6 +183,22 @@ test( 'Pasted URLs become a bare host name', function () {
 	same( '', clean_maintenance_normalize_host( 'not a host' ) );
 } );
 
+test( 'Router reports: only global prefixes and public IPv4 count', function () {
+	same( '2a00:aaaa:adc0:700::/56', clean_maintenance_clean_prefix( ' 2A00:AAAA:ADC0:700::/56 ' ) );
+	same( '', clean_maintenance_clean_prefix( '2001:db8::/16' ), 'too wide' );
+	same( '', clean_maintenance_clean_prefix( '2001:db8::1' ), 'no length' );
+	same( '', clean_maintenance_clean_prefix( 'fd00::/56' ), 'private' );
+	same( '', clean_maintenance_clean_prefix( '<ip6lanprefix>' ), 'placeholder not replaced' );
+	same( '8.8.4.4', clean_maintenance_clean_v4( '8.8.4.4' ) );
+	same( '', clean_maintenance_clean_v4( '100.64.12.1' ), 'carrier-grade NAT' );
+	same( '', clean_maintenance_clean_v4( '192.0.0.2' ), 'DS-Lite' );
+	same( '', clean_maintenance_clean_v4( '192.168.178.1' ), 'private' );
+	$home = array( 'prefix' => '2a00:aaaa:adc0:700::/56', 'v4' => '', 'time' => 1 );
+	same( true, clean_maintenance_home_matches( '2a00:aaaa:adc0:7e7::9', $home ), 'device at home' );
+	same( false, clean_maintenance_home_matches( '2a00:aaaa:ad80::60e', $home ), 'router internet side' );
+	same( false, clean_maintenance_home_matches( '8.8.4.4', $home ), 'no IPv4 reported' );
+} );
+
 test( 'Host names and private ranges are recognised', function () {
 	same( true, clean_maintenance_is_hostname( 'abc123.myfritz.net' ) );
 	same( false, clean_maintenance_is_hostname( '192.168.178.1' ) );

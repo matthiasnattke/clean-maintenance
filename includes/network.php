@@ -233,6 +233,9 @@ function clean_maintenance_render_network() {
 		$cm_ips    = $cm_host['host'] ? clean_maintenance_resolve_host( $cm_host['host'], isset( $_GET['cm-allow-saved'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
 		$cm_home   = $cm_host['host'] && clean_maintenance_host_matches( $cm_ip, $cm_ips, $cm_host['v6'] );
 		$cm_priv   = clean_maintenance_list_has_private( $cm_list );
+		$cm_report = clean_maintenance_home_report();
+		$cm_athome = clean_maintenance_home_matches( $cm_ip, $cm_report );
+		$cm_url    = clean_maintenance_home_url();
 		$cm_tunnel = $cm_priv && $cm_ip && ! clean_maintenance_is_private_ip( $cm_ip );
 		$cm_server = isset( $_SERVER['SERVER_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_ADDR'] ) ) : '';
 		$cm_domain = (string) wp_parse_url( network_home_url(), PHP_URL_HOST );
@@ -252,12 +255,54 @@ function clean_maintenance_render_network() {
 			<section class="cm-way cm-way-main">
 				<header>
 					<span class="cm-way-nr">1</span>
-					<strong><?php esc_html_e( 'Home address', 'clean-maintenance' ); ?></strong>
+					<strong><?php esc_html_e( 'Your router reports the home network', 'clean-maintenance' ); ?></strong>
 					<span class="cm-way-tag"><?php esc_html_e( 'Recommended', 'clean-maintenance' ); ?></span>
 				</header>
-				<p class="cm-help"><?php esc_html_e( 'A name that always points to the current address of your home network, e.g. your MyFRITZ address or a DynDNS name. It follows every address change by itself.', 'clean-maintenance' ); ?></p>
+				<p class="cm-help"><?php esc_html_e( 'Whenever its addresses change, your FRITZ!Box calls a secret link and tells the plugin the current network of your home. Nothing in your home network becomes reachable from outside – the router only sends, it does not open anything.', 'clean-maintenance' ); ?></p>
+				<div class="cm-copy">
+					<input type="text" id="cm-home-url" class="large-text code" readonly value="<?php echo esc_attr( $cm_url ); ?>" aria-label="<?php esc_attr_e( 'Update URL', 'clean-maintenance' ); ?>">
+					<button type="button" class="button cm-copy-btn" data-target="cm-home-url" data-done="<?php esc_attr_e( 'Copied', 'clean-maintenance' ); ?>"><?php esc_html_e( 'Copy', 'clean-maintenance' ); ?></button>
+				</div>
+				<ol class="cm-steps">
+					<li><?php esc_html_e( 'FRITZ!Box: Internet → Permit Access → DynDNS → Use DynDNS, provider “User-defined”.', 'clean-maintenance' ); ?></li>
+					<li><?php esc_html_e( 'Update URL: paste the link above unchanged – the parts in angle brackets are filled in by the FRITZ!Box.', 'clean-maintenance' ); ?></li>
+					<li>
+						<?php
+						/* translators: %s: domain of the network. */
+						echo wp_kses( sprintf( __( 'Domain name: %s. User name and password: anything, e.g. “home” – they are not used.', 'clean-maintenance' ), '<code>' . esc_html( $cm_domain ) . '</code>' ), array( 'code' => array() ) );
+						?>
+					</li>
+				</ol>
+				<p class="cm-ip">
+					<?php if ( $cm_report['time'] ) : ?>
+						<?php
+						/* translators: %s: how long ago, e.g. "5 minutes". */
+						echo esc_html( sprintf( __( 'Last report %s ago:', 'clean-maintenance' ), human_time_diff( $cm_report['time'] ) ) );
+						?>
+						<?php foreach ( array_filter( array( $cm_report['prefix'], $cm_report['v4'] ) ) as $cm_a ) : ?>
+							<code><?php echo esc_html( $cm_a ); ?></code>
+						<?php endforeach; ?>
+						<?php if ( $cm_athome ) : ?>
+							<span class="cm-ip-ok"><?php esc_html_e( 'You are at home – let through', 'clean-maintenance' ); ?></span>
+						<?php else : ?>
+							<span class="cm-ip-no"><?php esc_html_e( 'Your current address does not belong to it', 'clean-maintenance' ); ?></span>
+						<?php endif; ?>
+					<?php else : ?>
+						<span class="cm-ip-no"><?php esc_html_e( 'No report yet – save the DynDNS settings in the FRITZ!Box.', 'clean-maintenance' ); ?></span>
+					<?php endif; ?>
+				</p>
+				<label class="cm-renew"><input type="checkbox" name="cm_home_renew" value="1"> <?php esc_html_e( 'Create a new link (the old one stops working)', 'clean-maintenance' ); ?></label>
+			</section>
+
+			<details class="cm-way" <?php echo $cm_host['host'] ? 'open' : ''; ?>>
+				<summary>
+					<span class="cm-way-nr">2</span>
+					<strong><?php esc_html_e( 'Or a DynDNS name', 'clean-maintenance' ); ?></strong>
+					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Alternative', 'clean-maintenance' ); ?></span>
+				</summary>
+				<p class="cm-help"><?php esc_html_e( 'For routers without a user-defined DynDNS: a name that always points to an address of your home network. Pasted links are cleaned up to the name.', 'clean-maintenance' ); ?></p>
 				<div class="cm-host-row">
-					<input type="text" id="cm-network-host" name="cm_network_host" class="regular-text code" value="<?php echo esc_attr( $cm_host['host'] ); ?>" placeholder="abcdef1234567890.myfritz.net" spellcheck="false" autocomplete="off" inputmode="url">
+					<input type="text" id="cm-network-host" name="cm_network_host" class="regular-text code" value="<?php echo esc_attr( $cm_host['host'] ); ?>" placeholder="home.example.net" spellcheck="false" autocomplete="off" inputmode="url" aria-label="<?php esc_attr_e( 'DynDNS name', 'clean-maintenance' ); ?>">
 					<span class="cm-host-note" id="cm-host-note" aria-live="polite" data-text="<?php esc_attr_e( 'Cleaned up – only the name is needed.', 'clean-maintenance' ); ?>" hidden></span>
 					<label class="cm-v6"><span><?php esc_html_e( 'IPv6 network', 'clean-maintenance' ); ?></span>
 						<select name="cm_network_v6">
@@ -283,28 +328,15 @@ function clean_maintenance_render_network() {
 							<span class="cm-ip-no"><?php esc_html_e( 'This name cannot be resolved right now.', 'clean-maintenance' ); ?></span>
 						<?php endif; ?>
 					</p>
-					<?php if ( $cm_ips && ! $cm_home && preg_match( '/^[a-z0-9]+\.myfritz\.net$/', $cm_host['host'] ) ) : ?>
-						<div class="cm-hint">
-							<strong><?php esc_html_e( 'Tip for MyFRITZ', 'clean-maintenance' ); ?></strong>
-							<p><?php esc_html_e( 'The main MyFRITZ name points to the internet side of the FRITZ!Box. Your devices at home use a different IPv6 network, and often there is no IPv4 address at all. Use the MyFRITZ name of a device in your home network instead:', 'clean-maintenance' ); ?></p>
-							<ol class="cm-steps">
-								<li><?php esc_html_e( 'FRITZ!Box: Internet → Permit Access → Port Sharing → Add Device for Sharing, choose a device that is always on (e.g. a NAS or this computer).', 'clean-maintenance' ); ?></li>
-								<li><?php esc_html_e( 'Add a MyFRITZ!-Sharing for it, e.g. for HTTPS. Nothing has to be reachable – the share only creates the name.', 'clean-maintenance' ); ?></li>
-								<li>
-									<?php
-									/* translators: %s: example host name of a device, e.g. nas.abcdef.myfritz.net. */
-									echo wp_kses( sprintf( __( 'Enter the name shown there, such as %s, and keep “/56 – whole home network”.', 'clean-maintenance' ), '<code>' . esc_html( 'nas.' . $cm_host['host'] ) . '</code>' ), array( 'code' => array() ) );
-									?>
-								</li>
-							</ol>
-						</div>
+					<?php if ( $cm_ips && ! $cm_home && preg_match( '/\.myfritz\.net$/', $cm_host['host'] ) ) : ?>
+						<p class="cm-hint"><?php esc_html_e( 'A MyFRITZ name points to the internet side of the FRITZ!Box, not to your home network. Let the FRITZ!Box report the home network instead (way 1) – no sharing needed.', 'clean-maintenance' ); ?></p>
 					<?php endif; ?>
 				<?php endif; ?>
-			</section>
+			</details>
 
 			<details class="cm-way" <?php echo $cm_list ? 'open' : ''; ?>>
 				<summary>
-					<span class="cm-way-nr">2</span>
+					<span class="cm-way-nr">3</span>
 					<strong><?php esc_html_e( 'Fixed addresses and ranges', 'clean-maintenance' ); ?></strong>
 					<span class="cm-way-tag cm-way-tag-soft"><?php esc_html_e( 'Manual', 'clean-maintenance' ); ?></span>
 				</summary>
@@ -316,7 +348,7 @@ function clean_maintenance_render_network() {
 
 			<section class="cm-way cm-tunnel" id="cm-tunnel" data-public="<?php echo $cm_ip && ! clean_maintenance_is_private_ip( $cm_ip ) ? 1 : 0; ?>" <?php echo $cm_tunnel ? '' : 'hidden'; ?>>
 				<header>
-					<span class="cm-way-nr">3</span>
+					<span class="cm-way-nr">4</span>
 					<strong><?php esc_html_e( 'Private ranges need the tunnel', 'clean-maintenance' ); ?></strong>
 					<span class="cm-way-tag cm-way-tag-warn"><?php esc_html_e( 'Guide', 'clean-maintenance' ); ?></span>
 				</header>
@@ -346,7 +378,7 @@ function clean_maintenance_render_network() {
 						<?php esc_html_e( 'Reload this page: “Your current address” should now show a private address.', 'clean-maintenance' ); ?>
 					</li>
 				</ol>
-				<p class="cm-help"><?php esc_html_e( 'No tunnel? Then the home address above is the simpler way.', 'clean-maintenance' ); ?></p>
+				<p class="cm-help"><?php esc_html_e( 'No tunnel? Then letting the router report the home network is the simpler way.', 'clean-maintenance' ); ?></p>
 			</section>
 			<p class="cm-tunnel-link"><button type="button" class="button-link" id="cm-tunnel-toggle" <?php echo $cm_tunnel ? 'hidden' : ''; ?>><?php esc_html_e( 'Connected through a VPN? Show the tunnel guide', 'clean-maintenance' ); ?></button></p>
 
@@ -390,6 +422,10 @@ add_action(
 		update_site_option( 'clean_maintenance_network_allow', clean_maintenance_sanitize_ip_list( wp_unslash( $_POST['cm_network_allow'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized by clean_maintenance_sanitize_ip_list().
 		$raw  = sanitize_text_field( wp_unslash( $_POST['cm_network_host'] ?? '' ) );
 		$host = clean_maintenance_normalize_host( $raw );
+		if ( ! empty( $_POST['cm_home_renew'] ) ) {
+			delete_site_option( 'clean_maintenance_home_token' );
+			delete_site_option( 'clean_maintenance_home' );
+		}
 		update_site_option(
 			'clean_maintenance_network_host',
 			array(

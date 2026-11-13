@@ -315,3 +315,7 @@ fieldset.cm-sub > legend.cm-field + * { clear: both; }
 .cm-hint p { margin: 4px 0 8px; }
 .cm-hint .cm-steps { margin-bottom: 0; }
 .cm-hint code { padding: 1px 5px; border-radius: 5px; background: #fff; border: 1px solid var(--cm-line); }
+.cm-copy { display: flex; gap: 8px; margin: 12px 0 10px; }
+.cm-copy input { flex: 1; min-width: 0; font-size: 12px; background: var(--cm-soft); }
+.cm-renew { display: inline-block; margin-top: 10px; color: var(--cm-muted); font-size: 12px; }
+p.cm-hint { margin: 10px 0 0; font-size: 13px; }

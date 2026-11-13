@@ -61,6 +61,24 @@ jQuery( function ( $ ) {
 		}
 	} );
 
+	/* Copy the router link. */
+	$( '.cm-copy-btn' ).on( 'click', function () {
+		var $b = $( this );
+		var el = document.getElementById( $b.data( 'target' ) );
+		var done = function () {
+			var label = $b.text();
+			$b.text( $b.data( 'done' ) );
+			setTimeout( function () { $b.text( label ); }, 1600 );
+		};
+		el.select();
+		if ( navigator.clipboard ) {
+			navigator.clipboard.writeText( el.value ).then( done );
+		} else {
+			document.execCommand( 'copy' );
+			done();
+		}
+	} );
+
 	/* Home address: a pasted URL such as https://abc.myfritz.net:42243/ becomes abc.myfritz.net. */
 	function cmHost( value ) {
 		return String( value ).trim().toLowerCase()

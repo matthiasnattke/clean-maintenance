@@ -21,6 +21,8 @@ if ( is_multisite() ) {
 	}
 	delete_site_option( 'clean_maintenance_network_allow' );
 	delete_site_option( 'clean_maintenance_network_host' );
+	delete_site_option( 'clean_maintenance_home' );
+	delete_site_option( 'clean_maintenance_home_token' );
 } else {
 	delete_option( 'clean_maintenance' );
 }
