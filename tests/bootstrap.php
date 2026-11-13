@@ -22,6 +22,7 @@ $GLOBALS['cm_test_settings_errors'] = array();
 
 function add_action( ...$args ) {}
 function add_filter( ...$args ) {}
+function apply_filters( $hook, $value, ...$args ) { return $value; }
 function load_plugin_textdomain( ...$args ) {}
 function plugin_basename( $file ) { return 'clean-maintenance/' . basename( $file ); }
 function __( $text, $domain = 'default' ) { return $text; }

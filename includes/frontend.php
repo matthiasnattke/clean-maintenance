@@ -41,6 +41,16 @@ function clean_maintenance_excluded( $s ) {
 	if ( clean_maintenance_network_allowed( $ip ) || clean_maintenance_has_pass() ) {
 		return true;
 	}
+	/**
+	 * Lets other plugins exempt the current request from the maintenance page – Clean Short
+	 * Links does so for targets of short links when the site's rule says so.
+	 *
+	 * @param bool  $excluded Exempt.
+	 * @param array $s        Settings.
+	 */
+	if ( apply_filters( 'clean_maintenance_excluded', false, $s ) ) {
+		return true;
+	}
 	foreach ( preg_split( '/\R/', (string) $s['exclude'] ) as $line ) {
 		$line = trim( preg_replace( '/#.*$/', '', $line ) );
 		if ( '' === $line ) {
@@ -83,9 +93,12 @@ function clean_maintenance_send_headers( $s, $preview ) {
 	if ( $preview ) {
 		return;
 	}
-	$end = clean_maintenance_ts( $s['end'] );
-	status_header( 503 );
-	header( 'Retry-After: ' . ( ( 'scheduled' === $s['mode'] && $end > time() ) ? max( 60, $end - time() ) : HOUR_IN_SECONDS ) );
+	$end    = clean_maintenance_ts( $s['end'] );
+	$status = (int) ( $GLOBALS['clean_maintenance_status'] ?? 503 );
+	status_header( $status );
+	if ( 503 === $status ) {
+		header( 'Retry-After: ' . ( ( 'scheduled' === $s['mode'] && $end > time() ) ? max( 60, $end - time() ) : HOUR_IN_SECONDS ) );
+	}
 }
 
 /**
@@ -239,21 +252,46 @@ function clean_maintenance_render_classic( $s, $preview = false ) {
 	exit;
 }
 
+/**
+ * Would the current visitor see the maintenance page right now?
+ *
+ * @param array|null $s Settings.
+ * @return bool
+ */
+function clean_maintenance_blocks_visitor( $s = null ) {
+	$s = $s ? $s : clean_maintenance_settings();
+	if ( ! clean_maintenance_is_active( $s ) || clean_maintenance_bypass( $s ) ) {
+		return false;
+	}
+	if ( is_robots() || clean_maintenance_excluded( $s ) ) {
+		return false;
+	}
+	return ! ( ! empty( $s['bypass_bots'] ) && clean_maintenance_is_bot() );
+}
+
+/**
+ * Shows the maintenance page in the chosen design and ends the request – also for other
+ * plugins, e.g. Clean Short Links for short links that do not work.
+ *
+ * @param int $status HTTP status, 503 by default.
+ */
+function clean_maintenance_show_page( $status = 503 ) {
+	$s = clean_maintenance_settings();
+
+	$GLOBALS['clean_maintenance_status'] = (int) $status;
+	if ( 'classic' === $s['design'] ) {
+		clean_maintenance_render_classic( $s, false );
+	}
+	clean_maintenance_render( $s, false );
+}
+
 add_action(
 	'template_redirect',
 	function () {
 		$s       = clean_maintenance_settings();
 		$preview = isset( $_GET['cm-preview'] ) && ( current_user_can( 'manage_options' ) || clean_maintenance_has_pass() || clean_maintenance_network_allowed( clean_maintenance_client_ip() ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only preview switch.
-		if ( ! $preview ) {
-			if ( ! clean_maintenance_is_active( $s ) || clean_maintenance_bypass( $s ) ) {
-				return;
-			}
-			if ( is_robots() || clean_maintenance_excluded( $s ) ) {
-				return;
-			}
-			if ( ! empty( $s['bypass_bots'] ) && clean_maintenance_is_bot() ) {
-				return;
-			}
+		if ( ! $preview && ! clean_maintenance_blocks_visitor( $s ) ) {
+			return;
 		}
 		if ( 'classic' === $s['design'] ) {
 			clean_maintenance_render_classic( $s, $preview );

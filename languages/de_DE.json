@@ -189,5 +189,22 @@
 	"To see the maintenance page anyway, add ?cm-preview=1 to the address.": "Um die Wartungsseite trotzdem zu sehen, hänge ?cm-preview=1 an die Adresse.",
 	"A MyFRITZ name points to the internet side of the FRITZ!Box, not to your home network. Let the FRITZ!Box report the home network instead (way 2) – no sharing needed.": "Ein MyFRITZ-Name zeigt auf die Internetseite der FRITZ!Box, nicht auf dein Heimnetz. Lass die FRITZ!Box stattdessen das Heimnetz melden (Weg 2) – ganz ohne Freigabe.",
 	"Whole home network": "Ganzes Heimnetz",
-	"For every device at home without a pass – family, guests, TV, podcast apps.": "Für alle Geräte zu Hause ohne Durchlass – Familie, Gäste, Fernseher, Podcast-Apps."
+	"For every device at home without a pass – family, guests, TV, podcast apps.": "Für alle Geräte zu Hause ohne Durchlass – Familie, Gäste, Fernseher, Podcast-Apps.",
+	"While maintenance mode is on": "Bei eingeschaltetem Wartungsmodus",
+	"Redirect as usual": "Wie gewohnt weiterleiten",
+	"Short links work; pages of this site show the maintenance page.": "Kurzlinks funktionieren; Seiten dieser Website zeigen die Wartungsseite.",
+	"Let targets through": "Ziele durchlassen",
+	"Pages that active short links lead to stay reachable.": "Seiten, zu denen aktive Kurzlinks führen, bleiben erreichbar.",
+	"Pause short links": "Kurzlinks pausieren",
+	"Short links show the maintenance page too.": "Auch Kurzlinks zeigen die Wartungsseite.",
+	"Short links that do not work": "Kurzlinks, die nicht funktionieren",
+	"Error page": "Fehlerseite",
+	"“Not found” or “gone” as usual.": "Wie gewohnt „nicht gefunden“ oder „nicht mehr vorhanden“.",
+	"Maintenance page when temporary": "Wartungsseite, wenn vorübergehend",
+	"For targets that are only temporarily unreachable.": "Bei Zielen, die nur vorübergehend nicht erreichbar sind.",
+	"Always the maintenance page": "Immer die Wartungsseite",
+	"Instead of every error page – also without maintenance mode.": "Statt jeder Fehlerseite – auch ohne Wartungsmodus.",
+	"Short links": "Kurzlinks",
+	"How Clean Short Links and the maintenance mode work together on this site. The same setting appears in the short link settings.": "Wie Clean Short Links und der Wartungsmodus auf dieser Website zusammenspielen. Dieselbe Einstellung erscheint auch in den Kurzlink-Einstellungen.",
+	"A fallback of the short link and the default target of the short link settings always come first.": "Ein Ersatzziel des Kurzlinks und das Standard-Ziel der Kurzlink-Einstellungen haben immer Vorrang."
 }

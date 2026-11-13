@@ -32,8 +32,77 @@ add_action(
 				'default'           => array(),
 			)
 		);
+		// The short link rules are shared with Clean Short Links – only part of this form while it is active.
+		if ( clean_maintenance_short_links_active() ) {
+			register_setting(
+				'clean_maintenance',
+				'clean_maintenance_short_links',
+				array(
+					'type'              => 'array',
+					'sanitize_callback' => 'clean_maintenance_sanitize_short_link_rules',
+					'default'           => array(),
+				)
+			);
+		}
 	}
 );
+
+/**
+ * Is Clean Short Links active on this site?
+ *
+ * @return bool
+ */
+function clean_maintenance_short_links_active() {
+	return function_exists( 'CleanShortLinks\\site_settings' );
+}
+
+/**
+ * The shared rules for short links as tiles – the same choice appears in Clean Short Links.
+ */
+function clean_maintenance_short_links_card() {
+	$r = clean_maintenance_short_link_rules();
+	$n = 'clean_maintenance_short_links';
+	$groups = array(
+		'during' => array(
+			__( 'While maintenance mode is on', 'clean-maintenance' ),
+			array(
+				'redirect' => array( 'external', __( 'Redirect as usual', 'clean-maintenance' ), __( 'Short links work; pages of this site show the maintenance page.', 'clean-maintenance' ) ),
+				'open'     => array( 'key', __( 'Let targets through', 'clean-maintenance' ), __( 'Pages that active short links lead to stay reachable.', 'clean-maintenance' ) ),
+				'pause'    => array( 'cup', __( 'Pause short links', 'clean-maintenance' ), __( 'Short links show the maintenance page too.', 'clean-maintenance' ) ),
+			),
+		),
+		'dead'   => array(
+			__( 'Short links that do not work', 'clean-maintenance' ),
+			array(
+				'never'     => array( 'page', __( 'Error page', 'clean-maintenance' ), __( '“Not found” or “gone” as usual.', 'clean-maintenance' ) ),
+				'temporary' => array( 'calendar', __( 'Maintenance page when temporary', 'clean-maintenance' ), __( 'For targets that are only temporarily unreachable.', 'clean-maintenance' ) ),
+				'always'    => array( 'cup', __( 'Always the maintenance page', 'clean-maintenance' ), __( 'Instead of every error page – also without maintenance mode.', 'clean-maintenance' ) ),
+			),
+		),
+	);
+	?>
+	<section class="cm-card" id="cm-sec-links">
+		<h2><?php echo clean_maintenance_icon( 'link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Short links', 'clean-maintenance' ); ?></h2>
+		<p class="cm-lead"><?php esc_html_e( 'How Clean Short Links and the maintenance mode work together on this site. The same setting appears in the short link settings.', 'clean-maintenance' ); ?></p>
+		<?php foreach ( $groups as $key => $g ) : ?>
+			<fieldset class="cm-sub">
+				<legend class="cm-field"><span><?php echo esc_html( $g[0] ); ?></span></legend>
+				<div class="cm-tiles cm-tiles-3">
+					<?php foreach ( $g[1] as $v => $m ) : ?>
+						<label class="cm-tile">
+							<input type="radio" name="<?php echo esc_attr( $n . '[' . $key . ']' ); ?>" value="<?php echo esc_attr( $v ); ?>" <?php checked( $r[ $key ], $v ); ?>>
+							<span class="cm-tile-ico"><?php echo clean_maintenance_icon( $m[0] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+							<span class="cm-tile-title"><?php echo esc_html( $m[1] ); ?></span>
+							<span class="cm-tile-text"><?php echo esc_html( $m[2] ); ?></span>
+						</label>
+					<?php endforeach; ?>
+				</div>
+			</fieldset>
+		<?php endforeach; ?>
+		<p class="cm-help"><?php esc_html_e( 'A fallback of the short link and the default target of the short link settings always come first.', 'clean-maintenance' ); ?></p>
+	</section>
+	<?php
+}
 
 /**
  * Sanitize the settings form.
@@ -102,6 +171,7 @@ function clean_maintenance_icon( $name ) {
 		'globe'    => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
 		'bell'     => '<path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
 		'external' => '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+		'link'     => '<path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/>',
 		'network'  => '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
 	);
 	if ( ! isset( $paths[ $name ] ) ) {
@@ -186,6 +256,9 @@ function clean_maintenance_render_settings() {
 		'cm-sec-search'  => __( 'Search engines & API', 'clean-maintenance' ),
 		'cm-sec-comfort' => __( 'Comfort', 'clean-maintenance' ),
 	);
+	if ( clean_maintenance_short_links_active() ) {
+		$sections = array_slice( $sections, 0, 4, true ) + array( 'cm-sec-links' => __( 'Short links', 'clean-maintenance' ) ) + $sections;
+	}
 	?>
 	<div class="wrap cm-wrap">
 		<h1 class="screen-reader-text"><?php esc_html_e( 'Maintenance mode', 'clean-maintenance' ); ?></h1>
@@ -409,6 +482,12 @@ function clean_maintenance_render_settings() {
 						<textarea id="cm-rest-allow" name="<?php echo esc_attr( $n ); ?>[rest_allow]" rows="4" class="large-text code"><?php echo esc_textarea( $s['rest_allow'] ); ?></textarea>
 					</fieldset>
 				</section>
+
+				<?php
+				if ( clean_maintenance_short_links_active() ) {
+					clean_maintenance_short_links_card();
+				}
+				?>
 
 				<section class="cm-card" id="cm-sec-comfort">
 					<h2><?php echo clean_maintenance_icon( 'bell' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Comfort', 'clean-maintenance' ); ?></h2>

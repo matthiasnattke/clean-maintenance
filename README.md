@@ -127,3 +127,7 @@ See [readme.txt](readme.txt).
 ## License
 
 [GPL-2.0-or-later](LICENSE), like WordPress itself.
+
+## Works with Clean Short Links
+
+With [Clean Short Links](https://github.com/matthiasnattke/clean-short-links) active, the settings get a card *Short links*. It holds one rule per site, shared by both plugins: during maintenance short links redirect as usual, let their targets through or pause; and short links that do not work can show the maintenance page instead of an error page.

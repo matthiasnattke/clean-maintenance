@@ -51,6 +51,35 @@ function clean_maintenance_defaults() {
 }
 
 /**
+ * How short links behave with maintenance mode – one rule for both Clean Maintenance and
+ * Clean Short Links, stored once per site.
+ *
+ * during: redirect (as usual), open (targets of short links are let through), pause (short
+ *         links show the maintenance page too).
+ * dead:   never, temporary (for temporarily unreachable targets), always (instead of the
+ *         error page for every short link that does not work) – show the maintenance page.
+ *
+ * @param mixed $in Raw value.
+ * @return array{during:string,dead:string}
+ */
+function clean_maintenance_sanitize_short_link_rules( $in ) {
+	$in = is_array( $in ) ? $in : array();
+	return array(
+		'during' => in_array( $in['during'] ?? '', array( 'redirect', 'open', 'pause' ), true ) ? $in['during'] : 'redirect',
+		'dead'   => in_array( $in['dead'] ?? '', array( 'never', 'temporary', 'always' ), true ) ? $in['dead'] : 'never',
+	);
+}
+
+/**
+ * The short link rules of the current site.
+ *
+ * @return array{during:string,dead:string}
+ */
+function clean_maintenance_short_link_rules() {
+	return clean_maintenance_sanitize_short_link_rules( get_option( 'clean_maintenance_short_links', array() ) );
+}
+
+/**
  * Settings of the current or another site (multisite).
  *
  * @param int $blog_id Site ID, 0 for the current site.

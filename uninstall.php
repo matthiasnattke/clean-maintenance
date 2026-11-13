@@ -17,6 +17,9 @@ if ( is_multisite() ) {
 	foreach ( $clean_maintenance_sites as $clean_maintenance_site ) {
 		switch_to_blog( (int) $clean_maintenance_site );
 		delete_option( 'clean_maintenance' );
+		if ( ! function_exists( 'CleanShortLinks\\site_settings' ) ) {
+			delete_option( 'clean_maintenance_short_links' ); // Shared with Clean Short Links – kept while that is installed.
+		}
 		restore_current_blog();
 	}
 	delete_site_option( 'clean_maintenance_network_allow' );
@@ -28,4 +31,7 @@ if ( is_multisite() ) {
 	delete_site_option( 'clean_maintenance_pass_login' );
 } else {
 	delete_option( 'clean_maintenance' );
+	if ( ! function_exists( 'CleanShortLinks\\site_settings' ) ) {
+		delete_option( 'clean_maintenance_short_links' ); // Shared with Clean Short Links – kept while that is installed.
+	}
 }

@@ -312,6 +312,14 @@ test( 'End before start adds a settings error', function () {
 	same( array( 'when' ), $GLOBALS['cm_test_settings_errors'] );
 } );
 
+test( 'Short link rules are cleaned', function () {
+	same( array( 'during' => 'redirect', 'dead' => 'never' ), clean_maintenance_sanitize_short_link_rules( null ) );
+	same( array( 'during' => 'pause', 'dead' => 'temporary' ), clean_maintenance_sanitize_short_link_rules( array( 'during' => 'pause', 'dead' => 'temporary' ) ) );
+	same( array( 'during' => 'redirect', 'dead' => 'never' ), clean_maintenance_sanitize_short_link_rules( array( 'during' => 'x', 'dead' => 'y' ) ) );
+	$GLOBALS['cm_test_options']['clean_maintenance_short_links'] = array( 'during' => 'open', 'dead' => 'always' );
+	same( array( 'during' => 'open', 'dead' => 'always' ), clean_maintenance_short_link_rules() );
+} );
+
 echo "\nVersion\n";
 
 test( 'Version number matches everywhere', function () {
