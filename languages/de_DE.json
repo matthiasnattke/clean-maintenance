@@ -186,5 +186,7 @@
 	"Open this link once in a browser to give it a pass – handy as a bookmark for private windows, or to show the sites to someone without an account.": "Öffne diesen Link einmal in einem Browser, um ihm den Durchlass zu geben – praktisch als Lesezeichen für private Fenster oder um die Websites jemandem ohne Konto zu zeigen.",
 	"This browser has a pass": "Dieser Browser hat den Durchlass",
 	"This browser has no pass yet": "Dieser Browser hat noch keinen Durchlass",
-	"Revoke all passes and create a new link": "Alle Durchlässe widerrufen und neuen Link erzeugen"
+	"Revoke all passes and create a new link": "Alle Durchlässe widerrufen und neuen Link erzeugen",
+	"Remove it from this browser": "Aus diesem Browser entfernen",
+	"To see the maintenance page anyway, add ?cm-preview=1 to the address.": "Um die Wartungsseite trotzdem zu sehen, hänge ?cm-preview=1 an die Adresse."
 }

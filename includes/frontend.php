@@ -243,7 +243,7 @@ add_action(
 	'template_redirect',
 	function () {
 		$s       = clean_maintenance_settings();
-		$preview = isset( $_GET['cm-preview'] ) && current_user_can( 'manage_options' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only preview switch.
+		$preview = isset( $_GET['cm-preview'] ) && ( current_user_can( 'manage_options' ) || clean_maintenance_has_pass() || clean_maintenance_network_allowed( clean_maintenance_client_ip() ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only preview switch.
 		if ( ! $preview ) {
 			if ( ! clean_maintenance_is_active( $s ) || clean_maintenance_bypass( $s ) ) {
 				return;

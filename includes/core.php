@@ -708,7 +708,10 @@ add_action(
 			return;
 		}
 		$token = clean_maintenance_pass_token();
-		if ( '' !== $token && hash_equals( $token, $given ) ) {
+		if ( 'off' === $given && ! headers_sent() ) {
+			// Forget the pass in this browser, e.g. to see the sites like a visitor.
+			setcookie( CLEAN_MAINTENANCE_PASS_COOKIE, '', time() - YEAR_IN_SECONDS, '/' );
+		} elseif ( '' !== $token && hash_equals( $token, $given ) ) {
 			clean_maintenance_set_pass();
 		}
 		nocache_headers();

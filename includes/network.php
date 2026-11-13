@@ -325,10 +325,12 @@ function clean_maintenance_render_network() {
 					<input type="text" id="cm-pass-url" class="large-text code" readonly value="<?php echo esc_attr( clean_maintenance_pass_url() ); ?>" aria-label="<?php esc_attr_e( 'Access link', 'clean-maintenance' ); ?>">
 					<button type="button" class="button cm-copy-btn" data-target="cm-pass-url" data-done="<?php esc_attr_e( 'Copied', 'clean-maintenance' ); ?>"><?php esc_html_e( 'Copy', 'clean-maintenance' ); ?></button>
 				</div>
+				<p class="cm-help"><?php esc_html_e( 'To see the maintenance page anyway, add ?cm-preview=1 to the address.', 'clean-maintenance' ); ?></p>
 				<p class="cm-help"><?php esc_html_e( 'Open this link once in a browser to give it a pass – handy as a bookmark for private windows, or to show the sites to someone without an account.', 'clean-maintenance' ); ?></p>
 				<p class="cm-ip">
 					<?php if ( clean_maintenance_has_pass() ) : ?>
 						<span class="cm-ip-ok"><?php esc_html_e( 'This browser has a pass', 'clean-maintenance' ); ?></span>
+						<a href="<?php echo esc_url( add_query_arg( 'cm-pass', 'off', network_home_url( '/' ) ) ); ?>"><?php esc_html_e( 'Remove it from this browser', 'clean-maintenance' ); ?></a>
 					<?php else : ?>
 						<span class="cm-ip-no"><?php esc_html_e( 'This browser has no pass yet', 'clean-maintenance' ); ?></span>
 					<?php endif; ?>

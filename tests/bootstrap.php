@@ -14,6 +14,7 @@ define( 'ABSPATH', __DIR__ . '/' );
 define( 'HOUR_IN_SECONDS', 3600 );
 define( 'MINUTE_IN_SECONDS', 60 );
 define( 'DAY_IN_SECONDS', 86400 );
+define( 'YEAR_IN_SECONDS', 31536000 );
 
 $GLOBALS['cm_test_options']  = array();
 $GLOBALS['cm_test_is_feed']  = false;
