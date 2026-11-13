@@ -199,6 +199,16 @@ test( 'Router reports: only global prefixes and public IPv4 count', function () 
 	same( false, clean_maintenance_home_matches( '8.8.4.4', $home ), 'no IPv4 reported' );
 } );
 
+test( 'Separate IPv4 and IPv6 calls of the router are merged', function () {
+	$r = clean_maintenance_merge_home_report( array(), '', '94.0.2.10', 1 );
+	$r = clean_maintenance_merge_home_report( $r, '2a00:aaaa:adc0:7e7::/64', '', 2 );
+	same( array( 'prefix' => '2a00:aaaa:adc0:7e7::/64', 'v4' => '94.0.2.10', 'time' => 2 ), $r );
+	same( true, clean_maintenance_home_matches( '94.0.2.10', $r ), 'IPv4 still let through' );
+	$r = clean_maintenance_merge_home_report( $r, '', '94.0.2.11', 3 );
+	same( '94.0.2.11', $r['v4'], 'new IPv4 replaces the old one' );
+	same( '2a00:aaaa:adc0:7e7::/64', $r['prefix'], 'prefix kept' );
+} );
+
 test( 'Host names and private ranges are recognised', function () {
 	same( true, clean_maintenance_is_hostname( 'abc123.myfritz.net' ) );
 	same( false, clean_maintenance_is_hostname( '192.168.178.1' ) );

@@ -528,6 +528,23 @@ function clean_maintenance_home_matches( $ip, $home ) {
 }
 
 /**
+ * Merge a report into the previous one: empty values keep what an earlier call sent.
+ *
+ * @param array  $old    Previous report.
+ * @param string $prefix Reported IPv6 prefix or ''.
+ * @param string $v4     Reported IPv4 address or ''.
+ * @param int    $time   Time of the report.
+ * @return array
+ */
+function clean_maintenance_merge_home_report( $old, $prefix, $v4, $time ) {
+	return array(
+		'prefix' => '' !== $prefix ? $prefix : (string) ( $old['prefix'] ?? '' ),
+		'v4'     => '' !== $v4 ? $v4 : (string) ( $old['v4'] ?? '' ),
+		'time'   => (int) $time,
+	);
+}
+
+/**
  * Receive a report from the router (no login; protected by the secret).
  */
 function clean_maintenance_receive_home_report() {
@@ -549,15 +566,13 @@ function clean_maintenance_receive_home_report() {
 		echo 'noaddress';
 		exit;
 	}
+	// The FRITZ!Box sends IPv4 and IPv6 in separate calls – keep what the other call reported.
+	$old = clean_maintenance_home_report();
 	update_site_option(
 		'clean_maintenance_home',
-		array(
-			'prefix' => $prefix,
-			'v4'     => $v4,
-			'time'   => time(),
-		)
+		clean_maintenance_merge_home_report( $old, $prefix, $v4, time() )
 	);
-	echo 'good';
+	echo esc_html( trim( 'good ' . ( $v4 ? $v4 : $prefix ) ) );
 	exit;
 }
 add_action( 'admin_post_nopriv_clean_maintenance_home', 'clean_maintenance_receive_home_report' );
