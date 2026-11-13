@@ -173,3 +173,106 @@ function clean_maintenance_status( $s = null, $tz = null ) {
 	}
 	return array( $on, $t, $key );
 }
+
+/**
+ * Client IP address as seen by the web server.
+ *
+ * @return string
+ */
+function clean_maintenance_client_ip() {
+	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	return filter_var( $ip, FILTER_VALIDATE_IP ) ? $ip : '';
+}
+
+/**
+ * Whether a line is an IP address or an address range (CIDR, IPv4 or IPv6).
+ *
+ * @param string $line E.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/48.
+ * @return bool
+ */
+function clean_maintenance_is_ip_rule( $line ) {
+	$parts = explode( '/', trim( (string) $line ), 2 );
+	if ( ! filter_var( $parts[0], FILTER_VALIDATE_IP ) ) {
+		return false;
+	}
+	if ( ! isset( $parts[1] ) ) {
+		return true;
+	}
+	$max = false !== strpos( $parts[0], ':' ) ? 128 : 32;
+	return ctype_digit( $parts[1] ) && (int) $parts[1] <= $max;
+}
+
+/**
+ * Whether an IP address matches an address or range.
+ *
+ * @param string $ip   Client address.
+ * @param string $rule Address or CIDR range.
+ * @return bool
+ */
+function clean_maintenance_ip_matches( $ip, $rule ) {
+	if ( ! $ip || ! clean_maintenance_is_ip_rule( $rule ) ) {
+		return false;
+	}
+	$parts = explode( '/', trim( $rule ), 2 );
+	$a     = inet_pton( $ip );
+	$b     = inet_pton( $parts[0] );
+	if ( false === $a || false === $b || strlen( $a ) !== strlen( $b ) ) {
+		return false;
+	}
+	$bits  = isset( $parts[1] ) ? (int) $parts[1] : strlen( $a ) * 8;
+	$bytes = intdiv( $bits, 8 );
+	if ( substr( $a, 0, $bytes ) !== substr( $b, 0, $bytes ) ) {
+		return false;
+	}
+	$rest = $bits % 8;
+	if ( ! $rest ) {
+		return true;
+	}
+	$mask = ( 0xFF << ( 8 - $rest ) ) & 0xFF;
+	return ( ord( $a[ $bytes ] ) & $mask ) === ( ord( $b[ $bytes ] ) & $mask );
+}
+
+/**
+ * Whether an IP address matches any address or range in a list
+ * (one per line, comments with #, other lines are ignored).
+ *
+ * @param string $ip   Client address.
+ * @param string $list List of rules.
+ * @return bool
+ */
+function clean_maintenance_ip_in_list( $ip, $list ) {
+	foreach ( preg_split( '/\R/', (string) $list ) as $line ) {
+		$line = trim( preg_replace( '/#.*$/', '', $line ) );
+		if ( '' !== $line && clean_maintenance_ip_matches( $ip, $line ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Addresses and ranges that may see every site of the network
+ * (Network Admin → Settings → Maintenance mode).
+ *
+ * @return string
+ */
+function clean_maintenance_network_allow() {
+	return is_multisite() ? (string) get_site_option( 'clean_maintenance_network_allow', '' ) : '';
+}
+
+/**
+ * Keep only valid addresses and ranges (plus comments) in an IP list.
+ *
+ * @param string $text Raw input.
+ * @return string
+ */
+function clean_maintenance_sanitize_ip_list( $text ) {
+	$out = array();
+	foreach ( preg_split( '/\R/', sanitize_textarea_field( (string) $text ) ) as $line ) {
+		$rule = trim( preg_replace( '/#.*$/', '', $line ) );
+		if ( '' === $rule ? '' !== trim( $line ) : clean_maintenance_is_ip_rule( $rule ) ) {
+			$out[] = trim( $line );
+		}
+	}
+	return implode( "\n", $out );
+}

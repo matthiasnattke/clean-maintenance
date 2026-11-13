@@ -8,7 +8,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Domain: clean-maintenance\n"
 
-#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:166 includes/admin.php:172 includes/network.php:19 includes/network.php:20 includes/network.php:263
+#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:191 includes/admin.php:197 includes/network.php:19 includes/network.php:20 includes/network.php:290
 msgid "Maintenance mode"
 msgstr ""
 
@@ -20,280 +20,295 @@ msgstr ""
 msgid "The end is before the start – please check."
 msgstr ""
 
-#: includes/admin.php:158 includes/admin.php:205
+#. translators: %s: IP address of the current visitor.
+#: includes/admin.php:150
+#, php-format
+msgid "Your current address: %s"
+msgstr ""
+
+#. translators: %s: IP address of the current visitor.
+#: includes/admin.php:152
+msgid "Add"
+msgstr ""
+
+#: includes/admin.php:154
+msgid "Allowed network-wide"
+msgstr ""
+
+#: includes/admin.php:183 includes/admin.php:230
 msgid "Status"
 msgstr ""
 
-#: includes/admin.php:159 includes/admin.php:240
+#: includes/admin.php:184 includes/admin.php:265
 msgid "Appearance"
 msgstr ""
 
-#: includes/admin.php:160 includes/admin.php:309
+#: includes/admin.php:185 includes/admin.php:334
 msgid "Access"
 msgstr ""
 
-#: includes/admin.php:161 includes/admin.php:351
+#: includes/admin.php:186 includes/admin.php:377
 msgid "Search engines & API"
 msgstr ""
 
-#: includes/admin.php:162 includes/admin.php:388
+#: includes/admin.php:187 includes/admin.php:414
 msgid "Comfort"
 msgstr ""
 
-#: includes/admin.php:176 includes/admin.php:397 includes/network.php:222 includes/network.php:222
+#: includes/admin.php:201 includes/admin.php:423 includes/network.php:222 includes/network.php:222
 msgid "Preview"
 msgstr ""
 
-#: includes/admin.php:178
+#: includes/admin.php:203
 msgid "All sites"
 msgstr ""
 
-#: includes/admin.php:186
+#: includes/admin.php:211
 msgid "Sections"
 msgstr ""
 
 #. translators: %s: version number.
-#: includes/admin.php:194
+#: includes/admin.php:219
 #, php-format
 msgid "Version %s"
 msgstr ""
 
 #. translators: %s: version number.
-#: includes/admin.php:197
+#: includes/admin.php:222
 msgid "Project page"
 msgstr ""
 
-#: includes/admin.php:206
+#: includes/admin.php:231
 msgid "When should visitors see the maintenance page?"
 msgstr ""
 
-#: includes/admin.php:208
+#: includes/admin.php:233
 msgid "Mode"
 msgstr ""
 
-#: includes/admin.php:211 includes/core.php:151
+#: includes/admin.php:236 includes/core.php:151
 msgid "Off"
 msgstr ""
 
-#: includes/admin.php:211
+#: includes/admin.php:236
 msgid "Visitors see the normal site."
 msgstr ""
 
-#: includes/admin.php:212 includes/core.php:148
+#: includes/admin.php:237 includes/core.php:148
 msgid "On"
 msgstr ""
 
-#: includes/admin.php:212
+#: includes/admin.php:237
 msgid "Right away, until you turn it off."
 msgstr ""
 
-#: includes/admin.php:213
+#: includes/admin.php:238
 msgid "Scheduled"
 msgstr ""
 
-#: includes/admin.php:213
+#: includes/admin.php:238
 msgid "Start and end from the calendar."
 msgstr ""
 
-#: includes/admin.php:227
+#: includes/admin.php:252
 msgid "Start"
 msgstr ""
 
-#: includes/admin.php:228
+#: includes/admin.php:253
 msgid "End"
 msgstr ""
 
 #. translators: %s: time zone of the site, e.g. Europe/Berlin.
-#: includes/admin.php:233
+#: includes/admin.php:258
 #, php-format
 msgid "Time zone of the site (%s). Without a start the mode applies right away, without an end until you turn it off."
 msgstr ""
 
-#: includes/admin.php:241
+#: includes/admin.php:266
 msgid "What visitors see while you work."
 msgstr ""
 
-#: includes/admin.php:243
+#: includes/admin.php:268
 msgid "Design"
 msgstr ""
 
-#: includes/admin.php:247
+#: includes/admin.php:272
 msgid "Page from WordPress"
 msgstr ""
 
-#: includes/admin.php:248
+#: includes/admin.php:273
 msgid "In the style of your theme, edited like any other page."
 msgstr ""
 
-#: includes/admin.php:253
+#: includes/admin.php:278
 msgid "Classic"
 msgstr ""
 
-#: includes/admin.php:254
+#: includes/admin.php:279
 msgid "Heading, text and background – independent of the theme."
 msgstr ""
 
-#: includes/admin.php:259
+#: includes/admin.php:284
 msgid "Maintenance page"
 msgstr ""
 
-#: includes/admin.php:262
+#: includes/admin.php:287
 msgid "– simple notice with the site title –"
 msgstr ""
 
-#: includes/admin.php:268
+#: includes/admin.php:293
 msgid "Edit page"
 msgstr ""
 
-#: includes/admin.php:271
+#: includes/admin.php:296
 msgid "Shown everywhere without header and footer. Best create a page of its own as a draft or private – then it is not visible anywhere else."
 msgstr ""
 
-#: includes/admin.php:275
+#: includes/admin.php:300
 msgid "Title in the browser tab"
 msgstr ""
 
-#: includes/admin.php:278
+#: includes/admin.php:303
 msgid "Heading"
 msgstr ""
 
-#: includes/admin.php:280 includes/admin.php:285
+#: includes/admin.php:305 includes/admin.php:310
 msgid "Colour"
 msgstr ""
 
-#: includes/admin.php:283
+#: includes/admin.php:308
 msgid "Text"
 msgstr ""
 
-#: includes/admin.php:287
+#: includes/admin.php:312
 msgid "HTML is allowed (paragraphs, links, emphasis)."
 msgstr ""
 
-#: includes/admin.php:288
+#: includes/admin.php:313
 msgid "Show a “Dashboard” link below the text"
 msgstr ""
 
-#: includes/admin.php:292
+#: includes/admin.php:317
 msgid "Background"
 msgstr ""
 
-#: includes/admin.php:299
+#: includes/admin.php:324
 msgid "Choose image"
 msgstr ""
 
-#: includes/admin.php:300
+#: includes/admin.php:325
 msgid "Remove image"
 msgstr ""
 
-#: includes/admin.php:302
+#: includes/admin.php:327
 msgid "The image fills the whole background; the colour lies beneath it or applies on its own."
 msgstr ""
 
-#: includes/admin.php:310
+#: includes/admin.php:335
 msgid "Who still gets in – and what stays reachable for everyone."
 msgstr ""
 
-#: includes/admin.php:313
+#: includes/admin.php:338
 msgid "Roles with access to the site"
 msgstr ""
 
-#: includes/admin.php:319
+#: includes/admin.php:344
 msgid "Logged-in users with these roles see the normal site. Network administrators always have access."
 msgstr ""
 
-#: includes/admin.php:323
+#: includes/admin.php:348
 msgid "Roles with access to the dashboard"
 msgstr ""
 
-#: includes/admin.php:334
+#: includes/admin.php:359
 msgid "During maintenance only administrators and these roles may use the dashboard; everyone else is redirected."
 msgstr ""
 
-#: includes/admin.php:338
+#: includes/admin.php:363
 msgid "Redirect"
 msgstr ""
 
-#: includes/admin.php:340
+#: includes/admin.php:365
 msgid "Where logged-in users without dashboard access are sent. Empty = home page."
 msgstr ""
 
-#: includes/admin.php:344
+#: includes/admin.php:369
 msgid "Exceptions"
 msgstr ""
 
-#: includes/admin.php:346
-msgid "Exclude the feed, pages, archives or IP addresses from maintenance mode. One slug or IP per line; comments start with # and may follow at the end of a line."
+#: includes/admin.php:371
+msgid "Exclude the feed, pages, archives, IP addresses or address ranges from maintenance mode. One slug, IP address or range (e.g. 192.168.178.0/24) per line; comments start with # and may follow at the end of a line."
 msgstr ""
 
-#: includes/admin.php:352
+#: includes/admin.php:378
 msgid "How search engines and other programs are treated."
 msgstr ""
 
-#: includes/admin.php:355
+#: includes/admin.php:381
 msgid "Bots see the normal site"
 msgstr ""
 
-#: includes/admin.php:355
+#: includes/admin.php:381
 msgid "Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking."
 msgstr ""
 
-#: includes/admin.php:359
+#: includes/admin.php:385
 msgid "Robots meta tag"
 msgstr ""
 
-#: includes/admin.php:364
+#: includes/admin.php:390
 msgid "Instruction for search engines on the maintenance page."
 msgstr ""
 
-#: includes/admin.php:368
+#: includes/admin.php:394
 msgid "REST API for visitors"
 msgstr ""
 
-#: includes/admin.php:372
+#: includes/admin.php:398
 msgid "Open"
 msgstr ""
 
-#: includes/admin.php:373
+#: includes/admin.php:399
 msgid "Locked during maintenance"
 msgstr ""
 
-#: includes/admin.php:374
+#: includes/admin.php:400
 msgid "Always locked"
 msgstr ""
 
-#: includes/admin.php:381
+#: includes/admin.php:407
 msgid "Locked requests without login get “401”. Logged-in users, the block editor and Jetpack keep working. The REST API hints in the page head are removed as well."
 msgstr ""
 
-#: includes/admin.php:382
+#: includes/admin.php:408
 msgid "Still public (one namespace per line, e.g. oembed or podlove; comments with #):"
 msgstr ""
 
-#: includes/admin.php:389
+#: includes/admin.php:415
 msgid "Small helpers in the dashboard."
 msgstr ""
 
-#: includes/admin.php:391
+#: includes/admin.php:417
 msgid "Notice"
 msgstr ""
 
-#: includes/admin.php:391
+#: includes/admin.php:417
 msgid "Red “Maintenance mode active” notice in the admin bar, with a switch to turn it off"
 msgstr ""
 
-#: includes/admin.php:396
+#: includes/admin.php:422
 msgid "Save settings"
 msgstr ""
 
-#: includes/admin.php:425
+#: includes/admin.php:451
 msgid "Choose background image"
 msgstr ""
 
-#: includes/admin.php:426
+#: includes/admin.php:452
 msgid "Use image"
 msgstr ""
 
-#: includes/admin.php:435 includes/frontend.php:302 includes/network.php:221
+#: includes/admin.php:461 includes/frontend.php:305 includes/network.php:221
 msgid "Settings"
 msgstr ""
 
@@ -305,7 +320,7 @@ msgstr ""
 msgid "Period ended"
 msgstr ""
 
-#: includes/core.php:160 includes/network.php:151 includes/network.php:168 includes/network.php:288
+#: includes/core.php:160 includes/network.php:151 includes/network.php:168 includes/network.php:315
 msgid "Planned"
 msgstr ""
 
@@ -327,27 +342,27 @@ msgstr ""
 msgid "until %s"
 msgstr ""
 
-#: includes/frontend.php:125
+#: includes/frontend.php:128
 msgid "This website is currently being updated. Please check back soon."
 msgstr ""
 
-#: includes/frontend.php:230
+#: includes/frontend.php:233
 msgid "Dashboard"
 msgstr ""
 
-#: includes/frontend.php:286
+#: includes/frontend.php:289
 msgid "Maintenance mode active"
 msgstr ""
 
-#: includes/frontend.php:294
+#: includes/frontend.php:297
 msgid "Turn off maintenance mode"
 msgstr ""
 
-#: includes/frontend.php:315 includes/network.php:238
+#: includes/frontend.php:318 includes/network.php:252 includes/network.php:274
 msgid "You are not allowed to do this."
 msgstr ""
 
-#: includes/frontend.php:405
+#: includes/frontend.php:408
 msgid "The REST API is only available to logged-in users."
 msgstr ""
 
@@ -383,11 +398,11 @@ msgstr ""
 msgid "Each site sets its period, maintenance page, background, exceptions and roles in its own settings."
 msgstr ""
 
-#: includes/network.php:165 includes/network.php:285
+#: includes/network.php:165 includes/network.php:312
 msgid "in maintenance mode"
 msgstr ""
 
-#: includes/network.php:166 includes/network.php:286
+#: includes/network.php:166 includes/network.php:313
 msgid "reachable"
 msgstr ""
 
@@ -423,7 +438,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: includes/network.php:217 includes/network.php:299
+#: includes/network.php:217 includes/network.php:326
 msgid "Turn off"
 msgstr ""
 
@@ -435,15 +450,43 @@ msgstr ""
 msgid "No sites in this view."
 msgstr ""
 
-#: includes/network.php:229
+#: includes/network.php:231
+msgid "Always let through"
+msgstr ""
+
+#: includes/network.php:232
+msgid "Visitors from these addresses see every site of the network normally, without logging in – for example your home network or a VPN."
+msgstr ""
+
+#: includes/network.php:234
+msgid "Saved."
+msgstr ""
+
+#: includes/network.php:236
+msgid "IP addresses and ranges"
+msgstr ""
+
+#: includes/network.php:237
+msgid "home network"
+msgstr ""
+
+#: includes/network.php:238
+msgid "One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses."
+msgstr ""
+
+#: includes/network.php:240
+msgid "Save"
+msgstr ""
+
+#: includes/network.php:243
 msgid "“Turn on” applies right away and until you turn it off; a scheduled period is replaced. Network administrators always see the sites normally."
 msgstr ""
 
-#: includes/network.php:305
+#: includes/network.php:332
 msgid "All sites are reachable."
 msgstr ""
 
-#: includes/network.php:307
+#: includes/network.php:334
 msgid "Manage all sites →"
 msgstr ""
 

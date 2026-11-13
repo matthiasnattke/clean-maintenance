@@ -127,6 +127,48 @@ test( 'Search engine bots are detected', function () {
 	same( false, clean_maintenance_is_bot() );
 } );
 
+echo "\nAddress ranges\n";
+
+test( 'IPv4 ranges match only inside the range', function () {
+	same( true, clean_maintenance_ip_matches( '192.168.178.33', '192.168.178.0/24' ), 'home network' );
+	same( false, clean_maintenance_ip_matches( '192.168.179.1', '192.168.178.0/24' ), 'next network' );
+	same( true, clean_maintenance_ip_matches( '10.8.0.5', '10.8.0.0/24' ), 'VPN' );
+	same( true, clean_maintenance_ip_matches( '10.8.0.5', '10.0.0.0/8' ), 'wide range' );
+	same( true, clean_maintenance_ip_matches( '203.0.113.7', '203.0.113.7' ), 'single address' );
+	same( false, clean_maintenance_ip_matches( '203.0.113.8', '203.0.113.7/32' ), 'host mask' );
+	same( true, clean_maintenance_ip_matches( '203.0.113.130', '203.0.113.128/25' ), 'odd mask' );
+	same( false, clean_maintenance_ip_matches( '203.0.113.127', '203.0.113.128/25' ), 'odd mask outside' );
+} );
+
+test( 'IPv6 ranges and mixed families', function () {
+	same( true, clean_maintenance_ip_matches( '2001:db8:1234:5600::42', '2001:db8:1234:5600::/56' ) );
+	same( false, clean_maintenance_ip_matches( '2001:db8:1234:5700::42', '2001:db8:1234:5600::/56' ) );
+	same( false, clean_maintenance_ip_matches( '192.168.178.33', '2001:db8::/32' ), 'IPv4 vs. IPv6 range' );
+	same( false, clean_maintenance_ip_matches( '', '192.168.178.0/24' ), 'no address' );
+} );
+
+test( 'Invalid rules are not treated as addresses', function () {
+	same( true, clean_maintenance_is_ip_rule( '192.168.178.0/24' ) );
+	same( true, clean_maintenance_is_ip_rule( '2001:db8::/128' ) );
+	same( false, clean_maintenance_is_ip_rule( '192.168.178.0/33' ) );
+	same( false, clean_maintenance_is_ip_rule( '725-jahre-peitz' ) );
+	same( false, clean_maintenance_is_ip_rule( '10.8.0.0/abc' ) );
+} );
+
+test( 'A range in the exception list lets the whole network through', function () {
+	$_SERVER['REQUEST_URI'] = '/';
+	$_SERVER['REMOTE_ADDR'] = '192.168.178.33';
+	same( true, clean_maintenance_excluded( settings( array( 'exclude' => "feed\n192.168.178.0/24 # home" ) ) ) );
+	$_SERVER['REMOTE_ADDR'] = '198.51.100.1';
+	same( false, clean_maintenance_excluded( settings( array( 'exclude' => "feed\n192.168.178.0/24 # home" ) ) ) );
+} );
+
+test( 'IP lists keep only valid rules and comments', function () {
+	same( "192.168.178.0/24 # home\n# VPN\n10.8.0.0/24", clean_maintenance_sanitize_ip_list( "192.168.178.0/24 # home\n# VPN\n10.8.0.0/24\nnonsense\n10.0.0.0/99" ) );
+	same( true, clean_maintenance_ip_in_list( '10.8.0.9', "# VPN\n10.8.0.0/24" ) );
+	same( false, clean_maintenance_ip_in_list( '10.9.0.9', "# VPN\n10.8.0.0/24" ) );
+} );
+
 echo "\nREST-API\n";
 
 test( 'Public namespaces', function () {

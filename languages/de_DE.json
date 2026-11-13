@@ -30,7 +30,6 @@
 	"Remove image": "Bild entfernen",
 	"The image fills the whole background; the colour lies beneath it or applies on its own.": "Das Bild füllt den ganzen Hintergrund; die Farbe liegt darunter bzw. gilt allein.",
 	"Exceptions": "Ausnahmen",
-	"Exclude the feed, pages, archives or IP addresses from maintenance mode. One slug or IP per line; comments start with # and may follow at the end of a line.": "Feed, Seiten, Archive oder IP-Adressen vom Wartungsmodus ausnehmen. Ein Slug bzw. eine IP pro Zeile; Kommentare beginnen mit # und dürfen am Zeilenende stehen.",
 	"Roles with access to the site": "Rollen mit Zugang zur Website",
 	"Logged-in users with these roles see the normal site. Network administrators always have access.": "Angemeldete Personen mit diesen Rollen sehen die normale Website. Netzwerk-Administratoren haben immer Zugang.",
 	"Roles with access to the dashboard": "Rollen mit Zugang zur Verwaltung",
@@ -121,5 +120,16 @@
 	"Select all": "Alle auswählen",
 	"Action": "Aktion",
 	"No sites in this view.": "Keine Websites in dieser Ansicht.",
-	"All sites are reachable.": "Alle Websites sind erreichbar."
+	"All sites are reachable.": "Alle Websites sind erreichbar.",
+	"Your current address: %s": "Deine aktuelle Adresse: %s",
+	"Add": "Hinzufügen",
+	"Allowed network-wide": "Netzwerkweit freigegeben",
+	"Exclude the feed, pages, archives, IP addresses or address ranges from maintenance mode. One slug, IP address or range (e.g. 192.168.178.0/24) per line; comments start with # and may follow at the end of a line.": "Feed, Seiten, Archive, IP-Adressen oder Adressbereiche vom Wartungsmodus ausnehmen. Ein Slug, eine IP-Adresse oder ein Bereich (z. B. 192.168.178.0/24) pro Zeile; Kommentare beginnen mit # und dürfen am Zeilenende stehen.",
+	"Always let through": "Immer durchlassen",
+	"Visitors from these addresses see every site of the network normally, without logging in – for example your home network or a VPN.": "Besucher von diesen Adressen sehen alle Websites im Netzwerk ganz normal, ohne Anmeldung – zum Beispiel aus deinem Heimnetz oder über ein VPN.",
+	"Saved.": "Gespeichert.",
+	"IP addresses and ranges": "IP-Adressen und Bereiche",
+	"home network": "Heimnetz",
+	"One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses.": "Eine Adresse oder ein Bereich pro Zeile, IPv4 oder IPv6, z. B. 203.0.113.7, 192.168.178.0/24 oder 2001:db8::/56. Kommentare beginnen mit #. Suchmaschinen bekommen weiter die Wartungsseite, außer sie kommen von diesen Adressen.",
+	"Save": "Speichern"
 }

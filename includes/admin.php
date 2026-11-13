@@ -133,6 +133,31 @@ function clean_maintenance_switch( $name, $checked, $label, $help = '' ) {
 }
 
 /**
+ * "Your address" hint with a button that adds it to a list.
+ *
+ * @param string $target ID of the textarea the address is added to.
+ */
+function clean_maintenance_ip_hint( $target ) {
+	$ip = clean_maintenance_client_ip();
+	if ( ! $ip ) {
+		return;
+	}
+	$allowed = clean_maintenance_ip_in_list( $ip, clean_maintenance_network_allow() );
+	?>
+	<p class="cm-ip">
+		<?php
+		/* translators: %s: IP address of the current visitor. */
+		echo wp_kses( sprintf( __( 'Your current address: %s', 'clean-maintenance' ), '<code>' . esc_html( $ip ) . '</code>' ), array( 'code' => array() ) );
+		?>
+		<button type="button" class="button-link cm-ip-add" data-target="<?php echo esc_attr( $target ); ?>" data-ip="<?php echo esc_attr( $ip ); ?>"><?php esc_html_e( 'Add', 'clean-maintenance' ); ?></button>
+		<?php if ( $allowed ) : ?>
+			<span class="cm-ip-ok"><?php esc_html_e( 'Allowed network-wide', 'clean-maintenance' ); ?></span>
+		<?php endif; ?>
+	</p>
+	<?php
+}
+
+/**
  * Render the settings page.
  */
 function clean_maintenance_render_settings() {
@@ -343,7 +368,8 @@ function clean_maintenance_render_settings() {
 					<div class="cm-sub">
 						<label class="cm-field" for="cm-exclude"><span><?php esc_html_e( 'Exceptions', 'clean-maintenance' ); ?></span></label>
 						<textarea id="cm-exclude" name="<?php echo esc_attr( $n ); ?>[exclude]" rows="6" class="large-text code"><?php echo esc_textarea( $s['exclude'] ); ?></textarea>
-						<p class="cm-help"><?php esc_html_e( 'Exclude the feed, pages, archives or IP addresses from maintenance mode. One slug or IP per line; comments start with # and may follow at the end of a line.', 'clean-maintenance' ); ?></p>
+						<p class="cm-help"><?php esc_html_e( 'Exclude the feed, pages, archives, IP addresses or address ranges from maintenance mode. One slug, IP address or range (e.g. 192.168.178.0/24) per line; comments start with # and may follow at the end of a line.', 'clean-maintenance' ); ?></p>
+						<?php clean_maintenance_ip_hint( 'cm-exclude' ); ?>
 					</div>
 				</section>
 

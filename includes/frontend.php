@@ -37,14 +37,17 @@ function clean_maintenance_bypass( $s ) {
  */
 function clean_maintenance_excluded( $s ) {
 	$uri = isset( $_SERVER['REQUEST_URI'] ) ? rawurldecode( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : '/';
-	$ip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	$ip  = clean_maintenance_client_ip();
+	if ( clean_maintenance_ip_in_list( $ip, clean_maintenance_network_allow() ) ) {
+		return true;
+	}
 	foreach ( preg_split( '/\R/', (string) $s['exclude'] ) as $line ) {
 		$line = trim( preg_replace( '/#.*$/', '', $line ) );
 		if ( '' === $line ) {
 			continue;
 		}
-		if ( filter_var( $line, FILTER_VALIDATE_IP ) ) {
-			if ( $ip === $line ) {
+		if ( clean_maintenance_is_ip_rule( $line ) ) {
+			if ( clean_maintenance_ip_matches( $ip, $line ) ) {
 				return true;
 			}
 			continue;

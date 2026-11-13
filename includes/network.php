@@ -226,6 +226,20 @@ function clean_maintenance_render_network() {
 				<p class="cm-empty"><?php esc_html_e( 'No sites in this view.', 'clean-maintenance' ); ?></p>
 			</div>
 		</form>
+		<form method="post" action="<?php echo esc_url( network_admin_url( 'edit.php?action=clean_maintenance_network_allow' ) ); ?>" class="cm-card cm-allow" id="cm-allow">
+			<?php wp_nonce_field( 'clean_maintenance_network_allow' ); ?>
+			<h2><?php echo clean_maintenance_icon( 'key' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?> <?php esc_html_e( 'Always let through', 'clean-maintenance' ); ?></h2>
+			<p class="cm-lead"><?php esc_html_e( 'Visitors from these addresses see every site of the network normally, without logging in – for example your home network or a VPN.', 'clean-maintenance' ); ?></p>
+			<?php if ( isset( $_GET['cm-allow-saved'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only. ?>
+				<div class="notice notice-success inline"><p><?php esc_html_e( 'Saved.', 'clean-maintenance' ); ?></p></div>
+			<?php endif; ?>
+			<label class="cm-field" for="cm-network-allow"><span><?php esc_html_e( 'IP addresses and ranges', 'clean-maintenance' ); ?></span></label>
+			<textarea id="cm-network-allow" name="cm_network_allow" rows="5" class="large-text code" placeholder="192.168.178.0/24   # <?php esc_attr_e( 'home network', 'clean-maintenance' ); ?>"><?php echo esc_textarea( clean_maintenance_network_allow() ); ?></textarea>
+			<p class="cm-help"><?php esc_html_e( 'One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses.', 'clean-maintenance' ); ?></p>
+			<?php clean_maintenance_ip_hint( 'cm-network-allow' ); ?>
+			<p><?php submit_button( __( 'Save', 'clean-maintenance' ), 'primary', 'cm_allow_save', false ); ?></p>
+		</form>
+
 		<p class="cm-help cm-foot"><?php esc_html_e( '“Turn on” applies right away and until you turn it off; a scheduled period is replaced. Network administrators always see the sites normally.', 'clean-maintenance' ); ?></p>
 	</div>
 	<?php
@@ -249,6 +263,19 @@ add_action(
 			? network_admin_url()
 			: add_query_arg( 'cm-done', count( $sites ), network_admin_url( 'settings.php?page=clean-maintenance-network' ) );
 		wp_safe_redirect( $back );
+		exit;
+	}
+);
+
+add_action(
+	'network_admin_edit_clean_maintenance_network_allow',
+	function () {
+		if ( ! current_user_can( 'manage_network_options' ) ) {
+			wp_die( esc_html__( 'You are not allowed to do this.', 'clean-maintenance' ) );
+		}
+		check_admin_referer( 'clean_maintenance_network_allow' );
+		update_site_option( 'clean_maintenance_network_allow', clean_maintenance_sanitize_ip_list( wp_unslash( $_POST['cm_network_allow'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized by clean_maintenance_sanitize_ip_list().
+		wp_safe_redirect( add_query_arg( 'cm-allow-saved', '1', network_admin_url( 'settings.php?page=clean-maintenance-network' ) ) . '#cm-allow' );
 		exit;
 	}
 );

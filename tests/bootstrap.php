@@ -40,6 +40,7 @@ function wp_timezone_string() { return 'Europe/Berlin'; }
 function wp_date( $format, $ts, $tz = null ) { return ( new DateTimeImmutable( '@' . $ts ) )->setTimezone( $tz ? $tz : wp_timezone() )->format( $format ); }
 function get_current_blog_id() { return 1; }
 function is_multisite() { return false; }
+function get_site_option( $name, $default = false ) { return $default; }
 function is_feed() { return $GLOBALS['cm_test_is_feed']; }
 function wp_unslash( $v ) { return is_string( $v ) ? stripslashes( $v ) : $v; }
 function sanitize_text_field( $v ) { return trim( preg_replace( '/[\r\n\t ]+/', ' ', wp_strip_all_tags( (string) $v ) ) ); }

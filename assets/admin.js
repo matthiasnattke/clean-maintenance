@@ -52,6 +52,15 @@ jQuery( function ( $ ) {
 		$( this ).addClass( 'hidden' );
 	} );
 
+	$( '.cm-ip-add' ).on( 'click', function () {
+		var $t = $( '#' + $( this ).data( 'target' ) );
+		var ip = String( $( this ).data( 'ip' ) );
+		var v = $t.val().replace( /\s+$/, '' );
+		if ( ( '\n' + v + '\n' ).indexOf( '\n' + ip ) === -1 ) {
+			$t.val( ( v ? v + '\n' : '' ) + ip ).trigger( 'change' ).focus();
+		}
+	} );
+
 	$( '#cm-all' ).on( 'change', function () {
 		$( '.cm-site:visible .cm-site-check' ).prop( 'checked', this.checked );
 	} );
