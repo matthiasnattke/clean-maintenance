@@ -348,6 +348,55 @@ add_action(
 	100
 );
 
+// The quick switch works without reloading: a small script, only while the notice is shown.
+function clean_maintenance_flag_script() {
+	if ( ! clean_maintenance_show_flag() ) {
+		return;
+	}
+	$js = <<<'JS'
+( function ( ajax ) {
+	var link = document.querySelector( '#wp-admin-bar-cm-maintenance-off a' );
+	if ( ! link || ! window.fetch ) {
+		return;
+	}
+	link.addEventListener( 'click', function ( e ) {
+		e.preventDefault();
+		var body = new URLSearchParams( { action: 'clean_maintenance_off', _wpnonce: new URL( link.href ).searchParams.get( '_wpnonce' ) } );
+		fetch( ajax, { method: 'POST', credentials: 'same-origin', body: body } )
+			.then( function ( r ) { return r.json(); } )
+			.then( function ( r ) {
+				if ( ! r || ! r.success ) {
+					throw new Error();
+				}
+				var node = document.getElementById( 'wp-admin-bar-cm-maintenance' );
+				if ( node ) {
+					node.remove();
+				}
+				document.dispatchEvent( new CustomEvent( 'clean-maintenance-off', { detail: r.data } ) );
+			} )
+			.catch( function () {
+				window.location.href = link.href;
+			} );
+	} );
+}( %s ) );
+JS;
+	wp_print_inline_script_tag( sprintf( $js, wp_json_encode( admin_url( 'admin-ajax.php' ) ) ) );
+}
+add_action( 'admin_footer', 'clean_maintenance_flag_script' );
+add_action( 'wp_footer', 'clean_maintenance_flag_script' );
+
+add_action(
+	'wp_ajax_clean_maintenance_off',
+	function () {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( null, 403 );
+		}
+		check_ajax_referer( 'clean_maintenance_off' );
+		clean_maintenance_set_mode( get_current_blog_id(), 'off' );
+		wp_send_json_success( array( 'pill' => function_exists( 'clean_maintenance_widget_pill' ) ? clean_maintenance_widget_pill() : '' ) );
+	}
+);
+
 // Quick switch: turn off maintenance mode for this site and go back.
 add_action(
 	'admin_post_clean_maintenance_off',

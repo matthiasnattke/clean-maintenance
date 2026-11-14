@@ -780,3 +780,18 @@ add_action(
 		}
 	}
 );
+
+/**
+ * What the admin script needs for saving without reloading.
+ *
+ * @param string $nonce_action Nonce action of the request.
+ * @return array
+ */
+function clean_maintenance_ajax_data( $nonce_action ) {
+	return array(
+		'ajax'   => admin_url( 'admin-ajax.php' ),
+		'nonce'  => wp_create_nonce( $nonce_action ),
+		'saved'  => __( 'Saved.', 'clean-maintenance' ),
+		'failed' => __( 'Could not be saved – please try again.', 'clean-maintenance' ),
+	);
+}

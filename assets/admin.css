@@ -139,6 +139,7 @@ fieldset.cm-sub > legend.cm-field + * { clear: both; }
 .cm-switch input:checked + .cm-switch-track { background: var(--cm-blue); }
 .cm-switch input:checked + .cm-switch-track::after { transform: translateX(16px); }
 .cm-switch input:focus-visible + .cm-switch-track { outline: 2px solid var(--cm-blue); outline-offset: 2px; }
+.cm-switch-text { min-width: 0; overflow-wrap: anywhere; }
 .cm-switch-text strong { display: block; font-weight: 600; }
 .cm-classic .cm-switch { margin-top: 14px; }
 
@@ -347,3 +348,29 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 .cm-widget-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 14px 0 0; padding-top: 10px; border-top: 1px solid #f0f0f1; }
 .cm-widget-actions a { text-decoration: none; font-weight: 600; }
 .cm-widget-saved { margin: -4px 0 10px; color: #00701c; font-weight: 600; }
+
+/* Phones: small icon next to eyebrow and title, everything else below in the full width. */
+@media (max-width: 600px) {
+	.cm-hero { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 14px; row-gap: 12px; align-items: center; padding: 16px; }
+	.cm-hero-text { display: contents; }
+	.cm-hero-icon { grid-column: 1; grid-row: 1 / span 2; width: 44px; height: 44px; border-radius: 13px; }
+	.cm-hero-icon img { width: 44px; height: 44px; border-radius: 13px; }
+	.cm-hero-icon .cm-ico { width: 26px; height: 26px; }
+	.cm-hero-text > *, .cm-hero-actions, .cm-hero > .cm-stats { grid-column: 1 / -1; }
+	.cm-hero-text > .cm-eyebrow { grid-column: 2; align-self: end; }
+	.cm-hero-text > .cm-hero-title { grid-column: 2; align-self: start; font-size: 22px; margin: 0 !important; }
+	.cm-hero-text > .cm-pill { justify-self: start; }
+	.cm-hero > .cm-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+	.cm-hero > .cm-stats .cm-stat { min-width: 0; padding: 8px 10px; }
+	.cm-hero > .cm-stats .cm-stat strong { font-size: 22px; }
+	.cm-hero > .cm-stats .cm-stat span { font-size: 11px; overflow-wrap: break-word; hyphens: auto; }
+	.cm-hero-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+	.cm-hero-actions > * { flex: 1 1 auto; justify-content: center; }
+	.cm-nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -4px; }
+	.cm-nav > a { white-space: nowrap; }
+	.cm-net .cm-segment { display: flex; flex-wrap: nowrap; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+	.cm-net .cm-segment span { white-space: nowrap; }
+}
+
+/* A switch that is saving. */
+.cm-btn.is-busy { opacity: .6; pointer-events: none; }

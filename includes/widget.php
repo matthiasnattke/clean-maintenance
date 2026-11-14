@@ -22,16 +22,42 @@ add_action(
 	function ( $hook ) {
 		if ( 'index.php' === $hook && ! is_network_admin() && current_user_can( 'manage_options' ) ) {
 			wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array(), clean_maintenance_asset_ver( 'admin.css' ) );
+			wp_enqueue_script( 'clean-maintenance-widget', plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ), array( 'jquery' ), clean_maintenance_asset_ver( 'admin.js' ), true );
+			wp_localize_script( 'clean-maintenance-widget', 'cleanMaintenance', clean_maintenance_ajax_data( 'clean_maintenance_widget' ) );
 		}
 	}
 );
+
+/**
+ * The status pill of the current site.
+ *
+ * @return string HTML.
+ */
+function clean_maintenance_widget_pill() {
+	$status = clean_maintenance_status( clean_maintenance_settings() );
+	return '<p class="cm-pill' . ( $status[0] ? ' is-active' : '' ) . ' cm-state-' . esc_attr( $status[2] ) . '"><span class="cm-dot" aria-hidden="true"></span>' . esc_html( $status[1] ) . '</p>';
+}
+
+/**
+ * Saves what the widget shows, keeping all other settings.
+ *
+ * @param array $p Unslashed form data.
+ */
+function clean_maintenance_widget_apply( array $p ) {
+	$s = clean_maintenance_settings();
+	foreach ( array( 'mode', 'start', 'end', 'design', 'page', 'c_heading', 'c_text' ) as $key ) {
+		if ( isset( $p[ $key ] ) ) {
+			$s[ $key ] = $p[ $key ];
+		}
+	}
+	update_option( 'clean_maintenance', clean_maintenance_sanitize( $s ) );
+}
 
 /**
  * The widget.
  */
 function clean_maintenance_site_widget() {
 	$s      = clean_maintenance_settings();
-	$status = clean_maintenance_status( $s );
 	$pages  = get_pages(
 		array(
 			'post_status' => array( 'publish', 'private', 'draft' ),
@@ -48,7 +74,7 @@ function clean_maintenance_site_widget() {
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="cm-widget cm-site-widget">
 		<?php wp_nonce_field( 'clean_maintenance_widget' ); ?>
 		<input type="hidden" name="action" value="clean_maintenance_widget">
-		<p class="cm-pill<?php echo $status[0] ? ' is-active' : ''; ?> cm-state-<?php echo esc_attr( $status[2] ); ?>"><span class="cm-dot" aria-hidden="true"></span><?php echo esc_html( $status[1] ); ?></p>
+		<?php echo clean_maintenance_widget_pill(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside. ?>
 		<?php if ( $saved ) : ?>
 			<p class="cm-widget-saved"><?php esc_html_e( 'Saved.', 'clean-maintenance' ); ?></p>
 		<?php endif; ?>
@@ -100,16 +126,26 @@ add_action(
 			wp_die( esc_html__( 'You are not allowed to do this.', 'clean-maintenance' ) );
 		}
 		check_admin_referer( 'clean_maintenance_widget' );
-		$p = wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Everything goes through clean_maintenance_sanitize() below.
-		// Start from all current settings and change only what the widget shows.
-		$s = clean_maintenance_settings();
-		foreach ( array( 'mode', 'start', 'end', 'design', 'page', 'c_heading', 'c_text' ) as $key ) {
-			if ( isset( $p[ $key ] ) ) {
-				$s[ $key ] = $p[ $key ];
-			}
-		}
-		update_option( 'clean_maintenance', clean_maintenance_sanitize( $s ) );
+		clean_maintenance_widget_apply( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Everything goes through clean_maintenance_sanitize().
 		wp_safe_redirect( add_query_arg( 'cm-widget', '1', admin_url( 'index.php' ) ) . '#clean_maintenance_site' );
 		exit;
+	}
+);
+
+// The same without reloading the dashboard.
+add_action(
+	'wp_ajax_clean_maintenance_widget_save',
+	function () {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( null, 403 );
+		}
+		check_ajax_referer( 'clean_maintenance_widget' );
+		clean_maintenance_widget_apply( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Everything goes through clean_maintenance_sanitize().
+		wp_send_json_success(
+			array(
+				'pill'   => clean_maintenance_widget_pill(),
+				'active' => clean_maintenance_is_active( clean_maintenance_settings() ),
+			)
+		);
 	}
 );

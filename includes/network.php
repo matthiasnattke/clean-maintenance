@@ -34,9 +34,8 @@ add_action(
 			return;
 		}
 		wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array(), clean_maintenance_asset_ver( 'admin.css' ) );
-		if ( $overview ) {
-			wp_enqueue_script( 'clean-maintenance-network', plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ), array( 'jquery' ), clean_maintenance_asset_ver( 'admin.js' ), true );
-		}
+		wp_enqueue_script( 'clean-maintenance-network', plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ), array( 'jquery' ), clean_maintenance_asset_ver( 'admin.js' ), true );
+		wp_localize_script( 'clean-maintenance-network', 'cleanMaintenance', clean_maintenance_ajax_data( 'clean_maintenance_network' ) );
 	}
 );
 
@@ -125,81 +124,12 @@ function clean_maintenance_shows( $r ) {
 }
 
 /**
- * Render the network overview.
+ * One site card of the network overview.
+ *
+ * @param array $r Row from clean_maintenance_network_rows().
  */
-function clean_maintenance_render_network() {
-	if ( ! current_user_can( 'manage_network_options' ) ) {
-		return;
-	}
-	$rows   = clean_maintenance_network_rows();
-	$counts = array(
-		'active'  => 0,
-		'open'    => 0,
-		'planned' => 0,
-	);
-	foreach ( $rows as $r ) {
-		++$counts[ 'active' === $r['group'] ? 'active' : 'open' ];
-		if ( 'planned' === $r['group'] ) {
-			++$counts['planned'];
-		}
-	}
-	$done    = isset( $_GET['cm-done'] ) ? absint( $_GET['cm-done'] ) : null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
-	$filters = array(
-		'all'     => array( __( 'All', 'clean-maintenance' ), count( $rows ) ),
-		'active'  => array( __( 'In maintenance', 'clean-maintenance' ), $counts['active'] ),
-		'open'    => array( __( 'Reachable', 'clean-maintenance' ), $counts['open'] ),
-		'planned' => array( __( 'Planned', 'clean-maintenance' ), $counts['planned'] ),
-	);
+function clean_maintenance_site_card( $r ) {
 	?>
-	<div class="wrap cm-wrap cm-net">
-		<h1 class="screen-reader-text"><?php esc_html_e( 'Maintenance mode in the network', 'clean-maintenance' ); ?></h1>
-
-		<header class="cm-hero">
-			<span class="cm-hero-icon"><?php echo clean_maintenance_icon( 'network' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
-			<div class="cm-hero-text">
-				<p class="cm-eyebrow">Clean Maintenance</p>
-				<p class="cm-hero-title"><?php esc_html_e( 'Maintenance mode in the network', 'clean-maintenance' ); ?></p>
-				<p class="cm-help"><?php esc_html_e( 'Each site sets its period, maintenance page, background, exceptions and roles in its own settings.', 'clean-maintenance' ); ?></p>
-			</div>
-			<div class="cm-stats">
-				<p class="cm-stat is-active"><strong><?php echo (int) $counts['active']; ?></strong> <span><?php esc_html_e( 'in maintenance mode', 'clean-maintenance' ); ?></span></p>
-				<p class="cm-stat"><strong><?php echo (int) $counts['open']; ?></strong> <span><?php esc_html_e( 'reachable', 'clean-maintenance' ); ?></span></p>
-				<?php if ( $counts['planned'] ) : ?>
-					<p class="cm-stat is-planned"><strong><?php echo (int) $counts['planned']; ?></strong> <span><?php esc_html_e( 'Planned', 'clean-maintenance' ); ?></span></p>
-				<?php endif; ?>
-			</div>
-		</header>
-
-		<?php if ( null !== $done ) : ?>
-			<div class="notice notice-success is-dismissible"><p>
-				<?php
-				/* translators: %d: number of changed sites. */
-				echo esc_html( sprintf( _n( '%d site changed.', '%d sites changed.', $done, 'clean-maintenance' ), $done ) );
-				?>
-			</p></div>
-		<?php endif; ?>
-
-		<form method="post" action="<?php echo esc_url( network_admin_url( 'edit.php?action=clean_maintenance_network' ) ); ?>">
-			<?php wp_nonce_field( 'clean_maintenance_network' ); ?>
-
-			<div class="cm-toolbar">
-				<div class="cm-segment" role="group" aria-label="<?php esc_attr_e( 'Show', 'clean-maintenance' ); ?>">
-					<?php foreach ( $filters as $key => $f ) : ?>
-						<label><input type="radio" name="cm_view" value="<?php echo esc_attr( $key ); ?>" class="cm-view-<?php echo esc_attr( $key ); ?>" <?php checked( 'all', $key ); ?>><span><?php echo esc_html( $f[0] ); ?> <em><?php echo (int) $f[1]; ?></em></span></label>
-					<?php endforeach; ?>
-				</div>
-				<div class="cm-bulk">
-					<label class="cm-check"><input type="checkbox" id="cm-all"> <?php esc_html_e( 'Select all', 'clean-maintenance' ); ?></label>
-					<select name="cm_mode" aria-label="<?php esc_attr_e( 'Action', 'clean-maintenance' ); ?>">
-						<option value="on"><?php esc_html_e( 'Turn selected on', 'clean-maintenance' ); ?></option>
-						<option value="off"><?php esc_html_e( 'Turn selected off', 'clean-maintenance' ); ?></option>
-					</select>
-					<?php submit_button( __( 'Apply', 'clean-maintenance' ), 'secondary', 'cm_bulk', false ); ?>
-				</div>
-			</div>
-
-			<div class="cm-sites">
-				<?php foreach ( $rows as $r ) : ?>
 					<article class="cm-site cm-site-<?php echo esc_attr( $r['group'] ); ?>">
 						<div class="cm-site-top">
 							<label class="cm-check"><input type="checkbox" class="cm-site-check" name="cm_sites[]" value="<?php echo (int) $r['id']; ?>"><span class="screen-reader-text"><?php echo esc_html( $r['name'] ); ?></span></label>
@@ -222,6 +152,98 @@ function clean_maintenance_render_network() {
 							<a class="cm-link cm-icon-link" href="<?php echo esc_url( $r['preview'] ); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e( 'Preview', 'clean-maintenance' ); ?>"><?php echo clean_maintenance_icon( 'eye' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span class="screen-reader-text"><?php esc_html_e( 'Preview', 'clean-maintenance' ); ?></span></a>
 						</div>
 					</article>
+	<?php
+}
+
+/**
+ * How many sites are in maintenance, reachable and scheduled.
+ *
+ * @param array[] $rows Rows from clean_maintenance_network_rows().
+ * @return array{all:int,active:int,open:int,planned:int}
+ */
+function clean_maintenance_network_counts( array $rows ) {
+	$counts = array(
+		'all'     => count( $rows ),
+		'active'  => 0,
+		'open'    => 0,
+		'planned' => 0,
+	);
+	foreach ( $rows as $r ) {
+		++$counts[ 'active' === $r['group'] ? 'active' : 'open' ];
+		if ( 'planned' === $r['group'] ) {
+			++$counts['planned'];
+		}
+	}
+	return $counts;
+}
+
+/**
+ * Render the network overview.
+ */
+function clean_maintenance_render_network() {
+	if ( ! current_user_can( 'manage_network_options' ) ) {
+		return;
+	}
+	$rows   = clean_maintenance_network_rows();
+	$counts = clean_maintenance_network_counts( $rows );
+	$done    = isset( $_GET['cm-done'] ) ? absint( $_GET['cm-done'] ) : null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
+	$filters = array(
+		'all'     => array( __( 'All', 'clean-maintenance' ), count( $rows ) ),
+		'active'  => array( __( 'In maintenance', 'clean-maintenance' ), $counts['active'] ),
+		'open'    => array( __( 'Reachable', 'clean-maintenance' ), $counts['open'] ),
+		'planned' => array( __( 'Planned', 'clean-maintenance' ), $counts['planned'] ),
+	);
+	?>
+	<div class="wrap cm-wrap cm-net">
+		<h1 class="screen-reader-text"><?php esc_html_e( 'Maintenance mode in the network', 'clean-maintenance' ); ?></h1>
+
+		<header class="cm-hero">
+			<span class="cm-hero-icon"><?php echo clean_maintenance_icon( 'network' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
+			<div class="cm-hero-text">
+				<p class="cm-eyebrow">Clean Maintenance</p>
+				<p class="cm-hero-title"><?php esc_html_e( 'Maintenance mode in the network', 'clean-maintenance' ); ?></p>
+				<p class="cm-help"><?php esc_html_e( 'Each site sets its period, maintenance page, background, exceptions and roles in its own settings.', 'clean-maintenance' ); ?></p>
+			</div>
+			<div class="cm-stats">
+				<p class="cm-stat is-active"><strong data-cm-count="active"><?php echo (int) $counts['active']; ?></strong> <span><?php esc_html_e( 'in maintenance mode', 'clean-maintenance' ); ?></span></p>
+				<p class="cm-stat"><strong data-cm-count="open"><?php echo (int) $counts['open']; ?></strong> <span><?php esc_html_e( 'reachable', 'clean-maintenance' ); ?></span></p>
+				<?php if ( $counts['planned'] ) : ?>
+					<p class="cm-stat is-planned"><strong data-cm-count="planned"><?php echo (int) $counts['planned']; ?></strong> <span><?php esc_html_e( 'Planned', 'clean-maintenance' ); ?></span></p>
+				<?php endif; ?>
+			</div>
+		</header>
+
+		<?php if ( null !== $done ) : ?>
+			<div class="notice notice-success is-dismissible"><p>
+				<?php
+				/* translators: %d: number of changed sites. */
+				echo esc_html( sprintf( _n( '%d site changed.', '%d sites changed.', $done, 'clean-maintenance' ), $done ) );
+				?>
+			</p></div>
+		<?php endif; ?>
+
+		<form method="post" action="<?php echo esc_url( network_admin_url( 'edit.php?action=clean_maintenance_network' ) ); ?>">
+			<?php wp_nonce_field( 'clean_maintenance_network' ); ?>
+
+			<div class="cm-toolbar">
+				<div class="cm-segment" role="group" aria-label="<?php esc_attr_e( 'Show', 'clean-maintenance' ); ?>">
+					<?php foreach ( $filters as $key => $f ) : ?>
+						<label><input type="radio" name="cm_view" value="<?php echo esc_attr( $key ); ?>" class="cm-view-<?php echo esc_attr( $key ); ?>" <?php checked( 'all', $key ); ?>><span><?php echo esc_html( $f[0] ); ?> <em data-cm-count="<?php echo esc_attr( $key ); ?>"><?php echo (int) $f[1]; ?></em></span></label>
+					<?php endforeach; ?>
+				</div>
+				<div class="cm-bulk">
+					<label class="cm-check"><input type="checkbox" id="cm-all"> <?php esc_html_e( 'Select all', 'clean-maintenance' ); ?></label>
+					<select name="cm_mode" aria-label="<?php esc_attr_e( 'Action', 'clean-maintenance' ); ?>">
+						<option value="on"><?php esc_html_e( 'Turn selected on', 'clean-maintenance' ); ?></option>
+						<option value="off"><?php esc_html_e( 'Turn selected off', 'clean-maintenance' ); ?></option>
+					</select>
+					<?php submit_button( __( 'Apply', 'clean-maintenance' ), 'secondary', 'cm_bulk', false ); ?>
+				</div>
+			</div>
+
+			<div class="cm-sites">
+				<?php foreach ( $rows as $r ) : ?>
+					<?php clean_maintenance_site_card( $r ); ?>
 				<?php endforeach; ?>
 				<p class="cm-empty"><?php esc_html_e( 'No sites in this view.', 'clean-maintenance' ); ?></p>
 			</div>
@@ -543,3 +565,39 @@ function clean_maintenance_network_widget() {
 	</div>
 	<?php
 }
+
+/*
+ * Turning a site on or off without reloading the page – the links keep working without
+ * JavaScript.
+ */
+add_action(
+	'wp_ajax_clean_maintenance_toggle',
+	function () {
+		if ( ! is_multisite() || ! current_user_can( 'manage_network_options' ) ) {
+			wp_send_json_error( null, 403 );
+		}
+		check_ajax_referer( 'clean_maintenance_network' );
+		$id   = absint( wp_unslash( $_POST['site'] ?? 0 ) );
+		$mode = 'on' === sanitize_key( wp_unslash( $_POST['mode'] ?? '' ) ) ? 'on' : 'off';
+		if ( ! $id || ! get_site( $id ) ) {
+			wp_send_json_error( null, 404 );
+		}
+		clean_maintenance_set_mode( $id, $mode );
+		$rows = clean_maintenance_network_rows();
+		$out  = array( 'counts' => clean_maintenance_network_counts( $rows ) );
+		if ( 'dashboard' === sanitize_key( wp_unslash( $_POST['context'] ?? '' ) ) ) {
+			ob_start();
+			clean_maintenance_network_widget();
+			$out['widget'] = ob_get_clean();
+		} else {
+			foreach ( $rows as $r ) {
+				if ( $r['id'] === $id ) {
+					ob_start();
+					clean_maintenance_site_card( $r );
+					$out['card'] = ob_get_clean();
+				}
+			}
+		}
+		wp_send_json_success( $out );
+	}
+);

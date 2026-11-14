@@ -116,4 +116,93 @@ jQuery( function ( $ ) {
 	$( '#cm-all' ).on( 'change', function () {
 		$( '.cm-site:visible .cm-site-check' ).prop( 'checked', this.checked );
 	} );
+
+	/* Turning on and off without reloading. Without JavaScript or on an error the links and
+	 * the form work as before. */
+	function announce( text ) {
+		var $live = $( '#cm-live' );
+		if ( ! $live.length ) {
+			$live = $( '<p id="cm-live" class="screen-reader-text" aria-live="polite"></p>' ).appendTo( 'body' );
+		}
+		$live.text( text );
+	}
+
+	$( document ).on( 'click', '.cm-site .cm-btn-on, .cm-site .cm-btn-off, .cm-wrow .cm-btn', function ( e ) {
+		if ( ! l10n.ajax ) {
+			return;
+		}
+		e.preventDefault();
+		var $b = $( this ), href = $b.attr( 'href' ), q = new URL( href, window.location.href ).searchParams;
+		var context = $b.closest( '.cm-widget' ).length ? 'dashboard' : 'overview';
+		if ( $b.hasClass( 'is-busy' ) ) {
+			return;
+		}
+		$b.addClass( 'is-busy' ).attr( 'aria-busy', 'true' );
+		$.post( l10n.ajax, {
+			action: 'clean_maintenance_toggle',
+			_ajax_nonce: l10n.nonce,
+			site: q.get( 'cm_sites[]' ),
+			mode: q.get( 'cm_mode' ),
+			context: context
+		} ).done( function ( r ) {
+			if ( ! r || ! r.success ) {
+				window.location.href = href;
+				return;
+			}
+			if ( 'dashboard' === context ) {
+				$b.closest( '.cm-widget' ).replaceWith( r.data.widget );
+			} else {
+				$b.closest( '.cm-site' ).replaceWith( r.data.card );
+				$.each( r.data.counts, function ( key, n ) {
+					$( '[data-cm-count="' + key + '"]' ).text( n );
+				} );
+			}
+			announce( l10n.saved );
+		} ).fail( function () {
+			window.location.href = href;
+		} );
+	} );
+
+	$( document ).on( 'submit', '.cm-site-widget', function ( e ) {
+		if ( ! l10n.ajax ) {
+			return;
+		}
+		e.preventDefault();
+		var form = this, $f = $( form ), $btn = $f.find( '[type="submit"]' );
+		var data = $.grep( $f.serializeArray(), function ( f ) {
+			return 'action' !== f.name;
+		} );
+		data.push( { name: 'action', value: 'clean_maintenance_widget_save' } );
+		$btn.prop( 'disabled', true );
+		$.post( l10n.ajax, $.param( data ) ).done( function ( r ) {
+			if ( ! r || ! r.success ) {
+				form.submit();
+				return;
+			}
+			$f.find( '.cm-pill' ).replaceWith( r.data.pill );
+			var $msg = $f.find( '.cm-widget-saved' );
+			if ( ! $msg.length ) {
+				$msg = $( '<p class="cm-widget-saved"></p>' ).insertAfter( $f.find( '.cm-pill' ) );
+			}
+			$msg.text( l10n.saved ).prop( 'hidden', false );
+			if ( ! r.data.active ) {
+				$( '#wp-admin-bar-cm-maintenance' ).remove();
+			}
+			announce( l10n.saved );
+		} ).fail( function () {
+			form.submit();
+		} ).always( function () {
+			$btn.prop( 'disabled', false );
+		} );
+	} );
+
+	/* The quick switch in the admin bar turned maintenance off: show it in the widget too. */
+	document.addEventListener( 'clean-maintenance-off', function ( e ) {
+		var $w = $( '.cm-site-widget' );
+		if ( $w.length && e.detail && e.detail.pill ) {
+			$w.find( '.cm-pill' ).replaceWith( e.detail.pill );
+			$w.find( 'input[name="mode"][value="off"]' ).prop( 'checked', true );
+		}
+		announce( l10n.saved );
+	} );
 } );

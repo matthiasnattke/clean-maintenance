@@ -207,5 +207,6 @@
 	"Short links": "Kurzlinks",
 	"How Clean Short Links and the maintenance mode work together on this site. The same setting appears in the short link settings.": "Wie Clean Short Links und der Wartungsmodus auf dieser Website zusammenspielen. Dieselbe Einstellung erscheint auch in den Kurzlink-Einstellungen.",
 	"A fallback of the short link and the default target of the short link settings always come first.": "Ein Ersatzziel des Kurzlinks und das Standard-Ziel der Kurzlink-Einstellungen haben immer Vorrang.",
-	"All settings": "Alle Einstellungen"
+	"All settings": "Alle Einstellungen",
+	"Could not be saved – please try again.": "Konnte nicht gespeichert werden – bitte noch einmal versuchen."
 }
