@@ -9,7 +9,7 @@
 	--cm-accent: #e2611b;
 	--cm-blue: var(--wp-admin-theme-color, #2271b1);
 	--cm-radius: 16px;
-	max-width: 1180px;
+	max-width: none;
 	color: var(--cm-ink);
 }
 
