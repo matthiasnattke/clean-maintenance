@@ -401,3 +401,34 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 .cm-picker-simple { color: var(--cm-muted); }
 .cm-picker-head { margin: 6px 10px 2px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--cm-muted); }
 .cm-picker-note { margin: 0; padding: 8px 10px; color: var(--cm-muted); }
+
+/* Phones in landscape (e.g. iPhone turned sideways): wide but low. A compact head with the
+   actions beside the title, navigation in one scrolling row, a slim save bar – so the
+   settings themselves keep most of the screen. */
+@media (max-height: 500px) and (orientation: landscape) {
+	.cm-hero { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; column-gap: 14px; row-gap: 8px; align-items: center; margin: 10px 0 14px; padding: 12px 16px; }
+	.cm-hero-text { display: contents; }
+	.cm-hero-icon { grid-column: 1; grid-row: 1 / span 2; width: 40px; height: 40px; border-radius: 12px; transform: none; }
+	.cm-hero-icon img { width: 40px; height: 40px; border-radius: 12px; }
+	.cm-hero-icon .cm-ico { width: 24px; height: 24px; }
+	.cm-hero-text > *, .cm-hero > .cm-stats { grid-column: 1 / -1; }
+	.cm-hero-text > .cm-eyebrow { grid-column: 2; align-self: end; margin: 0; }
+	.cm-hero-text > .cm-hero-title { grid-column: 2; align-self: start; font-size: 20px; margin: 0 !important; }
+	.cm-hero-text > .cm-pill { justify-self: start; }
+	.cm-hero-actions { grid-column: 3; grid-row: 1 / span 2; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+	.cm-hero .cm-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+	.cm-hero .cm-stats .cm-stat { min-width: 0; padding: 6px 10px; }
+	.cm-hero .cm-stats .cm-stat strong { font-size: 20px; }
+	.cm-hero .cm-stats .cm-stat span { font-size: 11px; }
+	/* Without actions the figures sit beside the title. */
+	.cm-hero:not(:has(> .cm-hero-actions)) > .cm-stats { grid-column: 3; grid-row: 1 / span 2; display: flex; }
+	.cm-hero:not(:has(> .cm-hero-actions)) > .cm-stats .cm-stat { min-width: 96px; }
+	.cm-nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+	.cm-nav > a { white-space: nowrap; }
+	.cm-card { padding: 16px 18px; margin-bottom: 14px; }
+	.cm-savebar { flex-wrap: nowrap; gap: 12px; padding: 6px 14px; }
+	.cm-savebar .button-primary { min-height: 32px; }
+	.cm-net .cm-segment { display: flex; flex-wrap: nowrap; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+	.cm-net .cm-segment span { white-space: nowrap; }
+	.cm-picker-list { max-height: 45vh; }
+}
