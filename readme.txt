@@ -4,7 +4,7 @@ Tags: maintenance, maintenance mode, multisite, coming soon, rest api
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.8.0
+Stable tag: 0.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,7 +75,7 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 
 == Changelog ==
 
-= 0.8.0 =
+= 0.7.1 =
 * Works together with Clean Short Links: one shared rule per site decides whether short links redirect, let their targets through or pause during maintenance, and whether short links that do not work show the maintenance page.
 * Dashboard widget on every site: status, quick switch (off, on, scheduled), maintenance page and design.
 * Other plugins can exempt requests with the filter `clean_maintenance_excluded` and show the maintenance page with `clean_maintenance_show_page()`.
