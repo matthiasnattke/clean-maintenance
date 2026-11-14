@@ -33,9 +33,9 @@ add_action(
 		if ( ! $overview && ! $dashboard ) {
 			return;
 		}
-		wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array(), CLEAN_MAINTENANCE_VERSION );
+		wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array(), clean_maintenance_asset_ver( 'admin.css' ) );
 		if ( $overview ) {
-			wp_enqueue_script( 'clean-maintenance-network', plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ), array( 'jquery' ), CLEAN_MAINTENANCE_VERSION, true );
+			wp_enqueue_script( 'clean-maintenance-network', plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ), array( 'jquery' ), clean_maintenance_asset_ver( 'admin.js' ), true );
 		}
 	}
 );

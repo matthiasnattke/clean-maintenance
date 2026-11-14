@@ -515,12 +515,12 @@ add_action(
 		}
 		wp_enqueue_media();
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array( 'wp-color-picker' ), CLEAN_MAINTENANCE_VERSION );
+		wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array( 'wp-color-picker' ), clean_maintenance_asset_ver( 'admin.css' ) );
 		wp_enqueue_script(
 			'clean-maintenance-admin',
 			plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ),
 			array( 'jquery', 'wp-color-picker' ),
-			CLEAN_MAINTENANCE_VERSION,
+			clean_maintenance_asset_ver( 'admin.js' ),
 			true
 		);
 		wp_localize_script(

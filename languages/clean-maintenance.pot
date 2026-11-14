@@ -154,7 +154,7 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: includes/admin.php:309 includes/core.php:180 includes/widget.php:43
+#: includes/admin.php:309 includes/core.php:191 includes/widget.php:43
 msgid "Off"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Visitors see the normal site."
 msgstr ""
 
-#: includes/admin.php:310 includes/core.php:177 includes/widget.php:44
+#: includes/admin.php:310 includes/core.php:188 includes/widget.php:44
 msgid "On"
 msgstr ""
 
@@ -380,32 +380,32 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/core.php:187
+#: includes/core.php:198
 msgid "Active (scheduled)"
 msgstr ""
 
-#: includes/core.php:188
+#: includes/core.php:199
 msgid "Period ended"
 msgstr ""
 
-#: includes/core.php:189 includes/network.php:151 includes/network.php:168 includes/network.php:523
+#: includes/core.php:200 includes/network.php:151 includes/network.php:168 includes/network.php:523
 msgid "Planned"
 msgstr ""
 
 #. translators: 1: start date and time, 2: end date and time.
-#: includes/core.php:195
+#: includes/core.php:206
 #, php-format
 msgid "from %1$s to %2$s"
 msgstr ""
 
 #. translators: %s: start date and time.
-#: includes/core.php:198
+#: includes/core.php:209
 #, php-format
 msgid "from %s"
 msgstr ""
 
 #. translators: %s: end date and time.
-#: includes/core.php:201
+#: includes/core.php:212
 #, php-format
 msgid "until %s"
 msgstr ""

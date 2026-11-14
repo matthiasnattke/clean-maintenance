@@ -10,6 +10,17 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Version of an asset: plugin version plus file time, so browsers load a changed file right away.
+ *
+ * @param string $file File name in assets/.
+ * @return string
+ */
+function clean_maintenance_asset_ver( $file ) {
+	$path = dirname( CLEAN_MAINTENANCE_FILE ) . '/assets/' . $file;
+	return CLEAN_MAINTENANCE_VERSION . '.' . ( file_exists( $path ) ? filemtime( $path ) : 0 );
+}
+
+/**
  * Load the bundled translations (German ships with the plugin).
  */
 function clean_maintenance_load_textdomain() {

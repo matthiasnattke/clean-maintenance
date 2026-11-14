@@ -21,7 +21,7 @@ add_action(
 	'admin_enqueue_scripts',
 	function ( $hook ) {
 		if ( 'index.php' === $hook && ! is_network_admin() && current_user_can( 'manage_options' ) ) {
-			wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array(), CLEAN_MAINTENANCE_VERSION );
+			wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array(), clean_maintenance_asset_ver( 'admin.css' ) );
 		}
 	}
 );
