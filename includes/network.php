@@ -98,6 +98,7 @@ function clean_maintenance_network_rows() {
 			'page'     => (int) $s['page'] ? get_the_title( (int) $s['page'] ) : '',
 			'settings' => admin_url( 'options-general.php?page=clean-maintenance' ),
 			'preview'  => add_query_arg( 'cm-preview', '1', $url ),
+			'links'    => clean_maintenance_page_links( $s ),
 		);
 		restore_current_blog();
 	}
@@ -108,19 +109,6 @@ function clean_maintenance_network_rows() {
 		}
 	);
 	return $rows;
-}
-
-/**
- * Short description of what a site shows during maintenance.
- *
- * @param array $r Row from clean_maintenance_network_rows().
- * @return string
- */
-function clean_maintenance_shows( $r ) {
-	if ( 'classic' === $r['design'] ) {
-		return __( 'Classic design', 'clean-maintenance' );
-	}
-	return $r['page'] ? $r['page'] : __( 'simple notice', 'clean-maintenance' );
 }
 
 /**
@@ -141,7 +129,7 @@ function clean_maintenance_site_card( $r ) {
 						<?php if ( ! empty( $state[1] ) ) : ?>
 							<p class="cm-site-shows cm-site-when"><?php echo clean_maintenance_icon( 'calendar' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_html( $state[1] ); ?></p>
 						<?php endif; ?>
-						<p class="cm-site-shows"><?php echo clean_maintenance_icon( 'classic' === $r['design'] ? 'type' : 'page' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_html( clean_maintenance_shows( $r ) ); ?></p>
+						<p class="cm-site-shows"><?php clean_maintenance_page_links_html( $r['links'], 'classic' === $r['design'] ? 'type' : 'page' ); ?></p>
 						<div class="cm-site-actions">
 							<?php if ( 'on' === $r['mode'] ) : ?>
 								<a class="button cm-btn cm-btn-off" href="<?php echo esc_url( clean_maintenance_toggle_url( $r['id'], 'off' ) ); ?>" data-cm-site="<?php echo (int) $r['id']; ?>" data-cm-mode="off"><?php echo clean_maintenance_icon( 'power' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Turn off', 'clean-maintenance' ); ?></a>

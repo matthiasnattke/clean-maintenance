@@ -29,13 +29,20 @@ add_action(
 );
 
 /**
- * The status pill of the current site.
+ * The status pill of the current site and, while maintenance is on, what it shows.
  *
  * @return string HTML.
  */
 function clean_maintenance_widget_pill() {
-	$status = clean_maintenance_status( clean_maintenance_settings() );
-	return '<p class="cm-pill' . ( $status[0] ? ' is-active' : '' ) . ' cm-state-' . esc_attr( $status[2] ) . '"><span class="cm-dot" aria-hidden="true"></span>' . esc_html( $status[1] ) . '</p>';
+	$s      = clean_maintenance_settings();
+	$status = clean_maintenance_status( $s );
+	$html   = '<p class="cm-pill' . ( $status[0] ? ' is-active' : '' ) . ' cm-state-' . esc_attr( $status[2] ) . '"><span class="cm-dot" aria-hidden="true"></span>' . esc_html( $status[1] ) . '</p>';
+	if ( $status[0] ) {
+		ob_start();
+		clean_maintenance_page_links_html( clean_maintenance_page_links( $s ), 'classic' === $s['design'] ? 'type' : 'page' );
+		$html .= '<p class="cm-site-shows cm-widget-shows">' . ob_get_clean() . '</p>';
+	}
+	return '<div class="cm-widget-state">' . $html . '</div>';
 }
 
 /**

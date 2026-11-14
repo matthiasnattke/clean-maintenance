@@ -9,7 +9,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: clean-maintenance\n"
 
-#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:264 includes/admin.php:270 includes/network.php:19 includes/network.php:20 includes/network.php:520 includes/widget.php:15
+#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:265 includes/admin.php:271 includes/network.php:19 includes/network.php:20 includes/network.php:508 includes/widget.php:15
 msgid "Maintenance mode"
 msgstr "Wartungsmodus"
 
@@ -69,7 +69,7 @@ msgstr "Immer die Wartungsseite"
 msgid "Instead of every error page – also without maintenance mode."
 msgstr "Statt jeder Fehlerseite – auch ohne Wartungsmodus."
 
-#: includes/admin.php:85 includes/admin.php:260
+#: includes/admin.php:85 includes/admin.php:261
 msgid "Short links"
 msgstr "Kurzlinks"
 
@@ -90,294 +90,294 @@ msgid "The end is before the start – please check."
 msgstr "Das Ende liegt vor dem Beginn – bitte prüfen."
 
 #. translators: %s: IP address of the current visitor.
-#: includes/admin.php:220
+#: includes/admin.php:221
 #, php-format
 msgid "Your current address: %s"
 msgstr "Deine aktuelle Adresse: %s"
 
 #. translators: %s: IP address of the current visitor.
-#: includes/admin.php:222
+#: includes/admin.php:223
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: includes/admin.php:224
+#: includes/admin.php:225
 msgid "Allowed network-wide"
 msgstr "Netzwerkweit freigegeben"
 
-#: includes/admin.php:253 includes/admin.php:303
+#: includes/admin.php:254 includes/admin.php:304
 msgid "Status"
 msgstr "Status"
 
-#: includes/admin.php:254 includes/admin.php:338
+#: includes/admin.php:255 includes/admin.php:339
 msgid "Appearance"
 msgstr "Erscheinungsbild"
 
-#: includes/admin.php:255 includes/admin.php:407
+#: includes/admin.php:256 includes/admin.php:408
 msgid "Access"
 msgstr "Zugang"
 
-#: includes/admin.php:256 includes/admin.php:450
+#: includes/admin.php:257 includes/admin.php:451
 msgid "Search engines & API"
 msgstr "Suchmaschinen & Schnittstellen"
 
-#: includes/admin.php:257 includes/admin.php:493
+#: includes/admin.php:258 includes/admin.php:494
 msgid "Comfort"
 msgstr "Komfort"
 
-#: includes/admin.php:274 includes/admin.php:502 includes/network.php:152 includes/network.php:152 includes/widget.php:115
+#: includes/admin.php:275 includes/admin.php:503 includes/network.php:140 includes/network.php:140 includes/widget.php:122
 msgid "Preview"
 msgstr "Vorschau"
 
-#: includes/admin.php:276
+#: includes/admin.php:277
 msgid "All sites"
 msgstr "Alle Websites"
 
-#: includes/admin.php:284
+#: includes/admin.php:285
 msgid "Sections"
 msgstr "Abschnitte"
 
 #. translators: %s: version number.
-#: includes/admin.php:292
+#: includes/admin.php:293
 #, php-format
 msgid "Version %s"
 msgstr "Version %s"
 
 #. translators: %s: version number.
-#: includes/admin.php:295
+#: includes/admin.php:296
 msgid "Project page"
 msgstr "Projektseite"
 
-#: includes/admin.php:304
+#: includes/admin.php:305
 msgid "When should visitors see the maintenance page?"
 msgstr "Wann sollen Besucher die Wartungsseite sehen?"
 
-#: includes/admin.php:306 includes/widget.php:83
+#: includes/admin.php:307 includes/widget.php:90
 msgid "Mode"
 msgstr "Modus"
 
-#: includes/admin.php:309 includes/core.php:191 includes/widget.php:69
+#: includes/admin.php:310 includes/core.php:191 includes/widget.php:76
 msgid "Off"
 msgstr "Aus"
 
-#: includes/admin.php:309
+#: includes/admin.php:310
 msgid "Visitors see the normal site."
 msgstr "Besucher sehen die normale Website."
 
-#: includes/admin.php:310 includes/core.php:188 includes/widget.php:70
+#: includes/admin.php:311 includes/core.php:188 includes/widget.php:77
 msgid "On"
 msgstr "Eingeschaltet"
 
-#: includes/admin.php:310
+#: includes/admin.php:311
 msgid "Right away, until you turn it off."
 msgstr "Sofort, bis du ihn ausschaltest."
 
-#: includes/admin.php:311 includes/widget.php:71
+#: includes/admin.php:312 includes/widget.php:78
 msgid "Scheduled"
 msgstr "Zeitgesteuert"
 
-#: includes/admin.php:311
+#: includes/admin.php:312
 msgid "Start and end from the calendar."
 msgstr "Beginn und Ende aus dem Kalender."
 
-#: includes/admin.php:325 includes/widget.php:89
+#: includes/admin.php:326 includes/widget.php:96
 msgid "Start"
 msgstr "Beginn"
 
-#: includes/admin.php:326 includes/widget.php:90
+#: includes/admin.php:327 includes/widget.php:97
 msgid "End"
 msgstr "Ende"
 
 #. translators: %s: time zone of the site, e.g. Europe/Berlin.
-#: includes/admin.php:331
+#: includes/admin.php:332
 #, php-format
 msgid "Time zone of the site (%s). Without a start the mode applies right away, without an end until you turn it off."
 msgstr "Zeitzone der Website (%s). Ohne Beginn gilt der Modus sofort, ohne Ende bis zum Ausschalten."
 
-#: includes/admin.php:339
+#: includes/admin.php:340
 msgid "What visitors see while you work."
 msgstr "Was Besucher sehen, während du arbeitest."
 
-#: includes/admin.php:341 includes/widget.php:94
+#: includes/admin.php:342 includes/widget.php:101
 msgid "Design"
 msgstr "Gestaltung"
 
-#: includes/admin.php:345 includes/widget.php:95
+#: includes/admin.php:346 includes/widget.php:102
 msgid "Page from WordPress"
 msgstr "Seite aus WordPress"
 
-#: includes/admin.php:346
+#: includes/admin.php:347
 msgid "In the style of your theme, edited like any other page."
 msgstr "Im Stil deines Themes, bearbeitet wie jede andere Seite."
 
-#: includes/admin.php:351 includes/widget.php:96
+#: includes/admin.php:352 includes/widget.php:103
 msgid "Classic"
 msgstr "Klassisch"
 
-#: includes/admin.php:352
+#: includes/admin.php:353
 msgid "Heading, text and background – independent of the theme."
 msgstr "Überschrift, Text und Hintergrund – unabhängig vom Theme."
 
-#: includes/admin.php:357 includes/widget.php:99
+#: includes/admin.php:358 includes/widget.php:106
 msgid "Maintenance page"
 msgstr "Wartungsseite"
 
-#: includes/admin.php:360 includes/widget.php:101
+#: includes/admin.php:361 includes/widget.php:108
 msgid "– simple notice with the site title –"
 msgstr "– einfacher Hinweis mit Name –"
 
-#: includes/admin.php:366
+#: includes/admin.php:367
 msgid "Edit page"
 msgstr "Seite bearbeiten"
 
-#: includes/admin.php:369
+#: includes/admin.php:370
 msgid "Shown everywhere without header and footer. Best create a page of its own as a draft or private – then it is not visible anywhere else."
 msgstr "Wird überall ohne Kopf- und Fußbereich angezeigt. Am besten eine eigene Seite als Entwurf oder privat anlegen – sie ist dann sonst nirgends sichtbar."
 
-#: includes/admin.php:373
+#: includes/admin.php:374
 msgid "Title in the browser tab"
 msgstr "Titel im Browser-Tab"
 
-#: includes/admin.php:376 includes/widget.php:109
+#: includes/admin.php:377 includes/widget.php:116
 msgid "Heading"
 msgstr "Überschrift"
 
-#: includes/admin.php:378 includes/admin.php:383
+#: includes/admin.php:379 includes/admin.php:384
 msgid "Colour"
 msgstr "Farbe"
 
-#: includes/admin.php:381 includes/widget.php:110
+#: includes/admin.php:382 includes/widget.php:117
 msgid "Text"
 msgstr "Text"
 
-#: includes/admin.php:385
+#: includes/admin.php:386
 msgid "HTML is allowed (paragraphs, links, emphasis)."
 msgstr "HTML ist erlaubt (Absätze, Links, Hervorhebungen)."
 
-#: includes/admin.php:386
+#: includes/admin.php:387
 msgid "Show a “Dashboard” link below the text"
 msgstr "Link „Dashboard“ unter dem Text anzeigen"
 
-#: includes/admin.php:390
+#: includes/admin.php:391
 msgid "Background"
 msgstr "Hintergrund"
 
-#: includes/admin.php:397
+#: includes/admin.php:398
 msgid "Choose image"
 msgstr "Bild wählen"
 
-#: includes/admin.php:398
+#: includes/admin.php:399
 msgid "Remove image"
 msgstr "Bild entfernen"
 
-#: includes/admin.php:400
+#: includes/admin.php:401
 msgid "The image fills the whole background; the colour lies beneath it or applies on its own."
 msgstr "Das Bild füllt den ganzen Hintergrund; die Farbe liegt darunter bzw. gilt allein."
 
-#: includes/admin.php:408
+#: includes/admin.php:409
 msgid "Who still gets in – and what stays reachable for everyone."
 msgstr "Wer trotzdem hineinkommt – und was für alle erreichbar bleibt."
 
-#: includes/admin.php:411
+#: includes/admin.php:412
 msgid "Roles with access to the site"
 msgstr "Rollen mit Zugang zur Website"
 
-#: includes/admin.php:417
+#: includes/admin.php:418
 msgid "Logged-in users with these roles see the normal site. Network administrators always have access."
 msgstr "Angemeldete Personen mit diesen Rollen sehen die normale Website. Netzwerk-Administratoren haben immer Zugang."
 
-#: includes/admin.php:421
+#: includes/admin.php:422
 msgid "Roles with access to the dashboard"
 msgstr "Rollen mit Zugang zur Verwaltung"
 
-#: includes/admin.php:432
+#: includes/admin.php:433
 msgid "During maintenance only administrators and these roles may use the dashboard; everyone else is redirected."
 msgstr "Während der Wartung dürfen nur Administratoren und diese Rollen in die Verwaltung; alle anderen werden umgeleitet."
 
-#: includes/admin.php:436
+#: includes/admin.php:437
 msgid "Redirect"
 msgstr "Weiterleitung"
 
-#: includes/admin.php:438
+#: includes/admin.php:439
 msgid "Where logged-in users without dashboard access are sent. Empty = home page."
 msgstr "Wohin Angemeldete ohne Zugang zur Verwaltung geleitet werden. Leer = Startseite."
 
-#: includes/admin.php:442
+#: includes/admin.php:443
 msgid "Exceptions"
 msgstr "Ausnahmen"
 
-#: includes/admin.php:444
+#: includes/admin.php:445
 msgid "Exclude the feed, pages, archives, IP addresses or address ranges from maintenance mode. One slug, IP address or range (e.g. 192.168.178.0/24) per line; comments start with # and may follow at the end of a line."
 msgstr "Feed, Seiten, Archive, IP-Adressen oder Adressbereiche vom Wartungsmodus ausnehmen. Ein Slug, eine IP-Adresse oder ein Bereich (z. B. 192.168.178.0/24) pro Zeile; Kommentare beginnen mit # und dürfen am Zeilenende stehen."
 
-#: includes/admin.php:451
+#: includes/admin.php:452
 msgid "How search engines and other programs are treated."
 msgstr "Wie Suchmaschinen und andere Programme behandelt werden."
 
-#: includes/admin.php:454
+#: includes/admin.php:455
 msgid "Bots see the normal site"
 msgstr "Bots sehen die normale Website"
 
-#: includes/admin.php:454
+#: includes/admin.php:455
 msgid "Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking."
 msgstr "Sonst bekommen auch Suchmaschinen die Wartungsseite mit Status 503 (vorübergehend), was das Ranking schont."
 
-#: includes/admin.php:458
+#: includes/admin.php:459
 msgid "Robots meta tag"
 msgstr "Robots-Meta-Tag"
 
-#: includes/admin.php:463
+#: includes/admin.php:464
 msgid "Instruction for search engines on the maintenance page."
 msgstr "Angabe für Suchmaschinen auf der Wartungsseite."
 
-#: includes/admin.php:467
+#: includes/admin.php:468
 msgid "REST API for visitors"
 msgstr "REST-API für Besucher"
 
-#: includes/admin.php:471
+#: includes/admin.php:472
 msgid "Open"
 msgstr "Offen"
 
-#: includes/admin.php:472
+#: includes/admin.php:473
 msgid "Locked during maintenance"
 msgstr "Während der Wartung gesperrt"
 
-#: includes/admin.php:473
+#: includes/admin.php:474
 msgid "Always locked"
 msgstr "Immer gesperrt"
 
-#: includes/admin.php:480
+#: includes/admin.php:481
 msgid "Locked requests without login get “401”. Logged-in users, the block editor and Jetpack keep working. The REST API hints in the page head are removed as well."
 msgstr "Gesperrte Aufrufe ohne Anmeldung bekommen „401“. Angemeldete Nutzer, der Block-Editor und Jetpack funktionieren weiter. Die Hinweise auf die REST-API im Seitenkopf werden dann ebenfalls entfernt."
 
-#: includes/admin.php:481
+#: includes/admin.php:482
 msgid "Still public (one namespace per line, e.g. oembed or podlove; comments with #):"
 msgstr "Trotzdem öffentlich erreichbar (ein Namensraum pro Zeile, z. B. oembed oder podlove; Kommentare mit #):"
 
-#: includes/admin.php:494
+#: includes/admin.php:495
 msgid "Small helpers in the dashboard."
 msgstr "Kleine Helfer in der Verwaltung."
 
-#: includes/admin.php:496
+#: includes/admin.php:497
 msgid "Notice"
 msgstr "Hinweis"
 
-#: includes/admin.php:496
+#: includes/admin.php:497
 msgid "Red “Maintenance mode active” notice in the admin bar, with a switch to turn it off"
 msgstr "Roter Hinweis „Wartungsmodus aktiv“ in der Adminleiste, mit Schalter zum Ausschalten"
 
-#: includes/admin.php:501
+#: includes/admin.php:502
 msgid "Save settings"
 msgstr "Einstellungen speichern"
 
-#: includes/admin.php:530
+#: includes/admin.php:531
 msgid "Choose background image"
 msgstr "Hintergrundbild wählen"
 
-#: includes/admin.php:531
+#: includes/admin.php:532
 msgid "Use image"
 msgstr "Übernehmen"
 
-#: includes/admin.php:540 includes/frontend.php:343 includes/network.php:151
+#: includes/admin.php:541 includes/frontend.php:343 includes/network.php:139
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -389,7 +389,7 @@ msgstr "Aktiv (geplant)"
 msgid "Period ended"
 msgstr "Zeitraum vorbei"
 
-#: includes/core.php:200 includes/network.php:194 includes/network.php:211 includes/network.php:545
+#: includes/core.php:200 includes/network.php:182 includes/network.php:199 includes/network.php:533
 msgid "Planned"
 msgstr "Geplant"
 
@@ -411,13 +411,29 @@ msgstr "ab %s"
 msgid "until %s"
 msgstr "bis %s"
 
-#: includes/core.php:794 includes/network.php:273 includes/widget.php:79
+#: includes/core.php:794 includes/network.php:261 includes/widget.php:86
 msgid "Saved."
 msgstr "Gespeichert."
 
 #: includes/core.php:795
 msgid "Could not be saved – please try again."
 msgstr "Konnte nicht gespeichert werden – bitte noch einmal versuchen."
+
+#: includes/core.php:808
+msgid "Classic design"
+msgstr "Klassische Gestaltung"
+
+#: includes/core.php:808 includes/core.php:811
+msgid "simple notice"
+msgstr "einfacher Hinweis"
+
+#: includes/core.php:828
+msgid "Open the maintenance page"
+msgstr "Wartungsseite öffnen"
+
+#: includes/core.php:836
+msgid "Edit the maintenance page"
+msgstr "Wartungsseite im Editor bearbeiten"
 
 #: includes/frontend.php:141
 msgid "This website is currently being updated. Please check back soon."
@@ -435,7 +451,7 @@ msgstr "Wartungsmodus aktiv"
 msgid "Turn off maintenance mode"
 msgstr "Wartungsmodus ausschalten"
 
-#: includes/frontend.php:405 includes/network.php:464 includes/network.php:486 includes/widget.php:126
+#: includes/frontend.php:405 includes/network.php:452 includes/network.php:474 includes/widget.php:133
 msgid "You are not allowed to do this."
 msgstr "Keine Berechtigung."
 
@@ -447,357 +463,349 @@ msgstr "Die REST-API ist nur für angemeldete Nutzer verfügbar."
 msgid "Overview"
 msgstr "Übersicht"
 
-#: includes/network.php:121
-msgid "Classic design"
-msgstr "Klassische Gestaltung"
-
-#: includes/network.php:123
-msgid "simple notice"
-msgstr "einfacher Hinweis"
-
-#: includes/network.php:147 includes/network.php:556
+#: includes/network.php:135 includes/network.php:544
 msgid "Turn off"
 msgstr "Ausschalten"
 
-#: includes/network.php:149
+#: includes/network.php:137
 msgid "Turn on"
 msgstr "Einschalten"
 
-#: includes/network.php:191
+#: includes/network.php:179
 msgid "All"
 msgstr "Alle"
 
-#: includes/network.php:192
+#: includes/network.php:180
 msgid "In maintenance"
 msgstr "In Wartung"
 
-#: includes/network.php:193
+#: includes/network.php:181
 msgid "Reachable"
 msgstr "Erreichbar"
 
-#: includes/network.php:198 includes/network.php:204
+#: includes/network.php:186 includes/network.php:192
 msgid "Maintenance mode in the network"
 msgstr "Wartungsmodus im Netzwerk"
 
-#: includes/network.php:205
+#: includes/network.php:193
 msgid "Each site sets its period, maintenance page, background, exceptions and roles in its own settings."
 msgstr "Zeiträume, Wartungsseite, Hintergrund, Ausnahmen und Rollen stellt jede Website in ihren eigenen Einstellungen ein."
 
-#: includes/network.php:208 includes/network.php:542
+#: includes/network.php:196 includes/network.php:530
 msgid "in maintenance mode"
 msgstr "im Wartungsmodus"
 
-#: includes/network.php:209 includes/network.php:543
+#: includes/network.php:197 includes/network.php:531
 msgid "reachable"
 msgstr "erreichbar"
 
 #. translators: %d: number of changed sites.
-#: includes/network.php:220
+#: includes/network.php:208
 #, php-format
 msgid "%d site changed."
 msgid_plural "%d sites changed."
 msgstr[0] "%d Website geändert."
 msgstr[1] "%d Websites geändert."
 
-#: includes/network.php:229
+#: includes/network.php:217
 msgid "Show"
 msgstr "Anzeigen"
 
-#: includes/network.php:235
+#: includes/network.php:223
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: includes/network.php:236
+#: includes/network.php:224
 msgid "Action"
 msgstr "Aktion"
 
-#: includes/network.php:237
+#: includes/network.php:225
 msgid "Turn selected on"
 msgstr "Ausgewählte einschalten"
 
-#: includes/network.php:238
+#: includes/network.php:226
 msgid "Turn selected off"
 msgstr "Ausgewählte ausschalten"
 
-#: includes/network.php:240
+#: includes/network.php:228
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: includes/network.php:248
+#: includes/network.php:236
 msgid "No sites in this view."
 msgstr "Keine Websites in dieser Ansicht."
 
-#: includes/network.php:267
+#: includes/network.php:255
 msgid "Always let through"
 msgstr "Immer durchlassen"
 
-#: includes/network.php:268
+#: includes/network.php:256
 msgid "Visitors from your home network see every site of the network normally, without logging in."
 msgstr "Besucher aus deinem Heimnetz sehen alle Websites des Netzwerks normal – ohne Anmeldung."
 
-#: includes/network.php:271
+#: includes/network.php:259
 msgid "Saved, but the home address was not a valid name and has been left empty."
 msgstr "Gespeichert, aber der DynDNS-Name war ungültig und bleibt leer."
 
-#: includes/network.php:280
+#: includes/network.php:268
 msgid "Access pass for a browser"
 msgstr "Durchlass für einen Browser"
 
-#: includes/network.php:281
+#: includes/network.php:269
 msgid "Recommended"
 msgstr "Empfohlen"
 
-#: includes/network.php:283
+#: includes/network.php:271
 msgid "A cookie that lets one browser see every site – no matter where it is or which address it uses, also with iCloud Private Relay or on the go. It stays for half a year, even after logging out."
 msgstr "Ein Cookie, mit dem ein Browser alle Websites sieht – egal wo er ist und mit welcher Adresse, auch mit iCloud Privat-Relay oder unterwegs. Es bleibt ein halbes Jahr, auch nach dem Abmelden."
 
-#: includes/network.php:284
+#: includes/network.php:272
 msgid "Give network administrators a pass when they log in"
 msgstr "Netzwerk-Administratoren bekommen den Durchlass bei der Anmeldung"
 
-#: includes/network.php:286
+#: includes/network.php:274
 msgid "Access link"
 msgstr "Zugangslink"
 
-#: includes/network.php:287 includes/network.php:312
+#: includes/network.php:275 includes/network.php:300
 msgid "Copied"
 msgstr "Kopiert"
 
-#: includes/network.php:287 includes/network.php:312
+#: includes/network.php:275 includes/network.php:300
 msgid "Copy"
 msgstr "Kopieren"
 
-#: includes/network.php:289
+#: includes/network.php:277
 msgid "To see the maintenance page anyway, add ?cm-preview=1 to the address."
 msgstr "Um die Wartungsseite trotzdem zu sehen, hänge ?cm-preview=1 an die Adresse."
 
-#: includes/network.php:290
+#: includes/network.php:278
 msgid "Open this link once in a browser to give it a pass – handy as a bookmark for private windows, or to show the sites to someone without an account."
 msgstr "Öffne diesen Link einmal in einem Browser, um ihm den Durchlass zu geben – praktisch als Lesezeichen für private Fenster oder um die Websites jemandem ohne Konto zu zeigen."
 
-#: includes/network.php:293
+#: includes/network.php:281
 msgid "This browser has a pass"
 msgstr "Dieser Browser hat den Durchlass"
 
-#: includes/network.php:294
+#: includes/network.php:282
 msgid "Remove it from this browser"
 msgstr "Aus diesem Browser entfernen"
 
-#: includes/network.php:296
+#: includes/network.php:284
 msgid "This browser has no pass yet"
 msgstr "Dieser Browser hat noch keinen Durchlass"
 
-#: includes/network.php:299
+#: includes/network.php:287
 msgid "Revoke all passes and create a new link"
 msgstr "Alle Durchlässe widerrufen und neuen Link erzeugen"
 
-#: includes/network.php:305
+#: includes/network.php:293
 msgid "Your router reports the home network"
 msgstr "Der Router meldet das Heimnetz"
 
-#: includes/network.php:306
+#: includes/network.php:294
 msgid "Whole home network"
 msgstr "Ganzes Heimnetz"
 
-#: includes/network.php:308
+#: includes/network.php:296
 msgid "For every device at home without a pass – family, guests, TV, podcast apps."
 msgstr "Für alle Geräte zu Hause ohne Durchlass – Familie, Gäste, Fernseher, Podcast-Apps."
 
-#: includes/network.php:309
+#: includes/network.php:297
 msgid "Whenever its addresses change, your FRITZ!Box calls a secret link and tells the plugin the current network of your home. Nothing in your home network becomes reachable from outside – the router only sends, it does not open anything."
 msgstr "Sobald sich ihre Adressen ändern, ruft deine FRITZ!Box einen geheimen Link auf und teilt dem Plugin das aktuelle Netz deines Zuhauses mit. Nichts in deinem Heimnetz wird dadurch von außen erreichbar – der Router sendet nur, er öffnet nichts."
 
-#: includes/network.php:311
+#: includes/network.php:299
 msgid "Update URL"
 msgstr "Update-URL"
 
-#: includes/network.php:315
+#: includes/network.php:303
 msgid "FRITZ!Box: Internet → Permit Access → DynDNS → Use DynDNS, provider “User-defined”."
 msgstr "FRITZ!Box: Internet → Freigaben → DynDNS → „DynDNS benutzen“, Anbieter „Benutzerdefiniert“."
 
-#: includes/network.php:316
+#: includes/network.php:304
 msgid "Update URL: paste the link above unchanged – the parts in angle brackets are filled in by the FRITZ!Box."
 msgstr "Update-URL: den Link oben unverändert einfügen – die Teile in spitzen Klammern füllt die FRITZ!Box selbst aus."
 
 #. translators: %s: domain of the network.
-#: includes/network.php:320
+#: includes/network.php:308
 #, php-format
 msgid "Domain name: %s. User name and password: anything, e.g. “home” – they are not used."
 msgstr "Domainname: %s. Benutzername und Kennwort: beliebig, z. B. „home“ – sie werden nicht verwendet."
 
 #. translators: %s: how long ago, e.g. "5 minutes".
-#: includes/network.php:328
+#: includes/network.php:316
 #, php-format
 msgid "Last report %s ago:"
 msgstr "Letzte Meldung vor %s:"
 
-#: includes/network.php:334 includes/network.php:390
+#: includes/network.php:322 includes/network.php:378
 msgid "You are at home – let through"
 msgstr "Du bist zu Hause – wird durchgelassen"
 
-#: includes/network.php:336 includes/network.php:392
+#: includes/network.php:324 includes/network.php:380
 msgid "Your current address does not belong to it"
 msgstr "Deine aktuelle Adresse gehört nicht dazu"
 
-#: includes/network.php:339
+#: includes/network.php:327
 msgid "No report yet – save the DynDNS settings in the FRITZ!Box."
 msgstr "Noch keine Meldung – speichere die DynDNS-Einstellungen in der FRITZ!Box."
 
-#: includes/network.php:345
+#: includes/network.php:333
 msgid "Last calls of the router"
 msgstr "Letzte Aufrufe des Routers"
 
-#: includes/network.php:347
+#: includes/network.php:335
 msgid "When"
 msgstr "Wann"
 
-#: includes/network.php:347
+#: includes/network.php:335
 msgid "From"
 msgstr "Von"
 
-#: includes/network.php:361
+#: includes/network.php:349
 msgid "Create a new link (the old one stops working)"
 msgstr "Neuen Link erzeugen (der alte funktioniert dann nicht mehr)"
 
-#: includes/network.php:367
+#: includes/network.php:355
 msgid "Or a DynDNS name"
 msgstr "Oder ein DynDNS-Name"
 
-#: includes/network.php:368
+#: includes/network.php:356
 msgid "Alternative"
 msgstr "Alternative"
 
-#: includes/network.php:370
+#: includes/network.php:358
 msgid "For routers without a user-defined DynDNS: a name that always points to an address of your home network. Pasted links are cleaned up to the name."
 msgstr "Für Router ohne benutzerdefiniertes DynDNS: ein Name, der immer auf eine Adresse deines Heimnetzes zeigt. Eingefügte Links werden auf den Namen gekürzt."
 
-#: includes/network.php:372
+#: includes/network.php:360
 msgid "DynDNS name"
 msgstr "DynDNS-Name"
 
-#: includes/network.php:373
+#: includes/network.php:361
 msgid "Cleaned up – only the name is needed."
 msgstr "Bereinigt – nur der Name wird gebraucht."
 
-#: includes/network.php:374
+#: includes/network.php:362
 msgid "IPv6 network"
 msgstr "IPv6-Netz"
 
-#: includes/network.php:376
+#: includes/network.php:364
 msgid "/56 – whole home network"
 msgstr "/56 – ganzes Heimnetz"
 
-#: includes/network.php:376
+#: includes/network.php:364
 msgid "/64 – one network segment"
 msgstr "/64 – ein Netzsegment"
 
-#: includes/network.php:376
+#: includes/network.php:364
 msgid "/48 – wide"
 msgstr "/48 – weit"
 
-#: includes/network.php:376
+#: includes/network.php:364
 msgid "Only the exact address"
 msgstr "Nur die genaue Adresse"
 
-#: includes/network.php:385
+#: includes/network.php:373
 msgid "Points to"
 msgstr "Zeigt auf"
 
-#: includes/network.php:395
+#: includes/network.php:383
 msgid "This name cannot be resolved right now."
 msgstr "Dieser Name lässt sich gerade nicht auflösen."
 
-#: includes/network.php:399
+#: includes/network.php:387
 msgid "A MyFRITZ name points to the internet side of the FRITZ!Box, not to your home network. Let the FRITZ!Box report the home network instead (way 2) – no sharing needed."
 msgstr "Ein MyFRITZ-Name zeigt auf die Internetseite der FRITZ!Box, nicht auf dein Heimnetz. Lass die FRITZ!Box stattdessen das Heimnetz melden (Weg 2) – ganz ohne Freigabe."
 
-#: includes/network.php:407
+#: includes/network.php:395
 msgid "Fixed addresses and ranges"
 msgstr "Feste Adressen und Bereiche"
 
-#: includes/network.php:408
+#: includes/network.php:396
 msgid "Manual"
 msgstr "Manuell"
 
-#: includes/network.php:410
+#: includes/network.php:398
 msgid "IP addresses and ranges"
 msgstr "IP-Adressen und Bereiche"
 
-#: includes/network.php:411
+#: includes/network.php:399
 msgid "office"
 msgstr "Büro"
 
-#: includes/network.php:412
+#: includes/network.php:400
 msgid "One address or range per line, IPv4 or IPv6, e.g. 203.0.113.7, 192.168.178.0/24 or 2001:db8::/56. Comments start with #. Search engines still get the maintenance page unless they come from these addresses."
 msgstr "Eine Adresse oder ein Bereich pro Zeile, IPv4 oder IPv6, z. B. 203.0.113.7, 192.168.178.0/24 oder 2001:db8::/56. Kommentare beginnen mit #. Suchmaschinen bekommen weiter die Wartungsseite, außer sie kommen von diesen Adressen."
 
-#: includes/network.php:419
+#: includes/network.php:407
 msgid "Private ranges need the tunnel"
 msgstr "Private Bereiche brauchen den Tunnel"
 
-#: includes/network.php:420
+#: includes/network.php:408
 msgid "Guide"
 msgstr "Anleitung"
 
 #. translators: %s: IP address of the current visitor.
-#: includes/network.php:425
+#: includes/network.php:413
 #, php-format
 msgid "Private ranges such as 192.168.x.x or 10.x.x.x only match when a request really travels through your VPN. Right now your request arrives from %s – a public address, so the domain is reached over the internet."
 msgstr "Private Bereiche wie 192.168.x.x oder 10.x.x.x greifen nur, wenn eine Anfrage wirklich durch dein VPN läuft. Gerade kommt deine Anfrage von %s – einer öffentlichen Adresse, die Domain wird also über das Internet erreicht."
 
-#: includes/network.php:430
+#: includes/network.php:418
 msgid "Route the server through the tunnel"
 msgstr "Den Server durch den Tunnel leiten"
 
 #. translators: %s: public IP address of the web server.
-#: includes/network.php:433
+#: includes/network.php:421
 #, php-format
 msgid "In the WireGuard connection of your router, add the server address %s to the networks reached through the tunnel (AllowedIPs). On the server, the connection must accept your home range, e.g. 192.168.178.0/24."
 msgstr "Trage in der WireGuard-Verbindung deines Routers die Serveradresse %s bei den Netzen ein, die durch den Tunnel erreicht werden (AllowedIPs). Auf dem Server muss die Verbindung deinen Heimbereich annehmen, z. B. 192.168.178.0/24."
 
-#: includes/network.php:437
+#: includes/network.php:425
 msgid "Or resolve the domain locally"
 msgstr "Oder die Domain lokal auflösen"
 
 #. translators: %s: domain of the network.
-#: includes/network.php:440
+#: includes/network.php:428
 #, php-format
 msgid "Let %s point to the tunnel address of the server in your home network – in a local DNS server or in the hosts file of a device. The certificate stays valid because the name does not change."
 msgstr "Lass %s in deinem Heimnetz auf die Tunneladresse des Servers zeigen – in einem lokalen DNS-Server oder in der hosts-Datei eines Geräts. Das Zertifikat bleibt gültig, weil sich der Name nicht ändert."
 
-#: includes/network.php:444
+#: includes/network.php:432
 msgid "Check"
 msgstr "Prüfen"
 
-#: includes/network.php:445
+#: includes/network.php:433
 msgid "Reload this page: “Your current address” should now show a private address."
 msgstr "Lade diese Seite neu: „Deine aktuelle Adresse“ sollte jetzt eine private Adresse zeigen."
 
-#: includes/network.php:448
+#: includes/network.php:436
 msgid "No tunnel? Then letting the router report the home network is the simpler way."
 msgstr "Kein Tunnel? Dann ist es einfacher, den Router das Heimnetz melden zu lassen."
 
-#: includes/network.php:450
+#: includes/network.php:438
 msgid "Connected through a VPN? Show the tunnel guide"
 msgstr "Über VPN verbunden? Tunnel-Anleitung zeigen"
 
-#: includes/network.php:452 includes/widget.php:114
+#: includes/network.php:440 includes/widget.php:121
 msgid "Save"
 msgstr "Speichern"
 
-#: includes/network.php:455
+#: includes/network.php:443
 msgid "“Turn on” applies right away and until you turn it off; a scheduled period is replaced. Network administrators always see the sites normally."
 msgstr "„Einschalten“ gilt sofort und bis zum Ausschalten; ein geplanter Zeitraum wird dabei ersetzt. Netzwerk-Administratoren sehen die Websites immer normal."
 
-#: includes/network.php:562
+#: includes/network.php:550
 msgid "All sites are reachable."
 msgstr "Alle Websites sind erreichbar."
 
-#: includes/network.php:564
+#: includes/network.php:552
 msgid "Manage all sites →"
 msgstr "Alle Websites verwalten →"
 
-#: includes/widget.php:116
+#: includes/widget.php:123
 msgid "All settings"
 msgstr "Alle Einstellungen"
 

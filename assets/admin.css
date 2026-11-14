@@ -374,3 +374,13 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 
 /* A switch that is saving. */
 .cm-btn.is-busy { opacity: .6; pointer-events: none; }
+
+/* What a site shows: open it, or edit the page. */
+.cm-site-shows .cm-page-view { display: inline-flex; align-items: center; gap: 4px; min-width: 0; color: inherit; text-decoration: none; overflow-wrap: anywhere; }
+.cm-site-shows .cm-page-view:hover, .cm-site-shows .cm-page-view:focus { color: var(--cm-blue); text-decoration: underline; }
+.cm-site-shows .cm-page-view .cm-ico { width: 13px; height: 13px; opacity: .7; }
+.cm-site-shows .cm-page-edit { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; color: var(--cm-muted); }
+.cm-site-shows .cm-page-edit:hover, .cm-site-shows .cm-page-edit:focus { background: var(--cm-soft, #f3f6fa); color: var(--cm-blue); box-shadow: none; }
+.cm-site-shows .cm-page-edit .cm-ico { width: 14px; height: 14px; }
+.cm-widget-state .cm-pill { margin-bottom: 6px; }
+.cm-widget-shows { margin: 0 0 12px; }

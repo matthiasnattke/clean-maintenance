@@ -795,3 +795,46 @@ function clean_maintenance_ajax_data( $nonce_action ) {
 		'failed' => __( 'Could not be saved – please try again.', 'clean-maintenance' ),
 	);
 }
+
+/**
+ * Links to what the current site shows during maintenance: the page as visitors see it
+ * and – for a page from WordPress – its editor.
+ *
+ * @param array $s Settings of the site.
+ * @return array{label:string,view:string,edit:string}
+ */
+function clean_maintenance_page_links( array $s ) {
+	$page  = 'page' === $s['design'] ? (int) $s['page'] : 0;
+	$label = 'classic' === $s['design'] ? __( 'Classic design', 'clean-maintenance' ) : ( $page ? get_the_title( $page ) : __( 'simple notice', 'clean-maintenance' ) );
+	$edit  = $page && current_user_can( 'edit_post', $page ) ? (string) get_edit_post_link( $page, 'raw' ) : '';
+	return array(
+		'label' => '' !== $label ? $label : __( 'simple notice', 'clean-maintenance' ),
+		'view'  => add_query_arg( 'cm-preview', '1', home_url( '/' ) ),
+		'edit'  => $edit,
+	);
+}
+
+/**
+ * Prints the links of clean_maintenance_page_links().
+ *
+ * @param array  $l    Links.
+ * @param string $icon Icon in front.
+ */
+function clean_maintenance_page_links_html( array $l, $icon ) {
+	echo clean_maintenance_icon( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG.
+	printf(
+		' <a class="cm-page-view" href="%1$s" target="_blank" rel="noopener" title="%2$s">%3$s %4$s</a>',
+		esc_url( $l['view'] ),
+		esc_attr__( 'Open the maintenance page', 'clean-maintenance' ),
+		esc_html( $l['label'] ),
+		clean_maintenance_icon( 'external' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG.
+	);
+	if ( '' !== $l['edit'] ) {
+		printf(
+			' <a class="cm-page-edit" href="%1$s" title="%2$s">%3$s<span class="screen-reader-text">%2$s</span></a>',
+			esc_url( $l['edit'] ),
+			esc_attr__( 'Edit the maintenance page', 'clean-maintenance' ),
+			clean_maintenance_icon( 'pencil' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG.
+		);
+	}
+}

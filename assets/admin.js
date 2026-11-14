@@ -179,10 +179,10 @@ jQuery( function ( $ ) {
 				form.submit();
 				return;
 			}
-			$f.find( '.cm-pill' ).replaceWith( r.data.pill );
+			$f.find( '.cm-widget-state' ).replaceWith( r.data.pill );
 			var $msg = $f.find( '.cm-widget-saved' );
 			if ( ! $msg.length ) {
-				$msg = $( '<p class="cm-widget-saved"></p>' ).insertAfter( $f.find( '.cm-pill' ) );
+				$msg = $( '<p class="cm-widget-saved"></p>' ).insertAfter( $f.find( '.cm-widget-state' ) );
 			}
 			$msg.text( l10n.saved ).prop( 'hidden', false );
 			if ( ! r.data.active ) {
@@ -200,7 +200,7 @@ jQuery( function ( $ ) {
 	document.addEventListener( 'clean-maintenance-off', function ( e ) {
 		var $w = $( '.cm-site-widget' );
 		if ( $w.length && e.detail && e.detail.pill ) {
-			$w.find( '.cm-pill' ).replaceWith( e.detail.pill );
+			$w.find( '.cm-widget-state' ).replaceWith( e.detail.pill );
 			$w.find( 'input[name="mode"][value="off"]' ).prop( 'checked', true );
 		}
 		announce( l10n.saved );
