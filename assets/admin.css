@@ -335,8 +335,8 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 .cm-site-widget .cm-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0 0 10px; }
 .cm-site-widget .cm-row .cm-field { min-width: 0; margin: 0; }
 /* All fields of the widget look alike – Safari otherwise draws date fields without frame, centred and wider than the card. */
-.cm-site-widget input[type="text"], .cm-site-widget input[type="datetime-local"], .cm-site-widget select, .cm-site-widget textarea { box-sizing: border-box; display: block; width: 100%; max-width: 100%; min-width: 0; margin: 0; border: 1px solid #c3c4c7; border-radius: 10px; background-color: #fff; color: var(--cm-ink); font-size: 14px; }
-.cm-site-widget input[type="text"], .cm-site-widget input[type="datetime-local"], .cm-site-widget select { min-height: 40px; padding: 0 12px; line-height: 38px; }
+.cm-site-widget input[type="text"], .cm-site-widget input[type="search"], .cm-site-widget input[type="datetime-local"], .cm-site-widget select, .cm-site-widget textarea { box-sizing: border-box; display: block; width: 100%; max-width: 100%; min-width: 0; margin: 0; border: 1px solid #c3c4c7; border-radius: 10px; background-color: #fff; color: var(--cm-ink); font-size: 14px; }
+.cm-site-widget input[type="text"], .cm-site-widget input[type="search"], .cm-site-widget input[type="datetime-local"], .cm-site-widget select { min-height: 40px; padding: 0 12px; line-height: 38px; }
 .cm-site-widget select { padding-right: 32px; }
 .cm-site-widget textarea { padding: 8px 12px; line-height: 1.5; }
 .cm-site-widget input[type="datetime-local"] { -webkit-appearance: none; appearance: none; text-align: left; }
@@ -387,6 +387,9 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 
 /* Maintenance page in the widget: search field with a short list. */
 .cm-page-picker { position: relative; }
+.cm-page-picker select[hidden] { display: none !important; }
+.cm-picker-field { width: 100%; }
+.cm-site-widget input.cm-picker-input { -webkit-appearance: none; appearance: none; }
 .cm-picker-field { position: relative; display: flex; align-items: center; }
 .cm-site-widget input.cm-picker-input { padding-right: 90px; }
 .cm-picker-state { position: absolute; right: 10px; padding: 1px 8px; border-radius: 999px; background: #f0f0f1; color: var(--cm-muted); font-size: 11px; pointer-events: none; }
