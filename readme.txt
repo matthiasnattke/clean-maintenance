@@ -4,7 +4,7 @@ Tags: maintenance, maintenance mode, multisite, coming soon, rest api
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.7.2
+Stable tag: 0.7.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,9 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 9. Network overview: all sites with state, period and maintenance page, switch one or many at once.
 
 == Changelog ==
+
+= 0.7.3 =
+* Settings and network pages use the full width on large screens.
 
 = 0.7.2 =
 * Dashboard widget: start and end stay inside the card, all fields share the same frame, height and rounded corners (Safari and iPad).

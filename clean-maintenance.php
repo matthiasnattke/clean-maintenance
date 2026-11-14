@@ -3,7 +3,7 @@
  * Plugin Name:       Clean Maintenance
  * Plugin URI:        https://couch-blog.de/projekte/clean-maintenance/
  * Description:       A lean maintenance mode: your own maintenance page with background, permanent or scheduled, exceptions for slugs, IP addresses and roles, HTTP 503 for search engines and an optional REST API lock. In a multisite network every site has its own maintenance mode, and the network admin shows them all at a glance.
- * Version:           0.7.2
+ * Version:           0.7.3
  * Network:           true
  * Requires at least: 6.4
  * Requires PHP:      8.0
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CLEAN_MAINTENANCE_VERSION', '0.7.2' );
+define( 'CLEAN_MAINTENANCE_VERSION', '0.7.3' );
 define( 'CLEAN_MAINTENANCE_FILE', __FILE__ );
 
 require_once __DIR__ . '/includes/core.php';
