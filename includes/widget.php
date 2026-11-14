@@ -23,7 +23,27 @@ add_action(
 		if ( 'index.php' === $hook && ! is_network_admin() && current_user_can( 'manage_options' ) ) {
 			wp_enqueue_style( 'clean-maintenance-admin', plugins_url( 'assets/admin.css', CLEAN_MAINTENANCE_FILE ), array(), clean_maintenance_asset_ver( 'admin.css' ) );
 			wp_enqueue_script( 'clean-maintenance-widget', plugins_url( 'assets/admin.js', CLEAN_MAINTENANCE_FILE ), array( 'jquery' ), clean_maintenance_asset_ver( 'admin.js' ), true );
-			wp_localize_script( 'clean-maintenance-widget', 'cleanMaintenance', clean_maintenance_ajax_data( 'clean_maintenance_widget' ) );
+			wp_localize_script(
+				'clean-maintenance-widget',
+				'cleanMaintenance',
+				array_merge(
+					clean_maintenance_ajax_data( 'clean_maintenance_widget' ),
+					array(
+						'pages'     => rest_url( 'wp/v2/pages' ),
+						'restNonce' => wp_create_nonce( 'wp_rest' ),
+						'search'    => __( 'Search pages …', 'clean-maintenance' ),
+						'none'      => __( 'No page found.', 'clean-maintenance' ),
+						'simple'    => __( '– simple notice with the site title –', 'clean-maintenance' ),
+						'recent'    => __( 'Recently edited', 'clean-maintenance' ),
+						'states'    => array(
+							'draft'   => __( 'Draft', 'clean-maintenance' ),
+							'private' => __( 'Private', 'clean-maintenance' ),
+							'pending' => __( 'Pending', 'clean-maintenance' ),
+							'future'  => __( 'Scheduled', 'clean-maintenance' ),
+						),
+					)
+				)
+			);
 		}
 	}
 );
@@ -102,8 +122,9 @@ function clean_maintenance_site_widget() {
 			<label><input type="radio" name="design" value="page" <?php checked( $s['design'], 'page' ); ?>><span><?php esc_html_e( 'Page from WordPress', 'clean-maintenance' ); ?></span></label>
 			<label><input type="radio" name="design" value="classic" <?php checked( $s['design'], 'classic' ); ?>><span><?php esc_html_e( 'Classic', 'clean-maintenance' ); ?></span></label>
 		</fieldset>
-		<div class="cm-widget-page">
+		<div class="cm-widget-page cm-page-picker">
 			<label class="cm-field" for="cm-widget-page"><span><?php esc_html_e( 'Maintenance page', 'clean-maintenance' ); ?></span></label>
+			<?php // With JavaScript the list becomes a search; without it this list is used. ?>
 			<select id="cm-widget-page" name="page">
 				<option value="0"><?php esc_html_e( '– simple notice with the site title –', 'clean-maintenance' ); ?></option>
 				<?php foreach ( $pages as $p ) : ?>

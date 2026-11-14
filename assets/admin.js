@@ -196,6 +196,140 @@ jQuery( function ( $ ) {
 		} );
 	} );
 
+	/* Maintenance page in the widget: a search instead of a long list. The select stays the
+	 * field that is saved, so the form works the same with and without this. */
+	$( '.cm-page-picker' ).each( function () {
+		if ( ! l10n.pages || ! window.fetch ) {
+			return;
+		}
+		var $box = $( this ), $select = $box.find( 'select' ), listId = 'cm-page-list';
+		var $field = $( '<div class="cm-picker-field"></div>' );
+		var $input = $( '<input type="search" class="cm-picker-input" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false">' )
+			.attr( { id: $select.attr( 'id' ), placeholder: l10n.search, 'aria-controls': listId } );
+		var $state = $( '<span class="cm-picker-state"></span>' );
+		var $list = $( '<ul class="cm-picker-list" role="listbox" hidden></ul>' ).attr( 'id', listId );
+		$select.removeAttr( 'id' ).attr( { hidden: true, 'aria-hidden': 'true', tabindex: -1 } );
+		$field.append( $input, $state );
+		$box.append( $field, $list );
+
+		function stateOf( text ) {
+			var m = /\(([^)]+)\)$/.exec( text || '' );
+			return m ? m[ 1 ] : '';
+		}
+		function showCurrent() {
+			var $o = $select.find( 'option:selected' ), text = $o.text();
+			var st = '0' === $select.val() ? '' : stateOf( text );
+			$input.val( '0' === $select.val() ? '' : text.replace( /\s*\([^)]+\)$/, '' ) );
+			$input.attr( 'placeholder', '0' === $select.val() ? l10n.simple : l10n.search );
+			$state.text( st ).prop( 'hidden', ! st );
+		}
+		function close() {
+			$list.prop( 'hidden', true ).empty();
+			$input.attr( 'aria-expanded', 'false' ).removeAttr( 'aria-activedescendant' );
+		}
+		function choose( id, title, status ) {
+			var label = title + ( status && 'publish' !== status ? ' (' + ( l10n.states[ status ] || status ) + ')' : '' );
+			if ( ! $select.find( 'option[value="' + id + '"]' ).length ) {
+				$select.append( $( '<option></option>' ).val( id ).text( label ) );
+			}
+			$select.val( String( id ) ).trigger( 'change' );
+			showCurrent();
+			close();
+		}
+		function render( pages, heading ) {
+			$list.empty();
+			var add = function ( id, title, status, extra ) {
+				var $li = $( '<li role="option" class="cm-picker-option"></li>' ).attr( 'id', 'cm-page-opt-' + id ).data( 'page', { id: id, title: title, status: status } );
+				$li.append( $( '<span></span>' ).text( title ) );
+				if ( status && 'publish' !== status ) {
+					$li.append( $( '<em></em>' ).text( l10n.states[ status ] || status ) );
+				}
+				if ( extra ) {
+					$li.addClass( extra );
+				}
+				if ( String( id ) === $select.val() ) {
+					$li.attr( 'aria-selected', 'true' );
+				}
+				$list.append( $li );
+			};
+			add( 0, l10n.simple, '', 'cm-picker-simple' );
+			if ( heading ) {
+				$list.append( $( '<li class="cm-picker-head" role="presentation"></li>' ).text( heading ) );
+			}
+			if ( ! pages.length ) {
+				$list.append( $( '<li class="cm-picker-note" role="presentation"></li>' ).text( l10n.none ) );
+			}
+			$.each( pages, function ( i, pg ) {
+				var t = $( '<textarea>' ).html( pg.title && pg.title.rendered ? pg.title.rendered : '#' + pg.id ).text();
+				add( pg.id, t, pg.status );
+			} );
+			$list.prop( 'hidden', false );
+			$input.attr( 'aria-expanded', 'true' );
+		}
+		var timer, last = null;
+		function search() {
+			var q = $.trim( $input.val() );
+			if ( q === last && ! $list.prop( 'hidden' ) ) {
+				return;
+			}
+			last = q;
+			var url = l10n.pages + ( l10n.pages.indexOf( '?' ) === -1 ? '?' : '&' ) + 'per_page=8&status=publish,private,draft,pending,future&_fields=id,title,status&context=edit'
+				+ ( q ? '&search=' + encodeURIComponent( q ) : '&orderby=modified&order=desc' );
+			fetch( url, { credentials: 'same-origin', headers: { 'X-WP-Nonce': l10n.restNonce } } )
+				.then( function ( r ) { return r.ok ? r.json() : []; } )
+				.then( function ( pages ) {
+					if ( q === $.trim( $input.val() ) ) {
+						render( pages || [], q ? '' : l10n.recent );
+					}
+				} )
+				.catch( function () { render( [], '' ); } );
+		}
+		$input.on( 'focus', function () {
+			$input.select();
+			last = null;
+			$input.val( '' );
+			search();
+		} ).on( 'input', function () {
+			clearTimeout( timer );
+			timer = setTimeout( search, 200 );
+		} ).on( 'keydown', function ( e ) {
+			var $opts = $list.find( '.cm-picker-option' ), $cur = $opts.filter( '.is-active' ), i = $opts.index( $cur );
+			if ( 'ArrowDown' === e.key || 'ArrowUp' === e.key ) {
+				e.preventDefault();
+				if ( $list.prop( 'hidden' ) ) {
+					search();
+					return;
+				}
+				i = 'ArrowDown' === e.key ? Math.min( i + 1, $opts.length - 1 ) : Math.max( i - 1, 0 );
+				$opts.removeClass( 'is-active' );
+				var $n = $opts.eq( i ).addClass( 'is-active' );
+				$input.attr( 'aria-activedescendant', $n.attr( 'id' ) );
+				$n[ 0 ].scrollIntoView( { block: 'nearest' } );
+			} else if ( 'Enter' === e.key && $cur.length ) {
+				e.preventDefault();
+				var d = $cur.data( 'page' );
+				choose( d.id, d.title, d.status );
+			} else if ( 'Escape' === e.key ) {
+				close();
+				showCurrent();
+			}
+		} ).on( 'blur', function () {
+			setTimeout( function () {
+				if ( ! $box[ 0 ].contains( document.activeElement ) ) {
+					close();
+					showCurrent();
+				}
+			}, 150 );
+		} );
+		$list.on( 'mousedown', '.cm-picker-option', function ( e ) {
+			e.preventDefault();
+			var d = $( this ).data( 'page' );
+			choose( d.id, d.title, d.status );
+			$input.trigger( 'blur' );
+		} );
+		showCurrent();
+	} );
+
 	/* The quick switch in the admin bar turned maintenance off: show it in the widget too. */
 	document.addEventListener( 'clean-maintenance-off', function ( e ) {
 		var $w = $( '.cm-site-widget' );

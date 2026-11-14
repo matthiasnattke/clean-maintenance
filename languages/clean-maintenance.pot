@@ -123,7 +123,7 @@ msgstr ""
 msgid "Comfort"
 msgstr ""
 
-#: includes/admin.php:275 includes/admin.php:503 includes/network.php:140 includes/network.php:140 includes/widget.php:122
+#: includes/admin.php:275 includes/admin.php:503 includes/network.php:140 includes/network.php:140 includes/widget.php:143
 msgid "Preview"
 msgstr ""
 
@@ -150,11 +150,11 @@ msgstr ""
 msgid "When should visitors see the maintenance page?"
 msgstr ""
 
-#: includes/admin.php:307 includes/widget.php:90
+#: includes/admin.php:307 includes/widget.php:110
 msgid "Mode"
 msgstr ""
 
-#: includes/admin.php:310 includes/core.php:191 includes/widget.php:76
+#: includes/admin.php:310 includes/core.php:191 includes/widget.php:96
 msgid "Off"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Visitors see the normal site."
 msgstr ""
 
-#: includes/admin.php:311 includes/core.php:188 includes/widget.php:77
+#: includes/admin.php:311 includes/core.php:188 includes/widget.php:97
 msgid "On"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Right away, until you turn it off."
 msgstr ""
 
-#: includes/admin.php:312 includes/widget.php:78
+#: includes/admin.php:312 includes/widget.php:42 includes/widget.php:98
 msgid "Scheduled"
 msgstr ""
 
@@ -178,11 +178,11 @@ msgstr ""
 msgid "Start and end from the calendar."
 msgstr ""
 
-#: includes/admin.php:326 includes/widget.php:96
+#: includes/admin.php:326 includes/widget.php:116
 msgid "Start"
 msgstr ""
 
-#: includes/admin.php:327 includes/widget.php:97
+#: includes/admin.php:327 includes/widget.php:117
 msgid "End"
 msgstr ""
 
@@ -196,11 +196,11 @@ msgstr ""
 msgid "What visitors see while you work."
 msgstr ""
 
-#: includes/admin.php:342 includes/widget.php:101
+#: includes/admin.php:342 includes/widget.php:121
 msgid "Design"
 msgstr ""
 
-#: includes/admin.php:346 includes/widget.php:102
+#: includes/admin.php:346 includes/widget.php:122
 msgid "Page from WordPress"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "In the style of your theme, edited like any other page."
 msgstr ""
 
-#: includes/admin.php:352 includes/widget.php:103
+#: includes/admin.php:352 includes/widget.php:123
 msgid "Classic"
 msgstr ""
 
@@ -216,11 +216,11 @@ msgstr ""
 msgid "Heading, text and background – independent of the theme."
 msgstr ""
 
-#: includes/admin.php:358 includes/widget.php:106
+#: includes/admin.php:358 includes/widget.php:126
 msgid "Maintenance page"
 msgstr ""
 
-#: includes/admin.php:361 includes/widget.php:108
+#: includes/admin.php:361 includes/widget.php:36 includes/widget.php:129
 msgid "– simple notice with the site title –"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Title in the browser tab"
 msgstr ""
 
-#: includes/admin.php:377 includes/widget.php:116
+#: includes/admin.php:377 includes/widget.php:137
 msgid "Heading"
 msgstr ""
 
@@ -244,7 +244,7 @@ msgstr ""
 msgid "Colour"
 msgstr ""
 
-#: includes/admin.php:382 includes/widget.php:117
+#: includes/admin.php:382 includes/widget.php:138
 msgid "Text"
 msgstr ""
 
@@ -410,7 +410,7 @@ msgstr ""
 msgid "until %s"
 msgstr ""
 
-#: includes/core.php:794 includes/network.php:261 includes/widget.php:86
+#: includes/core.php:794 includes/network.php:261 includes/widget.php:106
 msgid "Saved."
 msgstr ""
 
@@ -450,7 +450,7 @@ msgstr ""
 msgid "Turn off maintenance mode"
 msgstr ""
 
-#: includes/frontend.php:405 includes/network.php:452 includes/network.php:474 includes/widget.php:133
+#: includes/frontend.php:405 includes/network.php:452 includes/network.php:474 includes/widget.php:154
 msgid "You are not allowed to do this."
 msgstr ""
 
@@ -788,7 +788,7 @@ msgstr ""
 msgid "Connected through a VPN? Show the tunnel guide"
 msgstr ""
 
-#: includes/network.php:440 includes/widget.php:121
+#: includes/network.php:440 includes/widget.php:142
 msgid "Save"
 msgstr ""
 
@@ -804,7 +804,31 @@ msgstr ""
 msgid "Manage all sites →"
 msgstr ""
 
-#: includes/widget.php:123
+#: includes/widget.php:34
+msgid "Search pages …"
+msgstr ""
+
+#: includes/widget.php:35
+msgid "No page found."
+msgstr ""
+
+#: includes/widget.php:37
+msgid "Recently edited"
+msgstr ""
+
+#: includes/widget.php:39
+msgid "Draft"
+msgstr ""
+
+#: includes/widget.php:40
+msgid "Private"
+msgstr ""
+
+#: includes/widget.php:41
+msgid "Pending"
+msgstr ""
+
+#: includes/widget.php:144
 msgid "All settings"
 msgstr ""
 

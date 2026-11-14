@@ -124,7 +124,7 @@ msgstr "Suchmaschinen & Schnittstellen"
 msgid "Comfort"
 msgstr "Komfort"
 
-#: includes/admin.php:275 includes/admin.php:503 includes/network.php:140 includes/network.php:140 includes/widget.php:122
+#: includes/admin.php:275 includes/admin.php:503 includes/network.php:140 includes/network.php:140 includes/widget.php:143
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -151,11 +151,11 @@ msgstr "Projektseite"
 msgid "When should visitors see the maintenance page?"
 msgstr "Wann sollen Besucher die Wartungsseite sehen?"
 
-#: includes/admin.php:307 includes/widget.php:90
+#: includes/admin.php:307 includes/widget.php:110
 msgid "Mode"
 msgstr "Modus"
 
-#: includes/admin.php:310 includes/core.php:191 includes/widget.php:76
+#: includes/admin.php:310 includes/core.php:191 includes/widget.php:96
 msgid "Off"
 msgstr "Aus"
 
@@ -163,7 +163,7 @@ msgstr "Aus"
 msgid "Visitors see the normal site."
 msgstr "Besucher sehen die normale Website."
 
-#: includes/admin.php:311 includes/core.php:188 includes/widget.php:77
+#: includes/admin.php:311 includes/core.php:188 includes/widget.php:97
 msgid "On"
 msgstr "Eingeschaltet"
 
@@ -171,7 +171,7 @@ msgstr "Eingeschaltet"
 msgid "Right away, until you turn it off."
 msgstr "Sofort, bis du ihn ausschaltest."
 
-#: includes/admin.php:312 includes/widget.php:78
+#: includes/admin.php:312 includes/widget.php:42 includes/widget.php:98
 msgid "Scheduled"
 msgstr "Zeitgesteuert"
 
@@ -179,11 +179,11 @@ msgstr "Zeitgesteuert"
 msgid "Start and end from the calendar."
 msgstr "Beginn und Ende aus dem Kalender."
 
-#: includes/admin.php:326 includes/widget.php:96
+#: includes/admin.php:326 includes/widget.php:116
 msgid "Start"
 msgstr "Beginn"
 
-#: includes/admin.php:327 includes/widget.php:97
+#: includes/admin.php:327 includes/widget.php:117
 msgid "End"
 msgstr "Ende"
 
@@ -197,11 +197,11 @@ msgstr "Zeitzone der Website (%s). Ohne Beginn gilt der Modus sofort, ohne Ende 
 msgid "What visitors see while you work."
 msgstr "Was Besucher sehen, während du arbeitest."
 
-#: includes/admin.php:342 includes/widget.php:101
+#: includes/admin.php:342 includes/widget.php:121
 msgid "Design"
 msgstr "Gestaltung"
 
-#: includes/admin.php:346 includes/widget.php:102
+#: includes/admin.php:346 includes/widget.php:122
 msgid "Page from WordPress"
 msgstr "Seite aus WordPress"
 
@@ -209,7 +209,7 @@ msgstr "Seite aus WordPress"
 msgid "In the style of your theme, edited like any other page."
 msgstr "Im Stil deines Themes, bearbeitet wie jede andere Seite."
 
-#: includes/admin.php:352 includes/widget.php:103
+#: includes/admin.php:352 includes/widget.php:123
 msgid "Classic"
 msgstr "Klassisch"
 
@@ -217,11 +217,11 @@ msgstr "Klassisch"
 msgid "Heading, text and background – independent of the theme."
 msgstr "Überschrift, Text und Hintergrund – unabhängig vom Theme."
 
-#: includes/admin.php:358 includes/widget.php:106
+#: includes/admin.php:358 includes/widget.php:126
 msgid "Maintenance page"
 msgstr "Wartungsseite"
 
-#: includes/admin.php:361 includes/widget.php:108
+#: includes/admin.php:361 includes/widget.php:36 includes/widget.php:129
 msgid "– simple notice with the site title –"
 msgstr "– einfacher Hinweis mit Name –"
 
@@ -237,7 +237,7 @@ msgstr "Wird überall ohne Kopf- und Fußbereich angezeigt. Am besten eine eigen
 msgid "Title in the browser tab"
 msgstr "Titel im Browser-Tab"
 
-#: includes/admin.php:377 includes/widget.php:116
+#: includes/admin.php:377 includes/widget.php:137
 msgid "Heading"
 msgstr "Überschrift"
 
@@ -245,7 +245,7 @@ msgstr "Überschrift"
 msgid "Colour"
 msgstr "Farbe"
 
-#: includes/admin.php:382 includes/widget.php:117
+#: includes/admin.php:382 includes/widget.php:138
 msgid "Text"
 msgstr "Text"
 
@@ -411,7 +411,7 @@ msgstr "ab %s"
 msgid "until %s"
 msgstr "bis %s"
 
-#: includes/core.php:794 includes/network.php:261 includes/widget.php:86
+#: includes/core.php:794 includes/network.php:261 includes/widget.php:106
 msgid "Saved."
 msgstr "Gespeichert."
 
@@ -451,7 +451,7 @@ msgstr "Wartungsmodus aktiv"
 msgid "Turn off maintenance mode"
 msgstr "Wartungsmodus ausschalten"
 
-#: includes/frontend.php:405 includes/network.php:452 includes/network.php:474 includes/widget.php:133
+#: includes/frontend.php:405 includes/network.php:452 includes/network.php:474 includes/widget.php:154
 msgid "You are not allowed to do this."
 msgstr "Keine Berechtigung."
 
@@ -789,7 +789,7 @@ msgstr "Kein Tunnel? Dann ist es einfacher, den Router das Heimnetz melden zu la
 msgid "Connected through a VPN? Show the tunnel guide"
 msgstr "Über VPN verbunden? Tunnel-Anleitung zeigen"
 
-#: includes/network.php:440 includes/widget.php:121
+#: includes/network.php:440 includes/widget.php:142
 msgid "Save"
 msgstr "Speichern"
 
@@ -805,7 +805,31 @@ msgstr "Alle Websites sind erreichbar."
 msgid "Manage all sites →"
 msgstr "Alle Websites verwalten →"
 
-#: includes/widget.php:123
+#: includes/widget.php:34
+msgid "Search pages …"
+msgstr "Seiten durchsuchen …"
+
+#: includes/widget.php:35
+msgid "No page found."
+msgstr "Keine Seite gefunden."
+
+#: includes/widget.php:37
+msgid "Recently edited"
+msgstr "Zuletzt bearbeitet"
+
+#: includes/widget.php:39
+msgid "Draft"
+msgstr "Entwurf"
+
+#: includes/widget.php:40
+msgid "Private"
+msgstr "Privat"
+
+#: includes/widget.php:41
+msgid "Pending"
+msgstr "Ausstehend"
+
+#: includes/widget.php:144
 msgid "All settings"
 msgstr "Alle Einstellungen"
 

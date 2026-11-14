@@ -210,5 +210,11 @@
 	"All settings": "Alle Einstellungen",
 	"Could not be saved – please try again.": "Konnte nicht gespeichert werden – bitte noch einmal versuchen.",
 	"Open the maintenance page": "Wartungsseite öffnen",
-	"Edit the maintenance page": "Wartungsseite im Editor bearbeiten"
+	"Edit the maintenance page": "Wartungsseite im Editor bearbeiten",
+	"Search pages …": "Seiten durchsuchen …",
+	"No page found.": "Keine Seite gefunden.",
+	"Recently edited": "Zuletzt bearbeitet",
+	"Draft": "Entwurf",
+	"Private": "Privat",
+	"Pending": "Ausstehend"
 }

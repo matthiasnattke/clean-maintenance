@@ -384,3 +384,17 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 .cm-site-shows .cm-page-edit .cm-ico { width: 14px; height: 14px; }
 .cm-widget-state .cm-pill { margin-bottom: 6px; }
 .cm-widget-shows { margin: 0 0 12px; }
+
+/* Maintenance page in the widget: search field with a short list. */
+.cm-page-picker { position: relative; }
+.cm-picker-field { position: relative; display: flex; align-items: center; }
+.cm-site-widget input.cm-picker-input { padding-right: 90px; }
+.cm-picker-state { position: absolute; right: 10px; padding: 1px 8px; border-radius: 999px; background: #f0f0f1; color: var(--cm-muted); font-size: 11px; pointer-events: none; }
+.cm-picker-list { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 4px); max-height: 280px; overflow-y: auto; margin: 0; padding: 6px; list-style: none; background: #fff; border: 1px solid var(--cm-line); border-radius: 12px; box-shadow: 0 12px 28px rgba(14, 36, 64, .14); }
+.cm-picker-option { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+.cm-picker-option:hover, .cm-picker-option.is-active { background: #f0f6fc; color: var(--cm-blue); }
+.cm-picker-option[aria-selected="true"] { font-weight: 600; }
+.cm-picker-option em { flex: none; font-style: normal; font-size: 11px; padding: 1px 7px; border-radius: 999px; background: #f0f0f1; color: var(--cm-muted); }
+.cm-picker-simple { color: var(--cm-muted); }
+.cm-picker-head { margin: 6px 10px 2px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--cm-muted); }
+.cm-picker-note { margin: 0; padding: 8px 10px; color: var(--cm-muted); }
