@@ -94,9 +94,6 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 * Fixed addresses and ranges (CIDR, IPv4 and IPv6) network-wide and in the exceptions of every site, with a button that adds your current address.
 * A guide pops up when private ranges are entered while requests arrive over the internet, explaining how to route them through a VPN tunnel.
 
-= 0.7.0 =
-* …
-
 = 0.6.1 =
 * Every release is now checked against the WordPress.org plugin guidelines and with Plugin Check before it is published.
 * No changes to the plugin's behaviour.
