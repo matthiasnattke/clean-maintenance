@@ -4,7 +4,7 @@ Tags: maintenance, maintenance mode, multisite, coming soon, rest api
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.7.4
+Stable tag: 0.7.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,12 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 9. Network overview: all sites with state, period and maintenance page, switch one or many at once.
 
 == Changelog ==
+
+= 0.7.5 =
+* Network overview and site widget: open the maintenance page, and edit it when it is a page from WordPress.
+* Site widget: the maintenance page is chosen with a search – recently edited pages first, drafts and private pages marked; the plain list stays as fallback.
+* Phones in landscape: compact header, section links in one row, slim save bar, shorter page list.
+* Tests also run on PHP 8.5.
 
 = 0.7.4 =
 * Turning sites on and off without reloading the page: network overview, network dashboard widget, site dashboard widget and the quick switch in the admin bar. Without JavaScript the links work as before.
