@@ -127,12 +127,12 @@ jQuery( function ( $ ) {
 		$live.text( text );
 	}
 
-	$( document ).on( 'click', '.cm-site .cm-btn-on, .cm-site .cm-btn-off, .cm-wrow .cm-btn', function ( e ) {
+	$( document ).on( 'click', '[data-cm-site][data-cm-mode]', function ( e ) {
 		if ( ! l10n.ajax ) {
 			return;
 		}
 		e.preventDefault();
-		var $b = $( this ), href = $b.attr( 'href' ), q = new URL( href, window.location.href ).searchParams;
+		var $b = $( this ), href = $b.attr( 'href' );
 		var context = $b.closest( '.cm-widget' ).length ? 'dashboard' : 'overview';
 		if ( $b.hasClass( 'is-busy' ) ) {
 			return;
@@ -141,8 +141,8 @@ jQuery( function ( $ ) {
 		$.post( l10n.ajax, {
 			action: 'clean_maintenance_toggle',
 			_ajax_nonce: l10n.nonce,
-			site: q.get( 'cm_sites[]' ),
-			mode: q.get( 'cm_mode' ),
+			site: $b.attr( 'data-cm-site' ),
+			mode: $b.attr( 'data-cm-mode' ),
 			context: context
 		} ).done( function ( r ) {
 			if ( ! r || ! r.success ) {

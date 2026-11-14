@@ -144,9 +144,9 @@ function clean_maintenance_site_card( $r ) {
 						<p class="cm-site-shows"><?php echo clean_maintenance_icon( 'classic' === $r['design'] ? 'type' : 'page' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_html( clean_maintenance_shows( $r ) ); ?></p>
 						<div class="cm-site-actions">
 							<?php if ( 'on' === $r['mode'] ) : ?>
-								<a class="button cm-btn cm-btn-off" href="<?php echo esc_url( clean_maintenance_toggle_url( $r['id'], 'off' ) ); ?>"><?php echo clean_maintenance_icon( 'power' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Turn off', 'clean-maintenance' ); ?></a>
+								<a class="button cm-btn cm-btn-off" href="<?php echo esc_url( clean_maintenance_toggle_url( $r['id'], 'off' ) ); ?>" data-cm-site="<?php echo (int) $r['id']; ?>" data-cm-mode="off"><?php echo clean_maintenance_icon( 'power' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Turn off', 'clean-maintenance' ); ?></a>
 							<?php else : ?>
-								<a class="button cm-btn cm-btn-on" href="<?php echo esc_url( clean_maintenance_toggle_url( $r['id'], 'on' ) ); ?>"><?php echo clean_maintenance_icon( 'cup' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Turn on', 'clean-maintenance' ); ?></a>
+								<a class="button cm-btn cm-btn-on" href="<?php echo esc_url( clean_maintenance_toggle_url( $r['id'], 'on' ) ); ?>" data-cm-site="<?php echo (int) $r['id']; ?>" data-cm-mode="on"><?php echo clean_maintenance_icon( 'cup' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Turn on', 'clean-maintenance' ); ?></a>
 							<?php endif; ?>
 							<a class="cm-link" href="<?php echo esc_url( $r['settings'] ); ?>"><?php esc_html_e( 'Settings', 'clean-maintenance' ); ?></a>
 							<a class="cm-link cm-icon-link" href="<?php echo esc_url( $r['preview'] ); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e( 'Preview', 'clean-maintenance' ); ?>"><?php echo clean_maintenance_icon( 'eye' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span class="screen-reader-text"><?php esc_html_e( 'Preview', 'clean-maintenance' ); ?></span></a>
@@ -553,7 +553,7 @@ function clean_maintenance_network_widget() {
 						<span class="cm-wsite"><a href="<?php echo esc_url( $r['settings'] ); ?>"><?php echo esc_html( $r['name'] ? $r['name'] : $r['host'] ); ?></a>
 						<small><?php echo esc_html( 'scheduled' === $r['mode'] ? $r['status'][1] : $r['host'] ); ?></small></span>
 						<?php if ( 'on' === $r['mode'] ) : ?>
-							<a class="button button-small cm-btn" href="<?php echo esc_url( clean_maintenance_toggle_url( $r['id'], 'off', 'dashboard' ) ); ?>"><?php esc_html_e( 'Turn off', 'clean-maintenance' ); ?></a>
+							<a class="button button-small cm-btn" href="<?php echo esc_url( clean_maintenance_toggle_url( $r['id'], 'off', 'dashboard' ) ); ?>" data-cm-site="<?php echo (int) $r['id']; ?>" data-cm-mode="off"><?php esc_html_e( 'Turn off', 'clean-maintenance' ); ?></a>
 						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
