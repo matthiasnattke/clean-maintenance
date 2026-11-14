@@ -331,9 +331,16 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 .cm-site-widget .cm-segment label { flex: 1; text-align: center; }
 .cm-site-widget .cm-field { margin: 8px 0 4px; }
 .cm-site-widget .cm-field > span { margin-bottom: 4px; font-size: 12px; }
-.cm-site-widget .cm-row { gap: 10px; margin: 0 0 10px; }
-.cm-site-widget .cm-row .cm-field { flex: 1 1 140px; margin: 0; }
-.cm-site-widget .cm-row input, .cm-site-widget select { width: 100%; max-width: 100%; min-width: 0; }
+.cm-site-widget .cm-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0 0 10px; }
+.cm-site-widget .cm-row .cm-field { min-width: 0; margin: 0; }
+/* All fields of the widget look alike – Safari otherwise draws date fields without frame, centred and wider than the card. */
+.cm-site-widget input[type="text"], .cm-site-widget input[type="datetime-local"], .cm-site-widget select, .cm-site-widget textarea { box-sizing: border-box; display: block; width: 100%; max-width: 100%; min-width: 0; margin: 0; border: 1px solid #c3c4c7; border-radius: 10px; background-color: #fff; color: var(--cm-ink); font-size: 14px; }
+.cm-site-widget input[type="text"], .cm-site-widget input[type="datetime-local"], .cm-site-widget select { min-height: 40px; padding: 0 12px; line-height: 38px; }
+.cm-site-widget select { padding-right: 32px; }
+.cm-site-widget textarea { padding: 8px 12px; line-height: 1.5; }
+.cm-site-widget input[type="datetime-local"] { -webkit-appearance: none; appearance: none; text-align: left; }
+.cm-site-widget input[type="datetime-local"]::-webkit-date-and-time-value { text-align: left; }
+.cm-site-widget input:focus, .cm-site-widget select:focus, .cm-site-widget textarea:focus { border-color: var(--cm-blue); box-shadow: 0 0 0 1px var(--cm-blue); outline: none; }
 .cm-site-widget:not(:has(input[name="mode"][value="scheduled"]:checked)) .cm-widget-when { display: none; }
 .cm-site-widget:has(input[name="design"][value="classic"]:checked) .cm-widget-page { display: none; }
 .cm-site-widget:not(:has(input[name="design"][value="classic"]:checked)) .cm-widget-classic { display: none; }
