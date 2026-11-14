@@ -77,6 +77,7 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 
 = 0.8.0 =
 * Works together with Clean Short Links: one shared rule per site decides whether short links redirect, let their targets through or pause during maintenance, and whether short links that do not work show the maintenance page.
+* Dashboard widget on every site: status, quick switch (off, on, scheduled), maintenance page and design.
 * Other plugins can exempt requests with the filter `clean_maintenance_excluded` and show the maintenance page with `clean_maintenance_show_page()`.
 
 = 0.7.0 =

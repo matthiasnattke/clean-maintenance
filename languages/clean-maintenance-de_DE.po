@@ -9,7 +9,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: clean-maintenance\n"
 
-#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:264 includes/admin.php:270 includes/network.php:19 includes/network.php:20 includes/network.php:498
+#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:264 includes/admin.php:270 includes/network.php:19 includes/network.php:20 includes/network.php:498 includes/widget.php:15
 msgid "Maintenance mode"
 msgstr "Wartungsmodus"
 
@@ -124,7 +124,7 @@ msgstr "Suchmaschinen & Schnittstellen"
 msgid "Comfort"
 msgstr "Komfort"
 
-#: includes/admin.php:274 includes/admin.php:502 includes/network.php:222 includes/network.php:222
+#: includes/admin.php:274 includes/admin.php:502 includes/network.php:222 includes/network.php:222 includes/widget.php:89
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -151,11 +151,11 @@ msgstr "Projektseite"
 msgid "When should visitors see the maintenance page?"
 msgstr "Wann sollen Besucher die Wartungsseite sehen?"
 
-#: includes/admin.php:306
+#: includes/admin.php:306 includes/widget.php:57
 msgid "Mode"
 msgstr "Modus"
 
-#: includes/admin.php:309 includes/core.php:180
+#: includes/admin.php:309 includes/core.php:180 includes/widget.php:43
 msgid "Off"
 msgstr "Aus"
 
@@ -163,7 +163,7 @@ msgstr "Aus"
 msgid "Visitors see the normal site."
 msgstr "Besucher sehen die normale Website."
 
-#: includes/admin.php:310 includes/core.php:177
+#: includes/admin.php:310 includes/core.php:177 includes/widget.php:44
 msgid "On"
 msgstr "Eingeschaltet"
 
@@ -171,7 +171,7 @@ msgstr "Eingeschaltet"
 msgid "Right away, until you turn it off."
 msgstr "Sofort, bis du ihn ausschaltest."
 
-#: includes/admin.php:311
+#: includes/admin.php:311 includes/widget.php:45
 msgid "Scheduled"
 msgstr "Zeitgesteuert"
 
@@ -179,11 +179,11 @@ msgstr "Zeitgesteuert"
 msgid "Start and end from the calendar."
 msgstr "Beginn und Ende aus dem Kalender."
 
-#: includes/admin.php:325
+#: includes/admin.php:325 includes/widget.php:63
 msgid "Start"
 msgstr "Beginn"
 
-#: includes/admin.php:326
+#: includes/admin.php:326 includes/widget.php:64
 msgid "End"
 msgstr "Ende"
 
@@ -197,11 +197,11 @@ msgstr "Zeitzone der Website (%s). Ohne Beginn gilt der Modus sofort, ohne Ende 
 msgid "What visitors see while you work."
 msgstr "Was Besucher sehen, während du arbeitest."
 
-#: includes/admin.php:341
+#: includes/admin.php:341 includes/widget.php:68
 msgid "Design"
 msgstr "Gestaltung"
 
-#: includes/admin.php:345
+#: includes/admin.php:345 includes/widget.php:69
 msgid "Page from WordPress"
 msgstr "Seite aus WordPress"
 
@@ -209,7 +209,7 @@ msgstr "Seite aus WordPress"
 msgid "In the style of your theme, edited like any other page."
 msgstr "Im Stil deines Themes, bearbeitet wie jede andere Seite."
 
-#: includes/admin.php:351
+#: includes/admin.php:351 includes/widget.php:70
 msgid "Classic"
 msgstr "Klassisch"
 
@@ -217,11 +217,11 @@ msgstr "Klassisch"
 msgid "Heading, text and background – independent of the theme."
 msgstr "Überschrift, Text und Hintergrund – unabhängig vom Theme."
 
-#: includes/admin.php:357
+#: includes/admin.php:357 includes/widget.php:73
 msgid "Maintenance page"
 msgstr "Wartungsseite"
 
-#: includes/admin.php:360
+#: includes/admin.php:360 includes/widget.php:75
 msgid "– simple notice with the site title –"
 msgstr "– einfacher Hinweis mit Name –"
 
@@ -237,7 +237,7 @@ msgstr "Wird überall ohne Kopf- und Fußbereich angezeigt. Am besten eine eigen
 msgid "Title in the browser tab"
 msgstr "Titel im Browser-Tab"
 
-#: includes/admin.php:376
+#: includes/admin.php:376 includes/widget.php:83
 msgid "Heading"
 msgstr "Überschrift"
 
@@ -245,7 +245,7 @@ msgstr "Überschrift"
 msgid "Colour"
 msgstr "Farbe"
 
-#: includes/admin.php:381
+#: includes/admin.php:381 includes/widget.php:84
 msgid "Text"
 msgstr "Text"
 
@@ -427,7 +427,7 @@ msgstr "Wartungsmodus aktiv"
 msgid "Turn off maintenance mode"
 msgstr "Wartungsmodus ausschalten"
 
-#: includes/frontend.php:356 includes/network.php:442 includes/network.php:464
+#: includes/frontend.php:356 includes/network.php:442 includes/network.php:464 includes/widget.php:100
 msgid "You are not allowed to do this."
 msgstr "Keine Berechtigung."
 
@@ -531,7 +531,7 @@ msgstr "Besucher aus deinem Heimnetz sehen alle Websites des Netzwerks normal �
 msgid "Saved, but the home address was not a valid name and has been left empty."
 msgstr "Gespeichert, aber der DynDNS-Name war ungültig und bleibt leer."
 
-#: includes/network.php:251
+#: includes/network.php:251 includes/widget.php:53
 msgid "Saved."
 msgstr "Gespeichert."
 
@@ -777,7 +777,7 @@ msgstr "Kein Tunnel? Dann ist es einfacher, den Router das Heimnetz melden zu la
 msgid "Connected through a VPN? Show the tunnel guide"
 msgstr "Über VPN verbunden? Tunnel-Anleitung zeigen"
 
-#: includes/network.php:430
+#: includes/network.php:430 includes/widget.php:88
 msgid "Save"
 msgstr "Speichern"
 
@@ -792,4 +792,8 @@ msgstr "Alle Websites sind erreichbar."
 #: includes/network.php:542
 msgid "Manage all sites →"
 msgstr "Alle Websites verwalten →"
+
+#: includes/widget.php:90
+msgid "All settings"
+msgstr "Alle Einstellungen"
 

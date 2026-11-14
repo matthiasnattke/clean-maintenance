@@ -27,6 +27,7 @@ require_once __DIR__ . '/includes/frontend.php';
 
 if ( is_admin() ) {
 	require_once __DIR__ . '/includes/admin.php';
+	require_once __DIR__ . '/includes/widget.php';
 	if ( is_multisite() ) {
 		require_once __DIR__ . '/includes/network.php';
 	}

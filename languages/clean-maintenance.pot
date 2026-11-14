@@ -8,7 +8,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Domain: clean-maintenance\n"
 
-#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:264 includes/admin.php:270 includes/network.php:19 includes/network.php:20 includes/network.php:498
+#: includes/admin.php:14 includes/admin.php:15 includes/admin.php:264 includes/admin.php:270 includes/network.php:19 includes/network.php:20 includes/network.php:498 includes/widget.php:15
 msgid "Maintenance mode"
 msgstr ""
 
@@ -123,7 +123,7 @@ msgstr ""
 msgid "Comfort"
 msgstr ""
 
-#: includes/admin.php:274 includes/admin.php:502 includes/network.php:222 includes/network.php:222
+#: includes/admin.php:274 includes/admin.php:502 includes/network.php:222 includes/network.php:222 includes/widget.php:89
 msgid "Preview"
 msgstr ""
 
@@ -150,11 +150,11 @@ msgstr ""
 msgid "When should visitors see the maintenance page?"
 msgstr ""
 
-#: includes/admin.php:306
+#: includes/admin.php:306 includes/widget.php:57
 msgid "Mode"
 msgstr ""
 
-#: includes/admin.php:309 includes/core.php:180
+#: includes/admin.php:309 includes/core.php:180 includes/widget.php:43
 msgid "Off"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Visitors see the normal site."
 msgstr ""
 
-#: includes/admin.php:310 includes/core.php:177
+#: includes/admin.php:310 includes/core.php:177 includes/widget.php:44
 msgid "On"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Right away, until you turn it off."
 msgstr ""
 
-#: includes/admin.php:311
+#: includes/admin.php:311 includes/widget.php:45
 msgid "Scheduled"
 msgstr ""
 
@@ -178,11 +178,11 @@ msgstr ""
 msgid "Start and end from the calendar."
 msgstr ""
 
-#: includes/admin.php:325
+#: includes/admin.php:325 includes/widget.php:63
 msgid "Start"
 msgstr ""
 
-#: includes/admin.php:326
+#: includes/admin.php:326 includes/widget.php:64
 msgid "End"
 msgstr ""
 
@@ -196,11 +196,11 @@ msgstr ""
 msgid "What visitors see while you work."
 msgstr ""
 
-#: includes/admin.php:341
+#: includes/admin.php:341 includes/widget.php:68
 msgid "Design"
 msgstr ""
 
-#: includes/admin.php:345
+#: includes/admin.php:345 includes/widget.php:69
 msgid "Page from WordPress"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "In the style of your theme, edited like any other page."
 msgstr ""
 
-#: includes/admin.php:351
+#: includes/admin.php:351 includes/widget.php:70
 msgid "Classic"
 msgstr ""
 
@@ -216,11 +216,11 @@ msgstr ""
 msgid "Heading, text and background – independent of the theme."
 msgstr ""
 
-#: includes/admin.php:357
+#: includes/admin.php:357 includes/widget.php:73
 msgid "Maintenance page"
 msgstr ""
 
-#: includes/admin.php:360
+#: includes/admin.php:360 includes/widget.php:75
 msgid "– simple notice with the site title –"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Title in the browser tab"
 msgstr ""
 
-#: includes/admin.php:376
+#: includes/admin.php:376 includes/widget.php:83
 msgid "Heading"
 msgstr ""
 
@@ -244,7 +244,7 @@ msgstr ""
 msgid "Colour"
 msgstr ""
 
-#: includes/admin.php:381
+#: includes/admin.php:381 includes/widget.php:84
 msgid "Text"
 msgstr ""
 
@@ -426,7 +426,7 @@ msgstr ""
 msgid "Turn off maintenance mode"
 msgstr ""
 
-#: includes/frontend.php:356 includes/network.php:442 includes/network.php:464
+#: includes/frontend.php:356 includes/network.php:442 includes/network.php:464 includes/widget.php:100
 msgid "You are not allowed to do this."
 msgstr ""
 
@@ -530,7 +530,7 @@ msgstr ""
 msgid "Saved, but the home address was not a valid name and has been left empty."
 msgstr ""
 
-#: includes/network.php:251
+#: includes/network.php:251 includes/widget.php:53
 msgid "Saved."
 msgstr ""
 
@@ -776,7 +776,7 @@ msgstr ""
 msgid "Connected through a VPN? Show the tunnel guide"
 msgstr ""
 
-#: includes/network.php:430
+#: includes/network.php:430 includes/widget.php:88
 msgid "Save"
 msgstr ""
 
@@ -790,5 +790,9 @@ msgstr ""
 
 #: includes/network.php:542
 msgid "Manage all sites →"
+msgstr ""
+
+#: includes/widget.php:90
+msgid "All settings"
 msgstr ""
 

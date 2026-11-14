@@ -323,3 +323,20 @@ p.cm-hint { margin: 10px 0 0; font-size: 13px; }
 .cm-log summary { cursor: pointer; }
 .cm-log table { margin-top: 6px; border-collapse: collapse; }
 .cm-log th, .cm-log td { padding: 3px 12px 3px 0; text-align: left; }
+
+/* ===== Site dashboard widget ===== */
+.cm-site-widget { --cm-soft: #f3f6fa; color: var(--cm-ink); }
+.cm-site-widget .cm-pill { margin: 0 0 12px; }
+.cm-site-widget .cm-segment { display: flex; margin: 0 0 10px; }
+.cm-site-widget .cm-segment label { flex: 1; text-align: center; }
+.cm-site-widget .cm-field { margin: 8px 0 4px; }
+.cm-site-widget .cm-field > span { margin-bottom: 4px; font-size: 12px; }
+.cm-site-widget .cm-row { gap: 10px; margin: 0 0 10px; }
+.cm-site-widget .cm-row .cm-field { flex: 1 1 140px; margin: 0; }
+.cm-site-widget .cm-row input, .cm-site-widget select { width: 100%; max-width: 100%; min-width: 0; }
+.cm-site-widget:not(:has(input[name="mode"][value="scheduled"]:checked)) .cm-widget-when { display: none; }
+.cm-site-widget:has(input[name="design"][value="classic"]:checked) .cm-widget-page { display: none; }
+.cm-site-widget:not(:has(input[name="design"][value="classic"]:checked)) .cm-widget-classic { display: none; }
+.cm-widget-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 14px 0 0; padding-top: 10px; border-top: 1px solid #f0f0f1; }
+.cm-widget-actions a { text-decoration: none; font-weight: 600; }
+.cm-widget-saved { margin: -4px 0 10px; color: #00701c; font-weight: 600; }
