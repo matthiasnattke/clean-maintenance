@@ -455,7 +455,7 @@ msgstr "Wartungsmodus ausschalten"
 msgid "You are not allowed to do this."
 msgstr "Keine Berechtigung."
 
-#: includes/frontend.php:596
+#: includes/frontend.php:601
 msgid "The REST API is only available to logged-in users."
 msgstr "Die REST-API ist nur für angemeldete Nutzer verfügbar."
 

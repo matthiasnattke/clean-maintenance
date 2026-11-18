@@ -454,7 +454,7 @@ msgstr ""
 msgid "You are not allowed to do this."
 msgstr ""
 
-#: includes/frontend.php:596
+#: includes/frontend.php:601
 msgid "The REST API is only available to logged-in users."
 msgstr ""
 
