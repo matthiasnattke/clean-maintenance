@@ -46,6 +46,8 @@ function get_current_blog_id() { return 1; }
 function is_multisite() { return false; }
 function get_site_option( $name, $default = false ) { return $default; }
 function is_feed() { return $GLOBALS['cm_test_is_feed']; }
+function wp_parse_url( $url, $component = -1 ) { return parse_url( $url, $component ); }
+if ( ! function_exists( 'home_url' ) ) { function home_url( $path = '' ) { return 'https://example.org' . $path; } }
 function wp_unslash( $v ) { return is_string( $v ) ? stripslashes( $v ) : $v; }
 function sanitize_text_field( $v ) { return trim( preg_replace( '/[\r\n\t ]+/', ' ', wp_strip_all_tags( (string) $v ) ) ); }
 function sanitize_textarea_field( $v ) { return trim( wp_strip_all_tags( (string) $v ) ); }

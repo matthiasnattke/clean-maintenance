@@ -42,7 +42,7 @@ function clean_maintenance_defaults() {
 		'page'            => 0,
 		'bg_image'        => 0,
 		'bg_color'        => '',
-		'exclude'         => "feed\nwp-login\nlogin", // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- setting name, not a query argument.
+		'exclude'         => 'feed', // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- setting name, not a query argument.
 		'roles'           => array( 'administrator', 'editor' ), // May see the site.
 		'backend_roles'   => array(),  // May use the dashboard (administrators always).
 		'redirect'        => '',       // Target for logged-in users without dashboard access.
@@ -533,7 +533,7 @@ function clean_maintenance_clean_prefix( $value ) {
 	}
 	list( $addr, $len ) = explode( '/', $value );
 	$len                = (int) $len;
-	if ( $len < 32 || $len > 64 || clean_maintenance_is_private_ip( $addr ) ) {
+	if ( $len < 48 || $len > 64 || clean_maintenance_is_private_ip( $addr ) ) {
 		return '';
 	}
 	return strtolower( $addr ) . '/' . $len;
@@ -626,10 +626,8 @@ function clean_maintenance_receive_home_report() {
 	$from   = clean_maintenance_client_ip();
 	$prefix = clean_maintenance_clean_prefix( $raw_prefix );
 	$v4     = clean_maintenance_clean_v4( $raw_v4 );
-	if ( '' === $v4 ) {
-		// No usable IPv4 value: a call over IPv4 comes from the router's public address itself.
-		$v4 = clean_maintenance_clean_v4( $from );
-	}
+	// No fallback to the caller's address: without a public IPv4 of its own (DS-Lite, carrier
+	// NAT) a call over IPv4 comes from the provider's address, shared by many customers.
 	clean_maintenance_log_home_call( $from, $raw_prefix, $raw_v4 );
 	if ( '' === $prefix && '' === $v4 ) {
 		status_header( 400 );

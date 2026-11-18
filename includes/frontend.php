@@ -51,6 +51,7 @@ function clean_maintenance_excluded( $s ) {
 	if ( apply_filters( 'clean_maintenance_excluded', false, $s ) ) {
 		return true;
 	}
+	$path = clean_maintenance_request_path( $uri, (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ) );
 	foreach ( preg_split( '/\R/', (string) $s['exclude'] ) as $line ) {
 		$line = trim( preg_replace( '/#.*$/', '', $line ) );
 		if ( '' === $line ) {
@@ -62,14 +63,51 @@ function clean_maintenance_excluded( $s ) {
 			}
 			continue;
 		}
-		if ( 'feed' === strtolower( $line ) && is_feed() ) {
-			return true;
+		if ( 'feed' === strtolower( $line ) ) {
+			if ( is_feed() ) {
+				return true;
+			}
+			continue;
 		}
-		if ( false !== stripos( $uri, $line ) ) {
+		if ( clean_maintenance_path_matches( $path, $line ) ) {
 			return true;
 		}
 	}
 	return false;
+}
+
+/**
+ * The path of a request below the site's home path – without query string or fragment, so
+ * "?login" or "#feed" can never open a page.
+ *
+ * @param string $uri       Request URI.
+ * @param string $home_path Path of the site's home URL.
+ * @return string E.g. "/shop/cart/".
+ */
+function clean_maintenance_request_path( $uri, $home_path ) {
+	$path = strtolower( rawurldecode( (string) wp_parse_url( '/' . ltrim( (string) $uri, '/' ), PHP_URL_PATH ) ) );
+	$home = '/' . trim( strtolower( (string) $home_path ), '/' );
+	if ( '/' !== $home && ( $path === $home || 0 === strpos( $path, $home . '/' ) ) ) {
+		$path = substr( $path, strlen( $home ) );
+	}
+	return '/' . ltrim( $path, '/' );
+}
+
+/**
+ * Does an exception (a slug or a path such as "shop/cart") cover this path? Only whole path
+ * segments count: "shop" opens /shop/ and /shop/cart/, but not /workshop/ or /shop-draft/.
+ *
+ * @param string $path Request path from clean_maintenance_request_path().
+ * @param string $line Exception.
+ * @return bool
+ */
+function clean_maintenance_path_matches( $path, $line ) {
+	$line = trim( strtolower( (string) wp_parse_url( trim( (string) $line ), PHP_URL_PATH ) ), '/' );
+	if ( '' === $line ) {
+		return false;
+	}
+	$path = rtrim( (string) $path, '/' ) . '/';
+	return 0 === strpos( $path, '/' . $line . '/' );
 }
 
 /**
@@ -110,8 +148,8 @@ function clean_maintenance_send_headers( $s, $preview ) {
 function clean_maintenance_render( $s, $preview = false ) {
 	do_action( 'clean_maintenance_render' ); // Lets other plugins hide extras such as mobile bars.
 	$page = (int) $s['page'] ? get_post( (int) $s['page'] ) : null;
-	if ( $page && 'page' !== $page->post_type ) {
-		$page = null;
+	if ( $page && ( 'page' !== $page->post_type || 'trash' === $page->post_status || '' !== $page->post_password ) ) {
+		$page = null; // Never reveal a protected or deleted page – the simple notice instead.
 	}
 
 	clean_maintenance_send_headers( $s, $preview );
@@ -266,7 +304,60 @@ function clean_maintenance_blocks_visitor( $s = null ) {
 	if ( is_robots() || clean_maintenance_excluded( $s ) ) {
 		return false;
 	}
-	return ! ( ! empty( $s['bypass_bots'] ) && clean_maintenance_is_bot() );
+	return ! ( ! empty( $s['bypass_bots'] ) && clean_maintenance_is_bot() && clean_maintenance_verified_crawler( clean_maintenance_client_ip() ) );
+}
+
+/**
+ * Does an address really belong to a search engine? A user agent can be faked, so the name
+ * of the address (reverse DNS) must end in a search engine's domain and resolve back to the
+ * same address. The answer is kept for a day per address.
+ *
+ * @param string $ip Client address.
+ * @return bool
+ */
+function clean_maintenance_verified_crawler( $ip ) {
+	if ( '' === $ip ) {
+		return false;
+	}
+	$key    = 'clean_maintenance_bot_' . md5( $ip );
+	$cached = get_site_transient( $key );
+	if ( false !== $cached ) {
+		return '1' === $cached;
+	}
+	$ok   = false;
+	$host = strtolower( (string) gethostbyaddr( $ip ) );
+	if ( $host && $host !== $ip && clean_maintenance_crawler_host( $host ) ) {
+		$back = filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 ) ? clean_maintenance_resolve_v6( $host ) : (array) gethostbynamel( $host );
+		$ok   = in_array( inet_pton( $ip ), array_map( 'inet_pton', array_filter( $back ) ), true );
+	}
+	set_site_transient( $key, $ok ? '1' : '0', DAY_IN_SECONDS );
+	return $ok;
+}
+
+/**
+ * Is a host name one of the known search engine crawlers?
+ *
+ * @param string $host Host name from reverse DNS.
+ * @return bool
+ */
+function clean_maintenance_crawler_host( $host ) {
+	return 1 === preg_match( '/\.(googlebot\.com|google\.com|googleusercontent\.com|search\.msn\.com|applebot\.apple\.com|yandex\.(ru|net|com)|crawl\.yahoo\.net|baidu\.(com|jp)|duckduckgo\.com|petalsearch\.com|qwant\.com|ecosia\.org)$/', strtolower( (string) $host ) );
+}
+
+/**
+ * IPv6 addresses of a host name.
+ *
+ * @param string $host Host name.
+ * @return string[]
+ */
+function clean_maintenance_resolve_v6( $host ) {
+	$out = array();
+	foreach ( (array) dns_get_record( $host, DNS_AAAA ) as $r ) {
+		if ( ! empty( $r['ipv6'] ) ) {
+			$out[] = $r['ipv6'];
+		}
+	}
+	return $out;
 }
 
 /**
@@ -471,7 +562,7 @@ function clean_maintenance_rest_route_allowed( $route, $allow_list ) {
 	$route = '/' . ltrim( (string) $route, '/' );
 	foreach ( preg_split( '/\R/', (string) $allow_list ) as $line ) {
 		$line = trim( preg_replace( '/#.*$/', '', $line ), " \t/" );
-		if ( '' !== $line && 0 === strpos( $route, '/' . $line ) ) {
+		if ( '' !== $line && 1 === preg_match( '#^/' . preg_quote( $line, '#' ) . '(?:$|[/-])#', $route ) ) {
 			return true;
 		}
 	}
@@ -481,11 +572,26 @@ function clean_maintenance_rest_route_allowed( $route, $allow_list ) {
 add_filter(
 	'rest_authentication_errors',
 	function ( $result ) {
-		if ( true === $result || is_wp_error( $result ) || is_user_logged_in() ) {
+		// Runs after core's cookie check (priority 100): a login cookie without a valid REST
+		// nonce no longer counts as logged in here. Being logged in is not enough either – on a
+		// network every user is logged in on every site, so the same rules as for the front end
+		// apply: people who may see the site or edit content, the access pass, allowed addresses.
+		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 		$s = clean_maintenance_settings();
 		if ( ! clean_maintenance_rest_locked( $s ) ) {
+			return $result;
+		}
+		if ( is_user_logged_in() && ( clean_maintenance_bypass( $s ) || current_user_can( 'edit_posts' ) ) ) {
+			return $result;
+		}
+		// Requests the Jetpack connection signed with the site's own key (WordPress.com tools).
+		$jp = 'Automattic\\Jetpack\\Connection\\Rest_Authentication';
+		if ( true === $result && class_exists( $jp ) && method_exists( $jp, 'is_signed_with_blog_token' ) && $jp::is_signed_with_blog_token() ) {
+			return $result;
+		}
+		if ( clean_maintenance_network_allowed( clean_maintenance_client_ip() ) || clean_maintenance_has_pass() ) {
 			return $result;
 		}
 		$qv = isset( $GLOBALS['wp'] ) && is_object( $GLOBALS['wp'] ) ? (array) $GLOBALS['wp']->query_vars : array();
@@ -494,7 +600,7 @@ add_filter(
 		}
 		return new WP_Error( 'rest_login_required', __( 'The REST API is only available to logged-in users.', 'clean-maintenance' ), array( 'status' => 401 ) );
 	},
-	90
+	110
 );
 
 add_action(

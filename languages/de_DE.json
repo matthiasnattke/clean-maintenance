@@ -38,7 +38,6 @@
 	"Where logged-in users without dashboard access are sent. Empty = home page.": "Wohin Angemeldete ohne Zugang zur Verwaltung geleitet werden. Leer = Startseite.",
 	"Search engine bots": "Suchmaschinen-Bots",
 	"Bots see the normal site": "Bots sehen die normale Website",
-	"Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking.": "Sonst bekommen auch Suchmaschinen die Wartungsseite mit Status 503 (vorübergehend), was das Ranking schont.",
 	"Robots meta tag": "Robots-Meta-Tag",
 	"Instruction for search engines on the maintenance page.": "Angabe für Suchmaschinen auf der Wartungsseite.",
 	"REST API for visitors": "REST-API für Besucher",
@@ -216,5 +215,6 @@
 	"Recently edited": "Zuletzt bearbeitet",
 	"Draft": "Entwurf",
 	"Private": "Privat",
-	"Pending": "Ausstehend"
+	"Pending": "Ausstehend",
+	"Only search engines whose address really belongs to them (checked by DNS) – a faked user agent does not help. Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking.": "Nur Suchmaschinen, deren Adresse wirklich zu ihnen gehört (per DNS geprüft) – ein gefälschter User-Agent hilft nicht. Sonst bekommen auch Suchmaschinen die Wartungsseite mit Status 503 (vorübergehend), was das Ranking schont."
 }

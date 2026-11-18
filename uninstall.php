@@ -29,6 +29,9 @@ if ( is_multisite() ) {
 	delete_site_option( 'clean_maintenance_home_log' );
 	delete_site_option( 'clean_maintenance_pass_token' );
 	delete_site_option( 'clean_maintenance_pass_login' );
+	global $wpdb;
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Removing the plugin's own cached values.
+	$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE meta_key LIKE %s OR meta_key LIKE %s', $wpdb->sitemeta, $wpdb->esc_like( '_site_transient_clean_maintenance_' ) . '%', $wpdb->esc_like( '_site_transient_timeout_clean_maintenance_' ) . '%' ) );
 } else {
 	delete_option( 'clean_maintenance' );
 	if ( ! function_exists( 'CleanShortLinks\\site_settings' ) ) {

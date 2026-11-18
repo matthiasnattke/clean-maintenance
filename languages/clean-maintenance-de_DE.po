@@ -318,8 +318,8 @@ msgid "Bots see the normal site"
 msgstr "Bots sehen die normale Website"
 
 #: includes/admin.php:455
-msgid "Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking."
-msgstr "Sonst bekommen auch Suchmaschinen die Wartungsseite mit Status 503 (vorübergehend), was das Ranking schont."
+msgid "Only search engines whose address really belongs to them (checked by DNS) – a faked user agent does not help. Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking."
+msgstr "Nur Suchmaschinen, deren Adresse wirklich zu ihnen gehört (per DNS geprüft) – ein gefälschter User-Agent hilft nicht. Sonst bekommen auch Suchmaschinen die Wartungsseite mit Status 503 (vorübergehend), was das Ranking schont."
 
 #: includes/admin.php:459
 msgid "Robots meta tag"
@@ -377,7 +377,7 @@ msgstr "Hintergrundbild wählen"
 msgid "Use image"
 msgstr "Übernehmen"
 
-#: includes/admin.php:541 includes/frontend.php:343 includes/network.php:139
+#: includes/admin.php:541 includes/frontend.php:434 includes/network.php:139
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -411,51 +411,51 @@ msgstr "ab %s"
 msgid "until %s"
 msgstr "bis %s"
 
-#: includes/core.php:794 includes/network.php:261 includes/widget.php:106
+#: includes/core.php:792 includes/network.php:261 includes/widget.php:106
 msgid "Saved."
 msgstr "Gespeichert."
 
-#: includes/core.php:795
+#: includes/core.php:793
 msgid "Could not be saved – please try again."
 msgstr "Konnte nicht gespeichert werden – bitte noch einmal versuchen."
 
-#: includes/core.php:808
+#: includes/core.php:806
 msgid "Classic design"
 msgstr "Klassische Gestaltung"
 
-#: includes/core.php:808 includes/core.php:811
+#: includes/core.php:806 includes/core.php:809
 msgid "simple notice"
 msgstr "einfacher Hinweis"
 
-#: includes/core.php:828
+#: includes/core.php:826
 msgid "Open the maintenance page"
 msgstr "Wartungsseite öffnen"
 
-#: includes/core.php:836
+#: includes/core.php:834
 msgid "Edit the maintenance page"
 msgstr "Wartungsseite im Editor bearbeiten"
 
-#: includes/frontend.php:141
+#: includes/frontend.php:179
 msgid "This website is currently being updated. Please check back soon."
 msgstr "Diese Website wird gerade überarbeitet. Bitte schau bald wieder vorbei."
 
-#: includes/frontend.php:246
+#: includes/frontend.php:284
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: includes/frontend.php:327
+#: includes/frontend.php:418
 msgid "Maintenance mode active"
 msgstr "Wartungsmodus aktiv"
 
-#: includes/frontend.php:335
+#: includes/frontend.php:426
 msgid "Turn off maintenance mode"
 msgstr "Wartungsmodus ausschalten"
 
-#: includes/frontend.php:405 includes/network.php:452 includes/network.php:474 includes/widget.php:154
+#: includes/frontend.php:496 includes/network.php:452 includes/network.php:474 includes/widget.php:154
 msgid "You are not allowed to do this."
 msgstr "Keine Berechtigung."
 
-#: includes/frontend.php:495
+#: includes/frontend.php:596
 msgid "The REST API is only available to logged-in users."
 msgstr "Die REST-API ist nur für angemeldete Nutzer verfügbar."
 

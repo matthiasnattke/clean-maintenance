@@ -317,7 +317,7 @@ msgid "Bots see the normal site"
 msgstr ""
 
 #: includes/admin.php:455
-msgid "Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking."
+msgid "Only search engines whose address really belongs to them (checked by DNS) – a faked user agent does not help. Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking."
 msgstr ""
 
 #: includes/admin.php:459
@@ -376,7 +376,7 @@ msgstr ""
 msgid "Use image"
 msgstr ""
 
-#: includes/admin.php:541 includes/frontend.php:343 includes/network.php:139
+#: includes/admin.php:541 includes/frontend.php:434 includes/network.php:139
 msgid "Settings"
 msgstr ""
 
@@ -410,51 +410,51 @@ msgstr ""
 msgid "until %s"
 msgstr ""
 
-#: includes/core.php:794 includes/network.php:261 includes/widget.php:106
+#: includes/core.php:792 includes/network.php:261 includes/widget.php:106
 msgid "Saved."
 msgstr ""
 
-#: includes/core.php:795
+#: includes/core.php:793
 msgid "Could not be saved – please try again."
 msgstr ""
 
-#: includes/core.php:808
+#: includes/core.php:806
 msgid "Classic design"
 msgstr ""
 
-#: includes/core.php:808 includes/core.php:811
+#: includes/core.php:806 includes/core.php:809
 msgid "simple notice"
 msgstr ""
 
-#: includes/core.php:828
+#: includes/core.php:826
 msgid "Open the maintenance page"
 msgstr ""
 
-#: includes/core.php:836
+#: includes/core.php:834
 msgid "Edit the maintenance page"
 msgstr ""
 
-#: includes/frontend.php:141
+#: includes/frontend.php:179
 msgid "This website is currently being updated. Please check back soon."
 msgstr ""
 
-#: includes/frontend.php:246
+#: includes/frontend.php:284
 msgid "Dashboard"
 msgstr ""
 
-#: includes/frontend.php:327
+#: includes/frontend.php:418
 msgid "Maintenance mode active"
 msgstr ""
 
-#: includes/frontend.php:335
+#: includes/frontend.php:426
 msgid "Turn off maintenance mode"
 msgstr ""
 
-#: includes/frontend.php:405 includes/network.php:452 includes/network.php:474 includes/widget.php:154
+#: includes/frontend.php:496 includes/network.php:452 includes/network.php:474 includes/widget.php:154
 msgid "You are not allowed to do this."
 msgstr ""
 
-#: includes/frontend.php:495
+#: includes/frontend.php:596
 msgid "The REST API is only available to logged-in users."
 msgstr ""
 

@@ -452,7 +452,7 @@ function clean_maintenance_render_settings() {
 					<p class="cm-lead"><?php esc_html_e( 'How search engines and other programs are treated.', 'clean-maintenance' ); ?></p>
 
 					<div class="cm-sub">
-						<?php clean_maintenance_switch( 'bypass_bots', ! empty( $s['bypass_bots'] ), __( 'Bots see the normal site', 'clean-maintenance' ), __( 'Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking.', 'clean-maintenance' ) ); ?>
+						<?php clean_maintenance_switch( 'bypass_bots', ! empty( $s['bypass_bots'] ), __( 'Bots see the normal site', 'clean-maintenance' ), __( 'Only search engines whose address really belongs to them (checked by DNS) – a faked user agent does not help. Otherwise search engines also get the maintenance page with status 503 (temporary), which protects your ranking.', 'clean-maintenance' ) ); ?>
 					</div>
 
 					<div class="cm-sub">

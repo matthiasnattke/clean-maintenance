@@ -101,6 +101,20 @@ test( 'A slug from the exception list is let through', function () {
 	same( false, clean_maintenance_excluded( settings( array( 'exclude' => "feed\n725-jahre-peitz" ) ) ) );
 } );
 
+test( 'Exceptions match whole path segments, never the query string', function () {
+	$s = settings( array( 'exclude' => "feed\nlogin\nshop\nshop/cart" ) );
+	foreach ( array( '/any-page/?login', '/?feed', '/secret/?x=wp-login', '/workshop/', '/shop-draft/', '/?shop', '/blog/#shop' ) as $uri ) {
+		$_SERVER['REQUEST_URI'] = $uri;
+		same( false, clean_maintenance_excluded( $s ), $uri );
+	}
+	foreach ( array( '/shop/', '/shop', '/shop/cart/item?x=1', '/Login/' ) as $uri ) {
+		$_SERVER['REQUEST_URI'] = $uri;
+		same( true, clean_maintenance_excluded( $s ), $uri );
+	}
+	same( '/shop/', clean_maintenance_request_path( '/sub/shop/?a=1', '/sub/' ), 'site in a subdirectory' );
+	same( false, in_array( 'login', preg_split( '/\R/', clean_maintenance_defaults()['exclude'] ), true ), 'no login in the defaults' );
+} );
+
 test( 'Comments and blank lines are ignored', function () {
 	$_SERVER['REQUEST_URI'] = '/irgendwas/';
 	same( false, clean_maintenance_excluded( settings( array( 'exclude' => "# just a comment\n\n   " ) ) ) );
@@ -186,6 +200,7 @@ test( 'Pasted URLs become a bare host name', function () {
 test( 'Router reports: only global prefixes and public IPv4 count', function () {
 	same( '2a00:aaaa:adc0:700::/56', clean_maintenance_clean_prefix( ' 2A00:AAAA:ADC0:700::/56 ' ) );
 	same( '', clean_maintenance_clean_prefix( '2001:db8::/16' ), 'too wide' );
+	same( '', clean_maintenance_clean_prefix( '2a00:aaaa::/32' ), 'wider than a home network' );
 	same( '', clean_maintenance_clean_prefix( '2001:db8::1' ), 'no length' );
 	same( '', clean_maintenance_clean_prefix( 'fd00::/56' ), 'private' );
 	same( '', clean_maintenance_clean_prefix( '<ip6lanprefix>' ), 'placeholder not replaced' );
@@ -247,6 +262,15 @@ test( 'Public namespaces', function () {
 	same( false, clean_maintenance_rest_route_allowed( '/wp/v2/users', $allow ), 'wp/v2/users' );
 	same( false, clean_maintenance_rest_route_allowed( '/', $allow ), 'index' );
 	same( false, clean_maintenance_rest_route_allowed( '', $allow ), 'empty' );
+	same( false, clean_maintenance_rest_route_allowed( '/oembedx/1.0/x', $allow ), 'only whole names' );
+	same( false, clean_maintenance_rest_route_allowed( '/podlovex/v1', $allow ), 'only whole names or name-…' );
+} );
+
+test( 'Crawler host names', function () {
+	same( true, clean_maintenance_crawler_host( 'crawl-66-249-66-1.googlebot.com' ) );
+	same( true, clean_maintenance_crawler_host( 'msnbot-157-55-39-1.search.msn.com' ) );
+	same( false, clean_maintenance_crawler_host( 'googlebot.com.evil.example' ) );
+	same( false, clean_maintenance_crawler_host( 'evilgooglebot.com' ) );
 } );
 
 test( 'Comments, blank lines and slashes in the list', function () {
