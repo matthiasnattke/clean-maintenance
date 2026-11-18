@@ -4,7 +4,7 @@ Tags: maintenance, maintenance mode, multisite, coming soon, rest api
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.7.5
+Stable tag: 0.7.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,13 @@ The action `clean_maintenance_render` fires right before the maintenance page is
 9. Network overview: all sites with state, period and maintenance page, switch one or many at once.
 
 == Changelog ==
+
+= 0.7.6 =
+* Security: exceptions match whole path segments, never the query string – "?login" or "?feed" no longer open the site during maintenance. "wp-login" and "login" are no longer in the default exceptions.
+* Security: the REST API lock follows the same rules as the front end and is decided after WordPress checked the login cookie; logged-in users without access no longer read content.
+* Security: the router report never allow-lists the caller's IPv4 address (shared behind DS-Lite or carrier NAT); home prefixes are at most /48.
+* Security: "Bots see the normal site" only applies to search engines confirmed by DNS.
+* Security: password-protected or trashed pages are never shown as maintenance page; public REST namespaces match whole names.
 
 = 0.7.5 =
 * Network overview and site widget: open the maintenance page, and edit it when it is a page from WordPress.
